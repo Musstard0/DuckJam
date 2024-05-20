@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace DuckJam.Models
 {
+    // this model can handle two different planes XY AND XZ.
+    // once the plane that will be used is confirmed, this class could be simplified
     internal sealed class MapModel
     {
         private readonly MapPlane _mapPlane;
