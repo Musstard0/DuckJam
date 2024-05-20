@@ -133,8 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 129764817}
   - component: {fileID: 129764816}
+  - component: {fileID: 129764818}
   m_Layer: 0
-  m_Name: Model Initialisers
+  m_Name: Model Initialiser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27da9b7501f50b544a3e372f90fea9b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plane: 0
+  plane: 1
   size: {x: 10, y: 10}
   centerPosition: {x: 0, y: 0, z: 0}
   timeScaleLineRotationSpeed: 8
@@ -171,6 +172,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &129764818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129764815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 900916aa2d9b497696d6328742c8343b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnConfig: {fileID: 11400000, guid: 1e71df601990aad4ba7746b59c788e1d, type: 2}
+  enemyTypes:
+  - name: Test Enemy
+    prefab: {fileID: 798391808316553258, guid: 8a0ee553fee0917429d36f5c83136f1b, type: 3}
 --- !u!1 &379295207
 GameObject:
   m_ObjectHideFlags: 0

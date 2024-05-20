@@ -31,7 +31,7 @@ namespace DuckJam.Models
 
         private void OnDrawGizmos()
         {
-            var mapModel = CreateMapModel();
+            var mapModel = _mapModel ?? CreateMapModel();
             
             Gizmos.color = Color.green;
             
@@ -40,6 +40,10 @@ namespace DuckJam.Models
             Gizmos.DrawLine(mapModel.SouthEastPosition, mapModel.NorthEastPosition);
             Gizmos.DrawLine(mapModel.NorthEastPosition, mapModel.NorthWestPosition);
             Gizmos.DrawLine(mapModel.NorthWestPosition, mapModel.SouthWestPosition);
+            
+            // draw time scale line
+            var directionOffset = mapModel.TimeScaleLineDirection * 50f;
+            Gizmos.DrawLine(mapModel.CenterPosition - directionOffset, mapModel.CenterPosition + directionOffset);
         }
 
         private MapModel CreateMapModel()
