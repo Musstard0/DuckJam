@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DuckJam.Entities
 {
-    internal sealed class Enemy : MonoBehaviour
+    internal sealed class EnemyController : MonoBehaviour
     {
         public float Speed { get; set; }
         public int Health { get; set; }

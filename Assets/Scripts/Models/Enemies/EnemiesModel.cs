@@ -6,10 +6,10 @@ namespace DuckJam.Models
 {
     internal sealed class EnemiesModel
     {
-        private readonly List<Enemy> _activeEnemies = new();
+        private readonly List<EnemyController> _activeEnemies = new();
         private readonly List<EnemyType> _enemyTypes = new();
         
-        public IReadOnlyList<Enemy> ActiveEnemies => _activeEnemies;
+        public IReadOnlyList<EnemyController> ActiveEnemies => _activeEnemies;
         
         public void AddEnemyType(EnemyType enemyType)
         {
@@ -17,7 +17,7 @@ namespace DuckJam.Models
             _enemyTypes.Add(enemyType);
         }
         
-        public Enemy SpawnEnemy(Vector3 position)
+        public EnemyController SpawnEnemy(Vector3 position)
         {
             var enemyType = _enemyTypes[Random.Range(0, _enemyTypes.Count)];
             var enemy = Object.Instantiate(enemyType.Prefab, position, Quaternion.identity);
@@ -29,7 +29,7 @@ namespace DuckJam.Models
             return enemy;
         }
         
-        public void DestroyEnemy(Enemy enemy)
+        public void DestroyEnemy(EnemyController enemy)
         {
             if(enemy == null) return;
             _activeEnemies.Remove(enemy);

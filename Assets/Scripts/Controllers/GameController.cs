@@ -14,7 +14,7 @@ namespace DuckJam.Controllers
         private MapModel _mapModel;
         private EnemiesModel _enemiesModel;
         
-        private readonly HashSet<Enemy> _deadEnemyBuffer = new();
+        private readonly HashSet<EnemyController> _deadEnemyBuffer = new();
         private float _nextEnemySpawnTime;
         private bool _nextSpawnAtLineStart;
         
