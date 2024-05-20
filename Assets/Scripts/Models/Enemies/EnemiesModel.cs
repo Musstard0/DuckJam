@@ -19,6 +19,7 @@ namespace DuckJam.Models
         {
             var enemyType = _enemyTypes[Random.Range(0, _enemyTypes.Count)];
             var enemy = Object.Instantiate(enemyType.Prefab, position, Quaternion.identity);
+            enemy.Speed = enemyType.Speed;
             ActiveEnemies.Add(enemy);
             return enemy;
         }

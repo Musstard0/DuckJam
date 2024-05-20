@@ -52,11 +52,11 @@ namespace DuckJam.Models
         }
         
         /// <summary>
-        /// Get the time scale at a given position.
+        /// Get the time scale sign at a position.
         /// </summary>
         /// <param name="position"></param>
         /// <returns>1 if position on fast side of line, -1 if position is on slow side of line</returns>
-        public float GetTimeScaleAtPosition(Vector3 position)
+        public float GetTimeScaleSignAtPosition(Vector3 position)
         {
             var directionToPosition = position - CenterPosition;
             var angleToPosition = Mathf.Atan2(directionToPosition.y, directionToPosition.x) * Mathf.Rad2Deg;

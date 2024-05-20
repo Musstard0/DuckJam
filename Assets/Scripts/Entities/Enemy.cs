@@ -6,9 +6,11 @@ namespace DuckJam.Entities
 {
     internal sealed class Enemy : MonoBehaviour
     {
+        public float Speed { get; set; }
+        public float CurrentTimeScale { get; set; } = 1f;
         public Vector3 TargetPosition { get; set; }
 
-        public Color Color
+        public Color Color 
         {
             set
             {

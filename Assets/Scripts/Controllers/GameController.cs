@@ -1,3 +1,4 @@
+using DuckJam.Configuration;
 using DuckJam.Models;
 using UnityEngine;
 
@@ -5,9 +6,11 @@ namespace DuckJam.Controllers
 {
     internal sealed class GameController : MonoBehaviour
     {
+        [SerializeField] private EnemySpawnConfig enemySpawnConfig;
+        [SerializeField] private TimeScaleConfig timeScaleConfig;
+        
         private MapModel _mapModel;
         private EnemiesModel _enemiesModel;
-        private EnemySpawnConfig _enemySpawnConfig;
         
         private float _nextEnemySpawnTime;
         
@@ -15,9 +18,8 @@ namespace DuckJam.Controllers
         {
             _mapModel = GameModel.Get<MapModel>();
             _enemiesModel = GameModel.Get<EnemiesModel>();
-            _enemySpawnConfig = GameModel.Get<EnemySpawnConfig>();
             
-            _nextEnemySpawnTime = Time.time + _enemySpawnConfig.RandomSpawnInterval;
+            _nextEnemySpawnTime = Time.time + enemySpawnConfig.RandomSpawnInterval;
         }
 
         private void Update()
@@ -30,13 +32,13 @@ namespace DuckJam.Controllers
 
         private void SpawnEnemies()
         {
-            if(_enemiesModel.ActiveEnemies.Count >= _enemySpawnConfig.MaxEnemies) return;
+            if(_enemiesModel.ActiveEnemies.Count >= enemySpawnConfig.MaxEnemies) return;
             
             var time = Time.time;
             if(time < _nextEnemySpawnTime) return;
             
             var newEnemy = _enemiesModel.SpawnEnemy(Vector3.zero);
-            _nextEnemySpawnTime = time + _enemySpawnConfig.RandomSpawnInterval;
+            _nextEnemySpawnTime = time + enemySpawnConfig.RandomSpawnInterval;
         }
 
         private void UpdateEnemies(float deltaTime)
@@ -46,23 +48,45 @@ namespace DuckJam.Controllers
             // their color changes based on their position in the map
             // (blue for slow time scale, red for fast time scale)
             
-            var travelDistance = 1f * deltaTime;
+            var timeScaleDeltaAbs = timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
+            
             
             foreach (var enemy in _enemiesModel.ActiveEnemies)
             {
-                // set time scale color
-                enemy.Color = _mapModel.GetTimeScaleAtPosition(enemy.transform.position) > 0 
-                    ? Color.red 
-                    : Color.blue;
+                // set time scale
+                var timeScaleSignAtPosition = _mapModel.GetTimeScaleSignAtPosition(enemy.transform.position);
+                enemy.CurrentTimeScale = Mathf.Clamp
+                (
+                    enemy.CurrentTimeScale + timeScaleSignAtPosition * timeScaleDeltaAbs, 
+                    timeScaleConfig.MinTimeScale, 
+                    timeScaleConfig.MaxTimeScale
+                );
+
+                
+                // set color to visualize time scale
+                var color = Color.white;
+                if (enemy.CurrentTimeScale > 1f)
+                {
+                    color = Color.Lerp(Color.white, Color.red, (enemy.CurrentTimeScale - 1f) / (timeScaleConfig.MaxTimeScale - 1f));
+                }
+                else if(enemy.CurrentTimeScale < 1f)
+                {
+                    color = Color.Lerp(Color.white, Color.blue, (1f - enemy.CurrentTimeScale) / (1f - timeScaleConfig.MinTimeScale));
+                }
+                enemy.Color = color;
+                
+                
                 
                 // move towards random target position
                 var targetOffset = enemy.TargetPosition - enemy.transform.position;
                 var targetDirection = targetOffset.normalized;
                 var targetDistance = targetOffset.magnitude;
 
-                if (targetDistance > travelDistance)
+                var deltaDistance = enemy.Speed * enemy.CurrentTimeScale * deltaTime;
+                
+                if (targetDistance > deltaDistance)
                 {
-                    enemy.transform.position += targetDirection * travelDistance;
+                    enemy.transform.position += targetDirection * deltaDistance;
                     continue;
                 }
                 

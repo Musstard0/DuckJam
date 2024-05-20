@@ -6,7 +6,6 @@ namespace DuckJam.Models
 {
     internal sealed class EnemiesModelInitializer : MonoBehaviour
     {
-        [SerializeField] private EnemySpawnConfig spawnConfig;
         [SerializeField] private EnemyType[] enemyTypes;
         
         private void Awake()
@@ -15,7 +14,6 @@ namespace DuckJam.Models
             foreach (var enemyType in enemyTypes) enemiesModel.AddEnemyType(enemyType);
             
             GameModel.Register(enemiesModel);
-            GameModel.Register(spawnConfig);
         }
     }
     
@@ -24,8 +22,10 @@ namespace DuckJam.Models
     {
         [SerializeField] private string name;
         [SerializeField] private Enemy prefab;
+        [SerializeField, Min(0f)] private float speed;
             
         public string Name => name;
         public Enemy Prefab => prefab;
+        public float Speed => speed;
     }
 }
