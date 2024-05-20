@@ -10,6 +10,7 @@ namespace DuckJam.Controllers
         private void Start()
         {
             _mapModel = GameModel.Get<MapModel>();
+            GetComponent<MeshRenderer>().enabled = true;
         }
 
         private void Update()
