@@ -1,10 +1,12 @@
+using DuckJam.Utilities;
 using UnityEngine;
 
 namespace DuckJam.Models
 {
     internal sealed class MapModel
     {
-        private Quaternion _initialRotation;
+        private readonly MapPlane _mapPlane;
+        private readonly Quaternion _initialRotation;
         
         public Vector3 CenterPosition { get; }
         public Vector2 Size { get; }
@@ -26,12 +28,21 @@ namespace DuckJam.Models
 
         public Vector3 TimeScaleLineDirection => Quaternion.AngleAxis(TimeScaleLineAngle, -GroundNormal) * HorizontalDirection;
         public Quaternion TimeScaleLineRotation => _initialRotation * Quaternion.AngleAxis(TimeScaleLineAngle, Vector3.forward);
+
+        public Vector3 TimeScaleLineStart => _mapPlane == MapPlane.XY 
+            ? GetTimeScaleLineIntersectionXYPlane(false) 
+            : GetTimeScaleLineIntersectionXZPlane(false);
         
-        public MapModel(Vector3 position, Vector2 size, Vector3 normal)
+        public Vector3 TimeScaleLineEnd => _mapPlane == MapPlane.XY 
+            ? GetTimeScaleLineIntersectionXYPlane(true) 
+            : GetTimeScaleLineIntersectionXZPlane(true);
+        
+        public MapModel(MapPlane plane, Vector3 position, Vector2 size)
         {
+            _mapPlane = plane;
             CenterPosition = position;
             Size = size;
-            GroundNormal = normal;
+            GroundNormal = plane == MapPlane.XY ? Vector3.back : Vector3.up;
             
             _initialRotation = Quaternion.LookRotation(-GroundNormal);
             
@@ -64,6 +75,129 @@ namespace DuckJam.Models
             adjustedAngle = Mathf.Repeat(adjustedAngle + 180f, 360f) - 180f;
             
             return Mathf.Sign(adjustedAngle);
+        }
+        
+        // hacky way to get intersection of time scale line with map edge (XY plane version)
+        private Vector3 GetTimeScaleLineIntersectionXYPlane(bool forward)
+        {
+            var lineDirection = forward ? TimeScaleLineDirection : -TimeScaleLineDirection;
+            var lineEndTemp = CenterPosition + lineDirection * (Size.x + Size.y);
+            
+            var lineStart = new Vector2(CenterPosition.x, CenterPosition.y);
+            var lineEnd = new Vector2(lineEndTemp.x, lineEndTemp.y);
+
+            if (LineUtils.TryGetIntersection
+                (
+                    lineStart, 
+                    lineEnd, 
+                    new Vector2(SouthWestPosition.x, SouthWestPosition.y), 
+                    new Vector2(SouthEastPosition.x, SouthEastPosition.y), 
+                    out var intersection
+                ))
+            {
+                return new Vector3(intersection.x, intersection.y, CenterPosition.z);
+            }
+            
+            if (LineUtils.TryGetIntersection
+                (
+                    lineStart, 
+                    lineEnd, 
+                    new Vector2(SouthEastPosition.x, SouthEastPosition.y), 
+                    new Vector2(NorthEastPosition.x, NorthEastPosition.y), 
+                    out intersection
+                ))
+            {
+                return new Vector3(intersection.x, intersection.y, CenterPosition.z);
+            }
+            
+            if (LineUtils.TryGetIntersection
+                (
+                    lineStart, 
+                    lineEnd, 
+                    new Vector2(NorthEastPosition.x, NorthEastPosition.y), 
+                    new Vector2(NorthWestPosition.x, NorthWestPosition.y), 
+                    out intersection
+                ))
+            {
+                return new Vector3(intersection.x, intersection.y, CenterPosition.z);
+            }
+
+            if (LineUtils.TryGetIntersection
+                (
+                    lineStart,
+                    lineEnd,
+                    new Vector2(NorthWestPosition.x, NorthWestPosition.y),
+                    new Vector2(SouthWestPosition.x, SouthWestPosition.y),
+                    out intersection
+                ))
+            {
+                return new Vector3(intersection.x, intersection.y, CenterPosition.z);
+
+            }
+
+            Debug.LogError($"Could not find intersection of time scale line with map area.");
+            return default;
+        }
+        
+        // hacky way to get intersection of time scale line with map edge (XZ plane version)
+        private Vector3 GetTimeScaleLineIntersectionXZPlane(bool forward)
+        {
+            var lineDirection = forward ? TimeScaleLineDirection : -TimeScaleLineDirection;
+            var lineEndTemp = CenterPosition + lineDirection * (Size.x + Size.y);
+            
+            var lineStart = new Vector2(CenterPosition.x, CenterPosition.z);
+            var lineEnd = new Vector2(lineEndTemp.x, lineEndTemp.z);
+
+            if (LineUtils.TryGetIntersection
+                (
+                    lineStart, 
+                    lineEnd, 
+                    new Vector2(SouthWestPosition.x, SouthWestPosition.z), 
+                    new Vector2(SouthEastPosition.x, SouthEastPosition.z), 
+                    out var intersection
+                ))
+            {
+                return new Vector3(intersection.x, CenterPosition.y, intersection.y);
+            }
+            
+            if (LineUtils.TryGetIntersection
+                (
+                    lineStart, 
+                    lineEnd, 
+                    new Vector2(SouthEastPosition.x, SouthEastPosition.z), 
+                    new Vector2(NorthEastPosition.x, NorthEastPosition.z), 
+                    out intersection
+                ))
+            {
+                return new Vector3(intersection.x, CenterPosition.y, intersection.y);
+            }
+            
+            if (LineUtils.TryGetIntersection
+                (
+                    lineStart, 
+                    lineEnd, 
+                    new Vector2(NorthEastPosition.x, NorthEastPosition.z), 
+                    new Vector2(NorthWestPosition.x, NorthWestPosition.z), 
+                    out intersection
+                ))
+            {
+                return new Vector3(intersection.x, CenterPosition.y, intersection.y);
+            }
+
+            if (LineUtils.TryGetIntersection
+                (
+                    lineStart,
+                    lineEnd,
+                    new Vector2(NorthWestPosition.x, NorthWestPosition.z),
+                    new Vector2(SouthWestPosition.x, SouthWestPosition.z),
+                    out intersection
+                ))
+            {
+                return new Vector3(intersection.x, CenterPosition.y, intersection.y);
+            }
+
+            Debug.LogError($"Could not find intersection of time scale line with map area.");
+            return default;
         }
     }
 }

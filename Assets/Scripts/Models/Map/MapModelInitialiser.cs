@@ -5,7 +5,7 @@ namespace DuckJam.Models
     internal sealed class MapModelInitialiser : MonoBehaviour
     {
         [Header("Map Area")]
-        [SerializeField] private Plane plane = Plane.XY;
+        [SerializeField] private MapPlane mapPlane = MapPlane.XY;
         [SerializeField] private Vector2 size = new(10, 10);
         [SerializeField] private Vector3 centerPosition = Vector3.zero;
         
@@ -44,26 +44,25 @@ namespace DuckJam.Models
             // draw time scale line
             var directionOffset = mapModel.TimeScaleLineDirection * (size.x + size.y);
             Gizmos.DrawLine(mapModel.CenterPosition - directionOffset, mapModel.CenterPosition + directionOffset);
-
-
-
-
-            var p = mapModel.CenterPosition + directionOffset;
-
+            
+            // draw points where time scale line intersects with the map edge
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(mapModel.TimeScaleLineStart, 1f);
+            Gizmos.DrawWireSphere(mapModel.TimeScaleLineEnd, 1f);
         }
 
         private MapModel CreateMapModel()
         {
-            return new MapModel(centerPosition, size, plane == Plane.XY ? Vector3.back : Vector3.up)
+            return new MapModel(mapPlane, centerPosition, size)
             {
                 TimeScaleLineRotationSpeed = timeScaleLineRotationSpeed
             };
         }
-        
-        private enum Plane : byte
-        {
-            XY = 0,
-            XZ = 1,
-        }
+    }
+    
+    internal enum MapPlane : byte
+    {
+        XY = 0,
+        XZ = 1,
     }
 }

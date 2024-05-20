@@ -13,6 +13,7 @@ namespace DuckJam.Controllers
         private EnemiesModel _enemiesModel;
         
         private float _nextEnemySpawnTime;
+        private bool _nextSpawnAtLineStart;
         
         private void Start()
         {
@@ -37,8 +38,11 @@ namespace DuckJam.Controllers
             var time = Time.time;
             if(time < _nextEnemySpawnTime) return;
             
-            var newEnemy = _enemiesModel.SpawnEnemy(Vector3.zero);
+            var spawnPosition = _nextSpawnAtLineStart ? _mapModel.TimeScaleLineStart : _mapModel.TimeScaleLineEnd;
+            
+            var newEnemy = _enemiesModel.SpawnEnemy(spawnPosition);
             _nextEnemySpawnTime = time + enemySpawnConfig.RandomSpawnInterval;
+            _nextSpawnAtLineStart = !_nextSpawnAtLineStart;
         }
 
         private void UpdateEnemies(float deltaTime)
@@ -82,7 +86,7 @@ namespace DuckJam.Controllers
                 var targetDirection = targetOffset.normalized;
                 var targetDistance = targetOffset.magnitude;
 
-                var deltaDistance = enemy.Speed * enemy.CurrentTimeScale * deltaTime;
+                var deltaDistance = enemy.ScaledSpeed * deltaTime;
                 
                 if (targetDistance > deltaDistance)
                 {
