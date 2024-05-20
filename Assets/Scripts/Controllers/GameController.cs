@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using DuckJam.Configuration;
+using DuckJam.Entities;
 using DuckJam.Models;
 using UnityEngine;
 
@@ -12,6 +14,7 @@ namespace DuckJam.Controllers
         private MapModel _mapModel;
         private EnemiesModel _enemiesModel;
         
+        private readonly HashSet<Enemy> _deadEnemyBuffer = new();
         private float _nextEnemySpawnTime;
         private bool _nextSpawnAtLineStart;
         
@@ -27,10 +30,26 @@ namespace DuckJam.Controllers
         {
             var deltaTime = Time.deltaTime;
             _mapModel.RotateTimeScaleLine(deltaTime);
+            
+            ClearDeadEnemies();
             SpawnEnemies();
             UpdateEnemies(deltaTime);
         }
+        
+        private void ClearDeadEnemies()
+        {
+            foreach (var enemy in _enemiesModel.ActiveEnemies)
+            {
+                if (enemy.Health > 0) continue;
+                _deadEnemyBuffer.Add(enemy);
+            }
 
+            foreach (var enemy in _deadEnemyBuffer)
+            {
+                _enemiesModel.DestroyEnemy(enemy);
+            }
+        }
+        
         private void SpawnEnemies()
         {
             if(_enemiesModel.ActiveEnemies.Count >= enemySpawnConfig.MaxEnemies) return;
@@ -39,6 +58,8 @@ namespace DuckJam.Controllers
             if(time < _nextEnemySpawnTime) return;
             
             var spawnPosition = _nextSpawnAtLineStart ? _mapModel.TimeScaleLineStart : _mapModel.TimeScaleLineEnd;
+            var directionToCenter = (_mapModel.CenterPosition - spawnPosition).normalized;
+            spawnPosition += directionToCenter * enemySpawnConfig.MapEdgeSpawnBuffer;
             
             var newEnemy = _enemiesModel.SpawnEnemy(spawnPosition);
             _nextEnemySpawnTime = time + enemySpawnConfig.RandomSpawnInterval;
@@ -53,7 +74,6 @@ namespace DuckJam.Controllers
             // (blue for slow time scale, red for fast time scale)
             
             var timeScaleDeltaAbs = timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
-            
             
             foreach (var enemy in _enemiesModel.ActiveEnemies)
             {

@@ -32,6 +32,8 @@ namespace DuckJam.Models
         private void OnDrawGizmos()
         {
             var mapModel = _mapModel ?? CreateMapModel();
+            var timeScaleLineStart = mapModel.TimeScaleLineStart;
+            var timeScaleLineEnd = mapModel.TimeScaleLineEnd;
             
             Gizmos.color = Color.green;
             
@@ -42,13 +44,12 @@ namespace DuckJam.Models
             Gizmos.DrawLine(mapModel.NorthWestPosition, mapModel.SouthWestPosition);
             
             // draw time scale line
-            var directionOffset = mapModel.TimeScaleLineDirection * (size.x + size.y);
-            Gizmos.DrawLine(mapModel.CenterPosition - directionOffset, mapModel.CenterPosition + directionOffset);
+            Gizmos.DrawLine(timeScaleLineStart, timeScaleLineEnd);
             
             // draw points where time scale line intersects with the map edge
             Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(mapModel.TimeScaleLineStart, 1f);
-            Gizmos.DrawWireSphere(mapModel.TimeScaleLineEnd, 1f);
+            Gizmos.DrawWireSphere(timeScaleLineStart, 1f);
+            Gizmos.DrawWireSphere(timeScaleLineEnd, 1f);
         }
 
         private MapModel CreateMapModel()

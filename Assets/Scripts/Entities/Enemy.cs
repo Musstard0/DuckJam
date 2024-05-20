@@ -5,6 +5,7 @@ namespace DuckJam.Entities
     internal sealed class Enemy : MonoBehaviour
     {
         public float Speed { get; set; }
+        public int Health { get; set; }
         public float CurrentTimeScale { get; set; } = 1f;
         public float ScaledSpeed => Speed * CurrentTimeScale;
         

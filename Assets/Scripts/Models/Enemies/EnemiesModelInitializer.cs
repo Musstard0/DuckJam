@@ -23,9 +23,11 @@ namespace DuckJam.Models
         [SerializeField] private string name;
         [SerializeField] private Enemy prefab;
         [SerializeField, Min(0f)] private float speed;
+        [SerializeField, Min(0)] private int health;
             
         public string Name => name;
         public Enemy Prefab => prefab;
         public float Speed => speed;
+        public int Health => health;
     }
 }
