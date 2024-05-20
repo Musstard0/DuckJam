@@ -4,6 +4,8 @@ namespace DuckJam.Models
 {
     internal sealed class MapModel
     {
+        private Quaternion _initialRotation;
+        
         public Vector3 CenterPosition { get; }
         public Vector2 Size { get; }
         public Vector3 GroundNormal { get; }
@@ -17,16 +19,21 @@ namespace DuckJam.Models
         public Vector3 NorthWestPosition { get; }
         public Vector3 NorthEastPosition { get; }
         
-        // current angle in degrees
-        public float TimeScaleLineAngle { get; private set; } 
         // speed of rotation - is anti-clockwise when positive, clockwise when negative
         public float TimeScaleLineRotationSpeed { get; set; } = 1f; 
+        // current angle in degrees
+        public float TimeScaleLineAngle { get; private set; }
 
+        public Vector3 TimeScaleLineDirection => Quaternion.AngleAxis(TimeScaleLineAngle, -GroundNormal) * HorizontalDirection;
+        public Quaternion TimeScaleLineRotation => _initialRotation * Quaternion.AngleAxis(TimeScaleLineAngle, Vector3.forward);
+        
         public MapModel(Vector3 position, Vector2 size, Vector3 normal)
         {
             CenterPosition = position;
             Size = size;
             GroundNormal = normal;
+            
+            _initialRotation = Quaternion.LookRotation(-GroundNormal);
             
             VerticalDirection = -Vector3.Cross(GroundNormal, HorizontalDirection);
             
