@@ -30,6 +30,8 @@ namespace DuckJam.Controllers
 
         private void SpawnEnemies()
         {
+            if(_enemiesModel.ActiveEnemies.Count >= _enemySpawnConfig.MaxEnemies) return;
+            
             var time = Time.time;
             if(time < _nextEnemySpawnTime) return;
             
@@ -41,10 +43,19 @@ namespace DuckJam.Controllers
         {
             // this is temp behavior just to get the enemies moving randomly
             
+            // their color changes based on their position in the map
+            // (blue for slow time scale, red for fast time scale)
+            
             var travelDistance = 1f * deltaTime;
             
             foreach (var enemy in _enemiesModel.ActiveEnemies)
             {
+                // set time scale color
+                enemy.Color = _mapModel.GetTimeScaleAtPosition(enemy.transform.position) > 0 
+                    ? Color.red 
+                    : Color.blue;
+                
+                // move towards random target position
                 var targetOffset = enemy.TargetPosition - enemy.transform.position;
                 var targetDirection = targetOffset.normalized;
                 var targetDistance = targetOffset.magnitude;

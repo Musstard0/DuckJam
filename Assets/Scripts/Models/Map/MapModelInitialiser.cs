@@ -42,7 +42,7 @@ namespace DuckJam.Models
             Gizmos.DrawLine(mapModel.NorthWestPosition, mapModel.SouthWestPosition);
             
             // draw time scale line
-            var directionOffset = mapModel.TimeScaleLineDirection * 50f;
+            var directionOffset = mapModel.TimeScaleLineDirection * (size.x + size.y);
             Gizmos.DrawLine(mapModel.CenterPosition - directionOffset, mapModel.CenterPosition + directionOffset);
 
 
