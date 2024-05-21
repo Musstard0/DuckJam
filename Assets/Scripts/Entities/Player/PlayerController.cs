@@ -1,4 +1,6 @@
+using System;
 using DuckJam.Entities;
+using DuckJam.Modules.Projectiles;
 using DuckJam.Utilities;
 using UnityEngine;
 
@@ -12,10 +14,19 @@ namespace DuckJam
         private float lastShotTime;
 
 
+        // this is centralized location for creating and managing projectiles.
+        // kind of pointless right now, but will allow for object pooling if needed - and also allow for changing the time scale of bullets if we want to
+        private ProjectileManager _projectileManager;
+        
         private void Awake()
         {
             InitializeModel();
             GameModel.Register(playerModel);
+        }
+
+        private void Start()
+        {
+            _projectileManager = GameModel.Get<ProjectileManager>();
         }
 
         private void InitializeModel()
@@ -83,7 +94,7 @@ namespace DuckJam
 
         private void Shoot()
         {
-            BulletController bullet = Instantiate(playerModel.BulletPrefab, playerModel.FirePoint.position, Quaternion.identity);
+            BulletController bullet = _projectileManager.GetBullet(playerModel.FirePoint.position);
             bullet.TargetLayer = LayerUtils.EnemyLayer;
             bullet.Damage = playerModel.Damage;
             

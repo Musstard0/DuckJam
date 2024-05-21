@@ -16,17 +16,17 @@ MonoBehaviour:
   - name: Mob 1
     prefab: {fileID: 7872888006728374084, guid: 525dc672bf9455f48b16b47c0161a6c1, type: 3}
     maxHealth: 10
-    speed: 5
+    speed: 8
     attack:
       isRanged: 1
       damage: 5
       minDistance: 4
       maxDistance: 12
       cooldown: 1
-      speed: 3
+      speed: 25
   - name: Mob 4
     prefab: {fileID: 1585416676206313591, guid: c94fc6063872b424188819e4a9dc91f9, type: 3}
-    maxHealth: 10
+    maxHealth: 20
     speed: 5
     attack:
       isRanged: 0

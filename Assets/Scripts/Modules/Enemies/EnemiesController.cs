@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DuckJam.Entities;
+using DuckJam.Modules.Projectiles;
 using DuckJam.SharedConfiguration;
 using DuckJam.Utilities;
 using UnityEngine;
@@ -17,6 +18,10 @@ namespace DuckJam.Modules
         private TimeScaleConfig _timeScaleConfig;
         private MapModel _mapModel;
         private PlayerModel _playerModel;
+        private ProjectileManager _projectileManager;
+        
+        // bit hacky - but whatever
+        private IDamageable _playerDamageable;
         
         private void Awake()
         {
@@ -29,6 +34,9 @@ namespace DuckJam.Modules
             _timeScaleConfig = GameModel.Get<TimeScaleConfig>();
             _mapModel = GameModel.Get<MapModel>();
             _playerModel = GameModel.Get<PlayerModel>();
+            _projectileManager = GameModel.Get<ProjectileManager>();
+
+            _playerDamageable = _playerModel.Transform.GetComponent<IDamageable>();
         }
 
         private void LateUpdate()
@@ -36,9 +44,11 @@ namespace DuckJam.Modules
             ClearDeadEnemies();
             
             var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * Time.deltaTime;
+            var playerPosition = _playerModel.Transform.position.XY();
             foreach (var enemy in _enemiesModel)
             {
                 SetTimeScale(enemy, timeScaleDeltaAbs);
+                HandleAttack(enemy, playerPosition);
             }
         }
 
@@ -48,7 +58,7 @@ namespace DuckJam.Modules
             var playerPosition = _playerModel.Transform.position.XY();
             foreach (var enemy in _enemiesModel)
             {
-                UpdateTransform(enemy, playerPosition, deltaTime);
+                HandleMovement(enemy, playerPosition, deltaTime);
             }
         }
 
@@ -90,8 +100,37 @@ namespace DuckJam.Modules
             }
             enemy.Color = color;
         }
+
+        private void HandleAttack(EnemyController enemy, Vector2 targetPosition)
+        {
+            var time = Time.time;
+            
+            var timeSinceLastAttack = time - enemy.LastAttackTime;
+            
+            if(enemy.Attack.Cooldown > timeSinceLastAttack) return;
+            
+            var offset = targetPosition - enemy.Position2D;
+            var distance = offset.magnitude;
+            
+            if(distance < enemy.Attack.MinDistance || distance > enemy.Attack.MaxDistance) return;
+
+
+            if (enemy.Attack.IsRanged)
+            {
+                var bullet = _projectileManager.GetBullet(enemy.Position2D);
+                bullet.TargetLayer = LayerUtils.PlayerLayer;
+                bullet.Damage = enemy.Attack.Damage;
+                bullet.GetComponent<Rigidbody2D>().velocity = offset.normalized * enemy.Attack.Speed;
+            }
+            else
+            {
+                // todo - Melee attack
+            }
+            
+            enemy.LastAttackTime = time;
+        }
         
-        private static void UpdateTransform(EnemyController enemy, Vector2 targetPosition, float deltaTime)
+        private static void HandleMovement(EnemyController enemy, Vector2 targetPosition, float deltaTime)
         {
             var offset = targetPosition - enemy.Position2D;
             
