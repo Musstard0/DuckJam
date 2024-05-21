@@ -83,8 +83,8 @@ namespace DuckJam
         private void Shoot()
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 direction = (mousePosition - playerModel.FirePoint.position).normalized;
-
+            Vector2 direction = (mousePosition.XY() - playerModel.FirePoint.position.XY()).normalized;
+            
             GameObject bullet = Instantiate(playerModel.BulletPrefab, playerModel.FirePoint.position, Quaternion.identity);
             bullet.GetComponent<BulletController>().TargetLayer = LayerUtils.EnemyLayer;
             Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
