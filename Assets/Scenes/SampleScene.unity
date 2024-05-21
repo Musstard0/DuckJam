@@ -132,7 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 129764817}
-  - component: {fileID: 129764816}
   - component: {fileID: 129764819}
   m_Layer: 0
   m_Name: Model Initialisers
@@ -141,22 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &129764816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129764815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27da9b7501f50b544a3e372f90fea9b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapPlane: 0
-  size: {x: 64, y: 64}
-  centerPosition: {x: 0, y: 0, z: 0}
-  timeScaleLineRotationSpeed: 8
 --- !u!4 &129764817
 Transform:
   m_ObjectHideFlags: 0
@@ -424,9 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25adfabb68f19434db16d12b622f0e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyConfig: {fileID: 0}
   enemySpawnConfig: {fileID: 11400000, guid: 1e71df601990aad4ba7746b59c788e1d, type: 2}
-  timeScaleConfig: {fileID: 11400000, guid: 85a6b2ccd3cc6924fafb5a13b89e96c0, type: 2}
 --- !u!4 &379295209
 Transform:
   m_ObjectHideFlags: 0
@@ -41916,7 +41897,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1987217973
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -42016,6 +41997,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2dee11d11671bc44818b2bd24acfa72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: {x: 64, y: 64}
+  centerPosition: {x: 0, y: 0}
+  timeScaleLineRotationSpeed: 8
 --- !u!1 &1989186073
 GameObject:
   m_ObjectHideFlags: 0

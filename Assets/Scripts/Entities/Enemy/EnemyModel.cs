@@ -1,3 +1,4 @@
+using DuckJam.Utilities;
 using UnityEngine;
 
 namespace DuckJam.Entities
@@ -9,6 +10,7 @@ namespace DuckJam.Entities
         public float LastAttackTime { get; set; }
         public bool Ranged { get; set; }
         public bool IsDead => Health <= 0f;
+        public Vector2 Position2D => transform.position.XY();
         
         public Color Color 
         {

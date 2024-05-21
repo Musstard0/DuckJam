@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using DuckJam.Configuration;
 using DuckJam.Models;
+using DuckJam.Utilities;
 using UnityEngine;
 
 namespace DuckJam.Entities
 {
-    internal sealed class EnemyController : MonoBehaviour
+    internal sealed class EnemiesController : MonoBehaviour
     {
         [SerializeField] private EnemyCfg enemyConfig;
         
@@ -54,7 +55,7 @@ namespace DuckJam.Entities
         private void UpdateEnemies(float deltaTime)
         {
             var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
-            var playerPosition = _playerModel.Transform.position;
+            var playerPosition = _playerModel.Transform.position.XY();
             
             foreach (var enemy in _enemiesModel)
             {
@@ -89,9 +90,9 @@ namespace DuckJam.Entities
             enemy.Color = color;
         }
         
-        private void HandleMovement(EnemyModel enemy, Vector3 targetPosition, float deltaTime)
+        private void HandleMovement(EnemyModel enemy, Vector2 targetPosition, float deltaTime)
         {
-            var offset = targetPosition - enemy.transform.position;
+            var offset = targetPosition - enemy.Position2D;
             var distance = offset.magnitude;
             var distanceRangeGoal = enemy.Ranged ? enemyConfig.RangedEnemyTargetRange : enemyConfig.MeleeEnemyTargetRange;
             
@@ -101,7 +102,7 @@ namespace DuckJam.Entities
             var baseSpeed = enemy.Ranged ? enemyConfig.RangedEnemySpeed : enemyConfig.MeleeEnemySpeed;
             var deltaDistance = baseSpeed * enemy.TimeScale * deltaTime;
             
-            enemy.transform.position += direction * deltaDistance;
+            enemy.transform.position += direction.XY0() * deltaDistance;
         }
     }
 }

@@ -2,16 +2,14 @@ using UnityEngine;
 
 namespace DuckJam.Models
 {
-    internal sealed class MapModelInitialiser : MonoBehaviour
+    internal sealed class MapController : MonoBehaviour
     {
         [Header("Map Area")]
-        [SerializeField] private MapPlane mapPlane = MapPlane.XY;
-        [SerializeField] private Vector2 size = new(10, 10);
-        [SerializeField] private Vector3 centerPosition = Vector3.zero;
+        [SerializeField] private Vector2 size = new(64, 64);
+        [SerializeField] private Vector2 centerPosition = Vector2.zero;
         
         [Header("Time Scale Line")]
         [SerializeField] private float timeScaleLineRotationSpeed = 8f;
-        
         
         private MapModel _mapModel;
         
@@ -22,18 +20,23 @@ namespace DuckJam.Models
             if(_mapModel is null) return;
             _mapModel.TimeScaleLineRotationSpeed = timeScaleLineRotationSpeed;
         }
-
+        
         private void Awake()
         {
             _mapModel = CreateMapModel();
             GameModel.Register(_mapModel);
         }
 
+        private void Update()
+        {
+            //transform.rotation = _mapModel.TimeScaleLineRotation;
+        }
+        
         private void OnDrawGizmos()
         {
             var mapModel = _mapModel ?? CreateMapModel();
-            var timeScaleLineStart = mapModel.TimeScaleLineStart;
-            var timeScaleLineEnd = mapModel.TimeScaleLineEnd;
+            var timeScaleLineStart = mapModel.TimeScaleLineStartPosition;
+            var timeScaleLineEnd = mapModel.TimeScaleLineEndPosition;
             
             Gizmos.color = Color.green;
             
@@ -51,19 +54,13 @@ namespace DuckJam.Models
             Gizmos.DrawWireSphere(timeScaleLineStart, 1f);
             Gizmos.DrawWireSphere(timeScaleLineEnd, 1f);
         }
-
+        
         private MapModel CreateMapModel()
         {
-            return new MapModel(mapPlane, centerPosition, size)
+            return new MapModel(centerPosition, size)
             {
                 TimeScaleLineRotationSpeed = timeScaleLineRotationSpeed
             };
         }
-    }
-    
-    internal enum MapPlane : byte
-    {
-        XY = 0,
-        XZ = 1,
     }
 }

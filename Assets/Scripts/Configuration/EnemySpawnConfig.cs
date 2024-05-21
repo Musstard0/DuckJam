@@ -17,10 +17,13 @@ namespace DuckJam.Configuration
         [Tooltip("How far from the map edge to spawn enemies")]
         [SerializeField, Min(0f)] private float mapEdgeSpawnBuffer = 1f;
         
+        [SerializeField] private float spawnPositionZ = 0f;
+        
         public float SpawnInterval => spawnInterval;
         public float SpawnIntervalDeviation => spawnIntervalDeviation;
         public int MaxEnemies => maxEnemies;
         public float MapEdgeSpawnBuffer => mapEdgeSpawnBuffer;
         public float RandomSpawnInterval => spawnInterval + Random.Range(-spawnIntervalDeviation, spawnIntervalDeviation);
+        public float SpawnPositionZ => spawnPositionZ;
     }
 }
