@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DuckJam.Entities
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    internal sealed class EnemyController : MonoBehaviour
+    internal sealed class EnemyController : MonoBehaviour, IDamageable
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
         
@@ -32,6 +32,19 @@ namespace DuckJam.Entities
         private void Awake()
         {
             Rigidbody2D = GetComponent<Rigidbody2D>();
+        }
+
+        public void TakeDamage(float damage)
+        {
+            if(IsDead) return;
+
+            Health = Mathf.Max(Health - damage, 0f);
+            if (IsDead) OnDeath();
+        }
+
+        private void OnDeath()
+        {
+            
         }
     }
 }

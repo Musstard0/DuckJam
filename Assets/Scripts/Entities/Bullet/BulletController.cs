@@ -1,11 +1,20 @@
+using DuckJam.Entities;
 using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
+    private float _damage;
+    
     public float LifeTime = 2f;
 
     public int TargetLayer { get; set; } = -1;
-    
+
+    public float Damage
+    {
+        get => _damage;
+        set => _damage = Mathf.Max(value, 0f);
+    }
+
     private void Start()
     {
         Destroy(gameObject, LifeTime);
@@ -15,6 +24,9 @@ public class BulletController : MonoBehaviour
     {
         if(TargetLayer < 0) return;
         if(other.gameObject.layer != TargetLayer) return;
+        
+        var damageable = other.GetComponent<IDamageable>();
+        if(damageable != null) damageable.TakeDamage(Damage);
         
         Destroy(gameObject);
         

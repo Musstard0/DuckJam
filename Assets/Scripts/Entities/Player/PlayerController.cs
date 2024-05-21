@@ -1,9 +1,10 @@
+using DuckJam.Entities;
 using DuckJam.Utilities;
 using UnityEngine;
 
 namespace DuckJam
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IDamageable
     {
         private PlayerModel playerModel;
         public PlayerCfg playerCfg;
@@ -82,13 +83,13 @@ namespace DuckJam
 
         private void Shoot()
         {
+            BulletController bullet = Instantiate(playerModel.BulletPrefab, playerModel.FirePoint.position, Quaternion.identity);
+            bullet.TargetLayer = LayerUtils.EnemyLayer;
+            bullet.Damage = playerModel.Damage;
+            
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePosition.XY() - playerModel.FirePoint.position.XY()).normalized;
-            
-            GameObject bullet = Instantiate(playerModel.BulletPrefab, playerModel.FirePoint.position, Quaternion.identity);
-            bullet.GetComponent<BulletController>().TargetLayer = LayerUtils.EnemyLayer;
-            Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-            bulletRB.velocity = direction * playerModel.BulletSpeed;
+            bullet.GetComponent<Rigidbody2D>().velocity = direction * playerModel.BulletSpeed;
         }
 
         public void TakeDamage(float damage)
