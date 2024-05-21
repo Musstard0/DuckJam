@@ -124,7 +124,7 @@ namespace DuckJam.Modules
             }
             else
             {
-                // todo - Melee attack
+                _playerDamageable.TakeDamage(enemy.Attack.Damage);
             }
             
             enemy.LastAttackTime = time;

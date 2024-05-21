@@ -42,7 +42,7 @@ namespace DuckJam.Modules
             [SerializeField, Min(0f)] private float maxDistance;
             [SerializeField, Min(0f)] private float cooldown;
             
-            [Tooltip("If the attack is ranged, the speed of the projectile. If the attack is melee, the duration of the attack.")]
+            [Tooltip("If attack is ranged - the speed of the projectile")]
             [SerializeField, Min(0f)] private float speed;
             
             public bool IsRanged => isRanged;

@@ -1,0 +1,34 @@
+using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace DuckJam.Modules
+{
+    internal sealed class PlayerStatsUIController : MonoBehaviour
+    {
+        [Header("Health")]
+        [SerializeField] private TMP_Text healthText;
+        [SerializeField] private Image healthFill;
+        
+        private PlayerModel _playerModel;
+        
+        private void Start()
+        {
+            _playerModel = GameModel.Get<PlayerModel>();
+            
+            UpdateHealth();
+        }
+
+        private void LateUpdate()
+        {
+            UpdateHealth();
+        }
+
+        private void UpdateHealth()
+        {
+            healthText.text = $"{_playerModel.Health} / {_playerModel.MaxHealth}";
+            healthFill.fillAmount = _playerModel.Health / _playerModel.MaxHealth;
+        }
+    }
+}
