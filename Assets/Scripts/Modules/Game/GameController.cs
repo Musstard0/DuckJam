@@ -40,7 +40,7 @@ namespace DuckJam.Modules
             
             var spawnPosition = spawnPosition2D.XY0(enemySpawnConfig.SpawnPositionZ);
             
-            _enemiesModel.SpawnMeleeEnemy(spawnPosition);
+            _enemiesModel.SpawnEnemy(spawnPosition);
             _nextEnemySpawnTime = time + enemySpawnConfig.RandomSpawnInterval;
             _nextSpawnAtLineStart = !_nextSpawnAtLineStart;
         }

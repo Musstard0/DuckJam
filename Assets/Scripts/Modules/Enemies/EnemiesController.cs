@@ -90,17 +90,16 @@ namespace DuckJam.Modules
             enemy.Color = color;
         }
         
-        private void HandleMovement(EnemyModel enemy, Vector2 targetPosition, float deltaTime)
+        private static void HandleMovement(EnemyModel enemy, Vector2 targetPosition, float deltaTime)
         {
             var offset = targetPosition - enemy.Position2D;
             var distance = offset.magnitude;
-            var distanceRangeGoal = enemy.Ranged ? enemyConfig.RangedEnemyTargetRange : enemyConfig.MeleeEnemyTargetRange;
+            //var distanceRangeGoal = enemy.Ranged ? enemyConfig.RangedEnemyTargetRange : enemyConfig.MeleeEnemyTargetRange;
             
-            if(distance > distanceRangeGoal.Min && distance < distanceRangeGoal.Max) return;
+            if(distance > enemy.Attack.MinDistance && distance < enemy.Attack.MaxDistance) return;
             
-            var direction = distance > distanceRangeGoal.Max ? offset.normalized : -offset.normalized;
-            var baseSpeed = enemy.Ranged ? enemyConfig.RangedEnemySpeed : enemyConfig.MeleeEnemySpeed;
-            var deltaDistance = baseSpeed * enemy.TimeScale * deltaTime;
+            var direction = distance > enemy.Attack.MaxDistance ? offset.normalized : -offset.normalized;
+            var deltaDistance = enemy.Speed * enemy.TimeScale * deltaTime;
             
             enemy.transform.position += direction.XY0() * deltaDistance;
         }

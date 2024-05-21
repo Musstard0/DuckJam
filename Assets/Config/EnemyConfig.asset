@@ -12,6 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bb63d6098a599e46b938ccb8a3b16f9, type: 3}
   m_Name: EnemyConfig
   m_EditorClassIdentifier: 
+  enemyTypes:
+  - name: Mob 4
+    prefab: {fileID: 1585416676206313591, guid: c94fc6063872b424188819e4a9dc91f9, type: 3}
+    maxHealth: 10
+    speed: 5
+    attack:
+      isRanged: 0
+      damage: 5
+      minDistance: 0
+      maxDistance: 3
+      cooldown: 1
+      speed: 0.5
   meleeEnemyPrefab: {fileID: 798391808316553258, guid: 8a0ee553fee0917429d36f5c83136f1b, type: 3}
   meleeEnemyAttackRange:
     Min: 0
