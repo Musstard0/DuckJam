@@ -1,10 +1,11 @@
 using System;
+using DuckJam.Entities;
 using UnityEngine;
 
-namespace DuckJam.Entities
+namespace DuckJam.Modules
 {
-    [CreateAssetMenu(fileName = nameof(EnemyCfg), menuName = "DuckJam/" + nameof(EnemyCfg))]
-    internal sealed class EnemyCfg : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(EnemiesConfig), menuName = "DuckJam/" + nameof(EnemiesConfig))]
+    internal sealed class EnemiesConfig : ScriptableObject
     { 
         [Header("Melee Enemy")] 
         [SerializeField] private EnemyModel meleeEnemyPrefab;

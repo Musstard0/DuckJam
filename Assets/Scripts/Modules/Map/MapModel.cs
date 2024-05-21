@@ -1,7 +1,7 @@
 using DuckJam.Utilities;
 using UnityEngine;
 
-namespace DuckJam.Models
+namespace DuckJam.Modules
 {
     internal sealed class MapModel
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DuckJam.Models
+namespace DuckJam.Modules
 {
     internal sealed class MapController : MonoBehaviour
     {

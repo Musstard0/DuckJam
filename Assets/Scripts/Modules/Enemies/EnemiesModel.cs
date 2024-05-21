@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using DuckJam.Entities;
 using UnityEngine;
 
-namespace DuckJam.Entities
+namespace DuckJam.Modules
 {
     internal sealed class EnemiesModel : IReadOnlyList<EnemyModel>
     {
-        private readonly EnemyCfg _enemyConfig;
+        private readonly EnemiesConfig _enemyConfig;
         private readonly List<EnemyModel> _activeEnemies = new();
         
         public int Count => _activeEnemies.Count;
         public EnemyModel this[int index] => _activeEnemies[index];
         
-        public EnemiesModel(EnemyCfg config)
+        public EnemiesModel(EnemiesConfig config)
         {
             _enemyConfig = config;
         }

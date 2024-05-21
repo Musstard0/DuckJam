@@ -1,10 +1,7 @@
-using DuckJam.Configuration;
-using DuckJam.Entities;
-using DuckJam.Models;
 using DuckJam.Utilities;
 using UnityEngine;
 
-namespace DuckJam.Controllers
+namespace DuckJam.Modules
 {
     internal sealed class GameController : MonoBehaviour
     {

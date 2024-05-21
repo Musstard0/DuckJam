@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DuckJam.Configuration
+namespace DuckJam.Modules
 {
     [CreateAssetMenu(fileName = nameof(EnemySpawnConfig), menuName = "DuckJam/" + nameof(EnemySpawnConfig))]
     internal sealed class EnemySpawnConfig : ScriptableObject

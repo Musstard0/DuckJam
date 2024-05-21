@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DuckJam.Configuration
+namespace DuckJam.SharedConfiguration
 {
     [CreateAssetMenu(fileName = nameof(TimeScaleConfig), menuName = "DuckJam/" + nameof(TimeScaleConfig))]
     internal sealed class TimeScaleConfig : ScriptableObject

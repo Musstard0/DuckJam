@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using DuckJam.Configuration;
-using DuckJam.Models;
+using DuckJam.Entities;
+using DuckJam.SharedConfiguration;
 using DuckJam.Utilities;
 using UnityEngine;
 
-namespace DuckJam.Entities
+namespace DuckJam.Modules
 {
     internal sealed class EnemiesController : MonoBehaviour
     {
-        [SerializeField] private EnemyCfg enemyConfig;
+        [SerializeField] private EnemiesConfig enemyConfig;
         
         private readonly HashSet<EnemyModel> _enemyBuffer = new();
         

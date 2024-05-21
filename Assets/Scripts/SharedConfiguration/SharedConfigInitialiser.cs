@@ -1,9 +1,8 @@
-using DuckJam.Configuration;
 using UnityEngine;
 
-namespace DuckJam.Models
+namespace DuckJam.SharedConfiguration
 {
-    internal sealed class ModelConfigInitialiser : MonoBehaviour
+    internal sealed class SharedConfigInitialiser : MonoBehaviour
     {
         [SerializeField] private TimeScaleConfig timeScaleConfig;
 #if UNITY_EDITOR
