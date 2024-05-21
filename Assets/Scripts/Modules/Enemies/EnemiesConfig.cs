@@ -21,13 +21,13 @@ namespace DuckJam.Modules
         public class EnemyType
         {
             [SerializeField] private string name;
-            [SerializeField] private EnemyModel prefab;
+            [SerializeField] private EnemyController prefab;
             [SerializeField, Min(0f)] private float maxHealth;
             [SerializeField, Min(0f)] private float speed;
             [SerializeField] private Attack attack;
             
             public string Name => name;
-            public EnemyModel Prefab => prefab;
+            public EnemyController Prefab => prefab;
             public float MaxHealth => maxHealth;
             public float Speed => speed;
             public Attack Attack => attack;

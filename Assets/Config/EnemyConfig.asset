@@ -13,6 +13,17 @@ MonoBehaviour:
   m_Name: EnemyConfig
   m_EditorClassIdentifier: 
   enemyTypes:
+  - name: Mob 1
+    prefab: {fileID: 7872888006728374084, guid: 525dc672bf9455f48b16b47c0161a6c1, type: 3}
+    maxHealth: 10
+    speed: 5
+    attack:
+      isRanged: 1
+      damage: 5
+      minDistance: 4
+      maxDistance: 12
+      cooldown: 1
+      speed: 3
   - name: Mob 4
     prefab: {fileID: 1585416676206313591, guid: c94fc6063872b424188819e4a9dc91f9, type: 3}
     maxHealth: 10
@@ -24,26 +35,3 @@ MonoBehaviour:
       maxDistance: 3
       cooldown: 1
       speed: 0.5
-  meleeEnemyPrefab: {fileID: 798391808316553258, guid: 8a0ee553fee0917429d36f5c83136f1b, type: 3}
-  meleeEnemyAttackRange:
-    Min: 0
-    Max: 2
-  meleeEnemyTargetRange:
-    Min: 1
-    Max: 2
-  meleeEnemyMaxHealth: 10
-  meleeEnemySpeed: 5
-  meleeEnemyDamage: 3
-  rangedEnemyPrefab: {fileID: 798391808316553258, guid: 8a0ee553fee0917429d36f5c83136f1b, type: 3}
-  rangedEnemyBulletPrefab: {fileID: 1244102424471242536, guid: 3c2ac21560a97f54ba8c98dfa172bcc8, type: 3}
-  rangedEnemyAttackRange:
-    Min: 3
-    Max: 10
-  rangedEnemyTargetRange:
-    Min: 5
-    Max: 7
-  rangedEnemyMaxHealth: 10
-  rangedEnemySpeed: 5
-  rangedEnemyBulletDamage: 2
-  rangedEnemyBulletSpeed: 16
-  rangedEnemyFireRate: 1

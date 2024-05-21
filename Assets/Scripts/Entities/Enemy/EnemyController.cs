@@ -1,13 +1,16 @@
+using System;
 using DuckJam.Modules;
 using DuckJam.Utilities;
 using UnityEngine;
 
 namespace DuckJam.Entities
 {
-    internal sealed class EnemyModel : MonoBehaviour
+    [RequireComponent(typeof(Rigidbody2D))]
+    internal sealed class EnemyController : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
         
+        public Rigidbody2D Rigidbody2D { get; private set;}
         public float Health { get; set; }
         public float Speed { get; set; }
         public EnemiesConfig.Attack Attack { get; set; }
@@ -24,6 +27,11 @@ namespace DuckJam.Entities
                 if(spriteRenderer == null) return;
                 spriteRenderer.color = value;
             }
+        }
+
+        private void Awake()
+        {
+            Rigidbody2D = GetComponent<Rigidbody2D>();
         }
     }
 }

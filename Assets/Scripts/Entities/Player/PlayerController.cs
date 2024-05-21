@@ -1,3 +1,4 @@
+using DuckJam.Utilities;
 using UnityEngine;
 
 namespace DuckJam
@@ -85,6 +86,7 @@ namespace DuckJam
             Vector3 direction = (mousePosition - playerModel.FirePoint.position).normalized;
 
             GameObject bullet = Instantiate(playerModel.BulletPrefab, playerModel.FirePoint.position, Quaternion.identity);
+            bullet.GetComponent<BulletController>().TargetLayer = LayerUtils.EnemyLayer;
             Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
             bulletRB.velocity = direction * playerModel.BulletSpeed;
         }

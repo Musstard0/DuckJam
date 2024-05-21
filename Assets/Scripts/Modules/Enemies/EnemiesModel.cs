@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace DuckJam.Modules
 {
-    internal sealed class EnemiesModel : IReadOnlyList<EnemyModel>
+    internal sealed class EnemiesModel : IReadOnlyList<EnemyController>
     {
         private readonly EnemiesConfig _enemyConfig;
-        private readonly List<EnemyModel> _activeEnemies = new();
+        private readonly List<EnemyController> _activeEnemies = new();
         
         public int Count => _activeEnemies.Count;
-        public EnemyModel this[int index] => _activeEnemies[index];
+        public EnemyController this[int index] => _activeEnemies[index];
         
         public EnemiesModel(EnemiesConfig config)
         {
@@ -47,14 +47,14 @@ namespace DuckJam.Modules
         //     _activeEnemies.Add(enemy);
         // }
         
-        public void DestroyEnemy(EnemyModel enemy)
+        public void DestroyEnemy(EnemyController enemy)
         {
             if(enemy == null) return;
             _activeEnemies.Remove(enemy);
             Object.Destroy(enemy.gameObject);
         }
         
-        public IEnumerator<EnemyModel> GetEnumerator() => _activeEnemies.GetEnumerator();
+        public IEnumerator<EnemyController> GetEnumerator() => _activeEnemies.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => _activeEnemies.GetEnumerator();
     }
 }
