@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 129764817}
   - component: {fileID: 129764816}
-  - component: {fileID: 129764818}
+  - component: {fileID: 129764819}
   m_Layer: 0
   m_Name: Model Initialisers
   m_TagString: Untagged
@@ -172,7 +172,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &129764818
+--- !u!114 &129764819
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,14 +181,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 129764815}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 900916aa2d9b497696d6328742c8343b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b8bc4b68da74e76b869092c55f77de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTypes:
-  - name: Test Enemy
-    prefab: {fileID: 798391808316553258, guid: 8a0ee553fee0917429d36f5c83136f1b, type: 3}
-    speed: 5
-    health: 10
+  timeScaleConfig: {fileID: 11400000, guid: 85a6b2ccd3cc6924fafb5a13b89e96c0, type: 2}
+  notes: 'This component is for registering config scriptable objects with the GameModel,
+    allowing them to be accessed from anywhere.
+
+
+    Ideally any config objects
+    registered here should be immutable.'
 --- !u!1 &152181051
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,6 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25adfabb68f19434db16d12b622f0e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyConfig: {fileID: 0}
   enemySpawnConfig: {fileID: 11400000, guid: 1e71df601990aad4ba7746b59c788e1d, type: 2}
   timeScaleConfig: {fileID: 11400000, guid: 85a6b2ccd3cc6924fafb5a13b89e96c0, type: 2}
 --- !u!4 &379295209
@@ -42013,6 +42016,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2dee11d11671bc44818b2bd24acfa72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1989186073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1989186075}
+  - component: {fileID: 1989186074}
+  m_Layer: 0
+  m_Name: Enemy Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1989186074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989186073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d130208b8f2489789eb6014e67caa81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyConfig: {fileID: 11400000, guid: d0234d91d58a32c4a9a43e9c422d2564, type: 2}
+--- !u!4 &1989186075
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989186073}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2113988243
 GameObject:
   m_ObjectHideFlags: 0
@@ -42094,5 +42142,6 @@ SceneRoots:
   - {fileID: 129764817}
   - {fileID: 1987217976}
   - {fileID: 379295209}
+  - {fileID: 1989186075}
   - {fileID: 152181055}
   - {fileID: 1505168005}

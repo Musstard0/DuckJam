@@ -20,6 +20,7 @@ namespace DuckJam
         {
             playerModel = new PlayerModel
             {
+                Transform = transform,
                 Health = playerCfg.Health,
                 MaxHealth = playerCfg.Health,
                 Speed = playerCfg.Speed,

@@ -5,6 +5,7 @@ namespace DuckJam
     [System.Serializable]
     public class PlayerModel
     {
+        public Transform Transform;
         public float Health;
         public float MaxHealth;
         public float Speed;
