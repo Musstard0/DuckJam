@@ -1,4 +1,3 @@
-using System;
 using DuckJam.Modules;
 using DuckJam.Utilities;
 using UnityEngine;
@@ -15,7 +14,8 @@ namespace DuckJam.Entities
         public float Speed { get; set; }
         public EnemiesConfig.Attack Attack { get; set; }
         public float TimeScale { get; set; }
-        public float LastAttackTime { get; set; }
+
+        public float AttackCooldownCountdown { get; set; }
         
         public bool IsDead => Health <= 0f;
         public Vector2 Position2D => transform.position.XY();

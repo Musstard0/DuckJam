@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using DuckJam.Entities;
 using DuckJam.Modules.Projectiles;
@@ -43,11 +42,14 @@ namespace DuckJam.Modules
         {
             ClearDeadEnemies();
             
-            var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * Time.deltaTime;
+            var deltaTime = Time.deltaTime;
+            
+            var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
             var playerPosition = _playerModel.Transform.position.XY();
             foreach (var enemy in _enemiesModel)
             {
                 SetTimeScale(enemy, timeScaleDeltaAbs);
+                ProgressAttackCooldownCountdown(enemy, deltaTime);
                 HandleAttack(enemy, playerPosition);
             }
         }
@@ -85,7 +87,7 @@ namespace DuckJam.Modules
         
         private void SetTimeScale(EnemyController enemy, float timeScaleDeltaAbs)
         {
-            var timeScaleDelta = _mapModel.GetTimeScaleSignAtPosition(enemy.transform.position) * timeScaleDeltaAbs;
+            var timeScaleDelta = _mapModel.GetTimeScaleSignAtPosition(enemy.Position2D) * timeScaleDeltaAbs;
             enemy.TimeScale = Mathf.Clamp
             (
                 enemy.TimeScale + timeScaleDelta, 
@@ -106,13 +108,18 @@ namespace DuckJam.Modules
             enemy.Color = color;
         }
 
+        private void ProgressAttackCooldownCountdown(EnemyController enemyController, float deltaTime)
+        {
+            if(enemyController.AttackCooldownCountdown <= 0f) return;
+            
+            var delta = deltaTime * enemyController.TimeScale;
+            
+            enemyController.AttackCooldownCountdown = Mathf.Max(enemyController.AttackCooldownCountdown - delta, 0f);
+        }
+
         private void HandleAttack(EnemyController enemy, Vector2 targetPosition)
         {
-            var time = Time.time;
-            
-            var timeSinceLastAttack = time - enemy.LastAttackTime;
-            
-            if(enemy.Attack.Cooldown > timeSinceLastAttack) return;
+            if(enemy.AttackCooldownCountdown > 0f) return;
             
             var offset = targetPosition - enemy.Position2D;
             var distance = offset.magnitude;
@@ -125,14 +132,14 @@ namespace DuckJam.Modules
                 var bullet = _projectileManager.GetBullet(enemy.Position2D);
                 bullet.TargetLayer = LayerUtils.PlayerLayer;
                 bullet.Damage = enemy.Attack.Damage;
-                bullet.GetComponent<Rigidbody2D>().velocity = offset.normalized * enemy.Attack.Speed;
+                bullet.Rigidbody2D.velocity = offset.normalized * enemy.Attack.Speed;
             }
             else
             {
                 _playerDamageable.TakeDamage(enemy.Attack.Damage);
             }
             
-            enemy.LastAttackTime = time;
+            enemy.AttackCooldownCountdown = enemy.Attack.Cooldown;
         }
         
         private static void HandleMovement(EnemyController enemy, Vector2 targetPosition, float deltaTime)

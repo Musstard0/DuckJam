@@ -2,12 +2,15 @@ using System;
 using DuckJam.Entities;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class BulletController : MonoBehaviour
 {
     private float _damage;
     
     //public float LifeTime = 2f;
 
+    public Rigidbody2D Rigidbody2D { get; private set; }
+    
     public Action<BulletController> DisposeAction;
     
     public int TargetLayer { get; set; } = -1;
@@ -16,6 +19,11 @@ public class BulletController : MonoBehaviour
     {
         get => _damage;
         set => _damage = Mathf.Max(value, 0f);
+    }
+
+    private void Awake()
+    {
+        Rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void Start()

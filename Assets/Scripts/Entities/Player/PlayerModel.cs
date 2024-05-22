@@ -10,10 +10,11 @@ namespace DuckJam
         public float MaxHealth;
         public float Speed;
         public float Damage;
-        public BulletController BulletPrefab;
         public float BulletSpeed;
         public Transform FirePoint;
         public float FireRate;
         public float Inertia;
+        public float TimeScale = 1f;
+        public float NextShotCountDown;
     }
 }

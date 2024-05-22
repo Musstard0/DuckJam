@@ -15,7 +15,7 @@ MonoBehaviour:
   Health: 100
   Speed: 15
   Damage: 10
-  BulletPrefab: {fileID: 1244102424471242536, guid: 3c2ac21560a97f54ba8c98dfa172bcc8, type: 3}
   BulletSpeed: 25
-  FireRate: 0.5
+  FireRate: 0.1
   Inertia: 0.1
+  timeScaleEffectsMovementSpeed: 1
