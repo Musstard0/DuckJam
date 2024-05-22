@@ -7,6 +7,7 @@ namespace DuckJam.Modules
 {
     internal sealed class SceneLoader : MonoBehaviour
     {
+        private const string PersistantSceneName = "Scene_Persistant";
         private const string MainMenuSceneName = "Scene_MainMenu";
         private const string GameSceneName = "Scene_Main";
         
@@ -17,7 +18,8 @@ namespace DuckJam.Modules
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Init() 
         {
-            SceneManager.LoadScene("Scene_Persistant", LoadSceneMode.Additive);
+            if(SceneManager.GetSceneByName(PersistantSceneName).isLoaded) return;
+            SceneManager.LoadScene(PersistantSceneName, LoadSceneMode.Additive);
         }
         
         private void Awake()
@@ -29,10 +31,8 @@ namespace DuckJam.Modules
             }
             
             Instance = this;
-        }
 
-        private void Start()
-        {
+            
             var isMainMenuSceneLoaded = SceneManager.GetSceneByName(MainMenuSceneName).isLoaded;
             var isGameSceneLoaded = SceneManager.GetSceneByName(GameSceneName).isLoaded;
 
@@ -68,11 +68,6 @@ namespace DuckJam.Modules
             if(CurrentScene == SceneId.MainMenu) return;
 
             StartCoroutine(LoadSceneAsync(GameSceneName, MainMenuSceneName));
-            
-            // GameModel.Reset();
-            // SceneManager.UnloadSceneAsync(GameSceneName);
-            // SceneManager.LoadScene(MainMenuSceneName, LoadSceneMode.Additive);
-            
             CurrentScene = SceneId.MainMenu;
         }
         
@@ -81,18 +76,10 @@ namespace DuckJam.Modules
             if (CurrentScene == SceneId.Game)
             {
                 StartCoroutine(LoadSceneAsync(GameSceneName, GameSceneName));
-                
-                // GameModel.Reset();
-                // SceneManager.UnloadSceneAsync(GameSceneName);
-                // SceneManager.LoadScene(GameSceneName, LoadSceneMode.Additive);
-                
                 return;
             }
             
             StartCoroutine(LoadSceneAsync(MainMenuSceneName, GameSceneName));
-            
-            //SceneManager.UnloadSceneAsync(MainMenuSceneName);
-            //SceneManager.LoadScene(GameSceneName, LoadSceneMode.Additive);
             
             CurrentScene = SceneId.Game;
         }
@@ -102,21 +89,12 @@ namespace DuckJam.Modules
             CanvasManager.Instance.ShowLoadingScreen();
             
             var unloadOperation = SceneManager.UnloadSceneAsync(unloadSceneName);
-            //unloadOperation.allowSceneActivation = false;
-            
             while (!unloadOperation.isDone)
             {
-                // if (unloadOperation.progress >= 0.9f)
-                // {
-                //     unloadOperation.allowSceneActivation = true;
-                // }
-                
                 yield return null;
             }
             
-            
             GameModel.Reset();
-            
             
             var loadOperation = SceneManager.LoadSceneAsync(loadSceneName, LoadSceneMode.Additive);
             loadOperation.allowSceneActivation = false;

@@ -36,6 +36,12 @@ namespace DuckJam.Modules
         private void Start()
         {
             HidePanel(loadingScreen);
+            
+            if (SceneLoader.Instance.CurrentScene == SceneId.MainMenu)
+            {
+                mainMenu.Show();
+                _currentPanel = mainMenu;
+            }
         }
 
         private void Update()
@@ -52,7 +58,7 @@ namespace DuckJam.Modules
 
         private void OnEscape()
         {
-            if (!_isPaused)
+            if (!_isPaused && SceneLoader.Instance.CurrentScene == SceneId.Game)
             {
                 Time.timeScale = 0f;
                 _isPaused = true;

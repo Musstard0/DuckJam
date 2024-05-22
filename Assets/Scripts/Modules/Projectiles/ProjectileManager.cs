@@ -21,6 +21,7 @@ namespace DuckJam.Modules.Projectiles
         {
             foreach (var bullet in _activeBullets)
             {
+                if(bullet == null) continue;
                 Destroy(bullet.gameObject);
             }
             
@@ -46,6 +47,8 @@ namespace DuckJam.Modules.Projectiles
         private void DisposeBullet(BulletController bulletController)
         {
             _activeBullets.Remove(bulletController);
+            
+            if(bulletController == null) return;
             Destroy(bulletController.gameObject);
         }
     }
