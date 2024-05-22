@@ -29,7 +29,7 @@ namespace DuckJam.Modules
 
         private void Update()
         {
-            //transform.rotation = _mapModel.TimeScaleLineRotation;
+            transform.rotation = _mapModel.TimeScaleLineRotation;
         }
         
         private void OnDrawGizmos()

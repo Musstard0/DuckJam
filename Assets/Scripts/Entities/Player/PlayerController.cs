@@ -12,14 +12,23 @@ namespace DuckJam
         public PlayerCfg playerCfg;
 
         private float lastShotTime;
+        private Transform gun; // Reference to the child object representing the gun
+        private Transform visuals; // Reference to the child object representing visuals
+        private Quaternion initialVisualsRotation; // Initial rotation of the visuals
 
-
-        // this is centralized location for creating and managing projectiles.
-        // kind of pointless right now, but will allow for object pooling if needed - and also allow for changing the time scale of bullets if we want to
+        // Centralized location for creating and managing projectiles
         private ProjectileManager _projectileManager;
-        
+        private Rigidbody2D rb;
         private void Awake()
         {
+            visuals = transform.Find("Visuals"); // Assuming the child object is named "Visuals"
+            gun = transform.Find("Gun");
+            rb = GetComponent<Rigidbody2D>();
+            if (visuals != null)
+            {
+                initialVisualsRotation = visuals.localRotation;
+            }
+
             InitializeModel();
             GameModel.Register(playerModel);
         }
@@ -40,48 +49,58 @@ namespace DuckJam
                 Damage = playerCfg.Damage,
                 BulletPrefab = playerCfg.BulletPrefab,
                 BulletSpeed = playerCfg.BulletSpeed,
-                FirePoint = transform.Find("FirePoint"),  // Assuming there's a child named "FirePoint"
+                FirePoint = gun.transform.Find("FirePoint"),  // Assuming there's a child named "FirePoint"
                 FireRate = playerCfg.FireRate,
-                Inertia = playerCfg.Inertia
+                SwaySpeed = playerCfg.SwaySpeed,
+                SwayAmount = playerCfg.SwayAmount
             };
         }
 
         private void Update()
         {
             HandleMovement();
-            HandleFlip();
+            //HandleFlip();
             HandleShooting();
+            AnimateVisuals();
         }
 
         private void HandleMovement()
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
+            playerModel.horizontalInput = Input.GetAxisRaw("Horizontal");
+            playerModel.verticalInput = Input.GetAxisRaw("Vertical");
 
-            Vector3 moveDirection = new Vector3(horizontalInput, verticalInput, 0).normalized;
-            Vector3 newPosition = transform.position + moveDirection * playerModel.Speed * Time.deltaTime;
+            rb.velocity = new Vector2(playerModel.horizontalInput, playerModel.verticalInput).normalized * playerModel.Speed;
 
-            transform.position = newPosition;
         }
-
-
-
 
         private void HandleFlip()
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            float angle = Mathf.Atan2(mousePosition.y - transform.position.y, mousePosition.x - transform.position.x) * Mathf.Rad2Deg;
-
+            Vector3 direction = (mousePosition - gun.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             if (Mathf.Abs(angle) < 90)
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localRotation = Quaternion.Euler(0, 180, 0);
             }
             else
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                transform.localRotation = Quaternion.Euler(0, -180, 0);
             }
         }
 
+
+        private void AnimateVisuals()
+        {
+            if (visuals != null && (playerModel.horizontalInput != 0 || playerModel.verticalInput != 0))
+            {
+                float swayAmount = Mathf.Sin(Time.time * playerModel.SwaySpeed) * playerModel.SwayAmount;
+                visuals.localRotation = initialVisualsRotation * Quaternion.Euler(0, 0, swayAmount);
+            }
+            else
+            {
+                visuals.localRotation = initialVisualsRotation;
+            }
+        }
 
         private void HandleShooting()
         {
@@ -97,9 +116,9 @@ namespace DuckJam
             BulletController bullet = _projectileManager.GetBullet(playerModel.FirePoint.position);
             bullet.TargetLayer = LayerUtils.EnemyLayer;
             bullet.Damage = playerModel.Damage;
-            
+
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePosition.XY() - playerModel.FirePoint.position.XY()).normalized;
+            Vector2 direction = (mousePosition - playerModel.FirePoint.position).normalized;
             bullet.GetComponent<Rigidbody2D>().velocity = direction * playerModel.BulletSpeed;
         }
 

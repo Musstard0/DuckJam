@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: PlayerCfg
   m_EditorClassIdentifier: 
   Health: 100
-  Speed: 15
+  Speed: 30
   Damage: 10
-  BulletPrefab: {fileID: 1244102424471242536, guid: 3c2ac21560a97f54ba8c98dfa172bcc8, type: 3}
+  BulletPrefab: {fileID: 1376255987763185058, guid: 3c2ac21560a97f54ba8c98dfa172bcc8, type: 3}
   BulletSpeed: 25
   FireRate: 0.5
-  Inertia: 0.1
+  SwaySpeed: 7.5
+  SwayAmount: 10
