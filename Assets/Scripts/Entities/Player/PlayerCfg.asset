@@ -20,3 +20,5 @@ MonoBehaviour:
   Inertia: 0.1
   timeScaleEffectsMovementSpeed: 1
   timeScaleEffectsShootingRate: 1
+  SwaySpeed: 10
+  SwayAmount: 10

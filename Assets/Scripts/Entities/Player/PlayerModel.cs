@@ -16,5 +16,13 @@ namespace DuckJam
         public float Inertia;
         public float TimeScale = 1f;
         public float NextShotCountDown;
+
+        public float horizontalInput;
+        public float verticalInput;
+
+
+        public float SwaySpeed; // Speed of the sway animation
+        public float SwayAmount; // Amount of sway
+
     }
 }
