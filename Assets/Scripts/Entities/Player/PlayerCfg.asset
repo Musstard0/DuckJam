@@ -16,6 +16,7 @@ MonoBehaviour:
   Speed: 15
   Damage: 10
   BulletSpeed: 25
-  FireRate: 0.1
+  FireRate: 0.2
   Inertia: 0.1
   timeScaleEffectsMovementSpeed: 1
+  timeScaleEffectsShootingRate: 1

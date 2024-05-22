@@ -129,10 +129,20 @@ namespace DuckJam.Modules
 
             if (enemy.Attack.IsRanged)
             {
-                var bullet = _projectileManager.GetBullet(enemy.Position2D);
-                bullet.TargetLayer = LayerUtils.PlayerLayer;
-                bullet.Damage = enemy.Attack.Damage;
-                bullet.Rigidbody2D.velocity = offset.normalized * enemy.Attack.Speed;
+                _projectileManager.ShootBullet
+                (
+                    enemy.Position2D, 
+                    targetPosition, 
+                    LayerUtils.PlayerLayer, 
+                    enemy.Attack.Damage, 
+                    enemy.Attack.Speed, 
+                    enemy.TimeScale
+                );
+                
+                // var bullet = _projectileManager.GetBullet(enemy.Position2D);
+                // bullet.TargetLayer = LayerUtils.PlayerLayer;
+                // bullet.Damage = enemy.Attack.Damage;
+                // bullet.Rigidbody2D.velocity = offset.normalized * enemy.Attack.Speed;
             }
             else
             {

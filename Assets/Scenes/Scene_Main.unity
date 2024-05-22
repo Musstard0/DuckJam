@@ -153,6 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1244102424471242536, guid: 3c2ac21560a97f54ba8c98dfa172bcc8, type: 3}
+  boundsPaddingFactor: 2
+  zPosition: 0
+  initialPoolSize: 128
+  maxPoolSize: 1024
 --- !u!4 &97122799
 Transform:
   m_ObjectHideFlags: 0

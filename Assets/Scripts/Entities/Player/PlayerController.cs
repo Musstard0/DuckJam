@@ -129,13 +129,15 @@ namespace DuckJam
 
         private void Shoot()
         {
-            BulletController bullet = _projectileManager.GetBullet(playerModel.FirePoint.position);
-            bullet.TargetLayer = LayerUtils.EnemyLayer;
-            bullet.Damage = playerModel.Damage;
-            
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePosition.XY() - playerModel.FirePoint.position.XY()).normalized;
-            bullet.Rigidbody2D.velocity = direction * playerModel.BulletSpeed;
+            _projectileManager.ShootBullet
+            (
+                playerModel.FirePoint.position.XY(), 
+                Camera.main.ScreenToWorldPoint(Input.mousePosition).XY(), 
+                LayerUtils.EnemyLayer, 
+                playerModel.Damage, 
+                playerModel.BulletSpeed, 
+                playerModel.TimeScale
+            );
         }
 
         public void TakeDamage(float damage)
