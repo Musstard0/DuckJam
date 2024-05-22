@@ -15,6 +15,7 @@ namespace DuckJam.Modules
         
         public int Count => _activeEnemies.Count;
         public EnemyController this[int index] => _activeEnemies[index];
+        public int DeadEnemyCount { get; private set; }
         
         public EnemiesModel(EnemiesConfig config)
         {
@@ -55,6 +56,7 @@ namespace DuckJam.Modules
             if(enemy == null) return;
             _activeEnemies.Remove(enemy);
             Object.Destroy(enemy.gameObject);
+            DeadEnemyCount++;
         }
         
         public IEnumerator<EnemyController> GetEnumerator() => _activeEnemies.GetEnumerator();

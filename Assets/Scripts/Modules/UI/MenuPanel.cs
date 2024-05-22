@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace DuckJam.Modules
@@ -5,9 +6,20 @@ namespace DuckJam.Modules
     [RequireComponent(typeof(CanvasGroup))]
     internal sealed class MenuPanel : MonoBehaviour
     {
+        [SerializeField] private TMP_Text optionalText;
+        
         [SerializeField] private UIPanel panel = UIPanel.None;
         [SerializeField] private EscapeAction escapeAction = EscapeAction.None;
         
+        public string OptionalText
+        {
+            set
+            {
+                if(optionalText == null) return;
+                optionalText.text = value;
+            }
+        }
+
         public UIPanel Panel => panel;
         public EscapeAction EscapeAction => escapeAction;
         

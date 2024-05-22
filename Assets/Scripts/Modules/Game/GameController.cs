@@ -9,14 +9,18 @@ namespace DuckJam.Modules
         
         private MapModel _mapModel;
         private EnemiesModel _enemiesModel;
+        private PlayerModel _playerModel;
         
         private float _nextEnemySpawnTime;
         private bool _nextSpawnAtLineStart;
+        
+        private bool _gameOver;
         
         private void Start()
         {
             _mapModel = GameModel.Get<MapModel>();
             _enemiesModel = GameModel.Get<EnemiesModel>();
+            _playerModel = GameModel.Get<PlayerModel>();
             
             _nextEnemySpawnTime = Time.time + enemySpawnConfig.RandomSpawnInterval;
         }
@@ -24,7 +28,13 @@ namespace DuckJam.Modules
         private void Update()
         {
             _mapModel.RotateTimeScaleLine(Time.deltaTime);
+            
+            if(_gameOver) return;
+            
             SpawnEnemies();
+            
+            if(_playerModel.Health > 0) return;
+            EndGame();
         }
         
         private void SpawnEnemies()
@@ -43,6 +53,12 @@ namespace DuckJam.Modules
             _enemiesModel.SpawnEnemy(spawnPosition);
             _nextEnemySpawnTime = time + enemySpawnConfig.RandomSpawnInterval;
             _nextSpawnAtLineStart = !_nextSpawnAtLineStart;
+        }
+
+        public void EndGame()
+        {
+            _gameOver = true;
+            CanvasManager.Instance.ShowGameOverMenu(_enemiesModel.DeadEnemyCount);
         }
     }
 }

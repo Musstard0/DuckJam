@@ -58,7 +58,23 @@ namespace DuckJam.Modules
 
         private void OnEscape()
         {
-            if (!_isPaused && SceneLoader.Instance.CurrentScene == SceneId.Game)
+            var currentScene = SceneLoader.Instance.CurrentScene;
+
+            if (currentScene != SceneId.Game)
+            {
+                if (_isPaused)
+                {
+                    Time.timeScale = 1f;
+                    _isPaused = false;
+                }
+                
+                return;
+            }
+
+            
+            
+            
+            if (!_isPaused)
             {
                 Time.timeScale = 0f;
                 _isPaused = true;
@@ -145,6 +161,7 @@ namespace DuckJam.Modules
             if (_currentPanel != null)
             {
                 _currentPanel.Hide();
+                _currentPanel = null;
             }
             
             SceneLoader.Instance.LoadMainMenu();
@@ -167,6 +184,7 @@ namespace DuckJam.Modules
             if (_currentPanel != null)
             {
                 _currentPanel.Hide();
+                _currentPanel = null;
             }
             
             SceneLoader.Instance.LoadGame();
@@ -180,6 +198,13 @@ namespace DuckJam.Modules
         public void HideLoadingScreen()
         {
             HidePanel(loadingScreen);
+        }
+        
+        public void ShowGameOverMenu(int score)
+        {
+            NavigateTo(UIPanel.GameOverMenu);
+            _currentPanel = gameOverMenu;
+            _currentPanel.OptionalText = $"Score: {score}";
         }
         
         private static void HidePanel(CanvasGroup canvasGroup)

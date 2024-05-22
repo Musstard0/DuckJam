@@ -114,8 +114,10 @@ namespace DuckJam
 
         private void Die()
         {
+            
+            
             // Handle player death
-            Debug.Log("Player has died");
+            //Debug.Log("Player has died");
             // Destroy(gameObject);
         }
     }

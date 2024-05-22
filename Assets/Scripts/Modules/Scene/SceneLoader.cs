@@ -84,8 +84,9 @@ namespace DuckJam.Modules
             CurrentScene = SceneId.Game;
         }
         
-        private static IEnumerator LoadSceneAsync(string unloadSceneName, string loadSceneName)
+        private IEnumerator LoadSceneAsync(string unloadSceneName, string loadSceneName)
         {
+            CurrentScene = SceneId.Loading;
             CanvasManager.Instance.ShowLoadingScreen();
             
             var unloadOperation = SceneManager.UnloadSceneAsync(unloadSceneName);
@@ -115,6 +116,7 @@ namespace DuckJam.Modules
     
     internal enum SceneId
     {
+        Loading,
         MainMenu,
         Game
     }
