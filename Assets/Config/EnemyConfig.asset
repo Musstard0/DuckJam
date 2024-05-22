@@ -46,3 +46,5 @@ MonoBehaviour:
       maxDistance: 3
       cooldown: 1.5
       speed: 0
+  swaySpeed: 10
+  swayAmount: 10

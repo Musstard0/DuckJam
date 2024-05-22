@@ -50,6 +50,7 @@ namespace DuckJam.Modules
             {
                 SetTimeScale(enemy, timeScaleDeltaAbs);
                 ProgressAttackCooldownCountdown(enemy, deltaTime);
+                AnimateVisuals(enemy);
                 HandleAttack(enemy, playerPosition);
             }
         }
@@ -116,6 +117,20 @@ namespace DuckJam.Modules
             
             enemyController.AttackCooldownCountdown = Mathf.Max(enemyController.AttackCooldownCountdown - delta, 0f);
         }
+        
+        private void AnimateVisuals(EnemyController enemyController)
+        {
+            if (!enemyController.Moving)
+            {
+                enemyController.VisualsTransform.rotation = Quaternion.identity;
+                return;
+            }
+            
+            var timeSinceMovementStart = Time.time - enemyController.MovementStartTime;
+            var swayAmount = Mathf.Sin(timeSinceMovementStart * enemyConfig.SwaySpeed) * enemyConfig.SwayAmount;
+            
+            enemyController.VisualsTransform.rotation = Quaternion.Euler(0f, 0f, swayAmount);
+        }
 
         private void HandleAttack(EnemyController enemy, Vector2 targetPosition)
         {
@@ -163,7 +178,19 @@ namespace DuckJam.Modules
             var distance = offset.magnitude;
             
             // if within min/max range don't move
-            if(distance > enemy.Attack.MinDistance && distance < enemy.Attack.MaxDistance) return;
+            if (distance > enemy.Attack.MinDistance && distance < enemy.Attack.MaxDistance)
+            {
+                enemy.Moving = false;
+                return;
+            }
+
+            if (!enemy.Moving)
+            {
+                enemy.MovementStartTime = Time.time;
+                enemy.Moving = true;
+            }
+            
+            
             
             // move towards/away from target
             var moveDirection = distance > enemy.Attack.MaxDistance ? offset.normalized : -offset.normalized;

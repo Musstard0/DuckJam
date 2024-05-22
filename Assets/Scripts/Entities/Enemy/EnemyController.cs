@@ -7,8 +7,11 @@ namespace DuckJam.Entities
     [RequireComponent(typeof(Rigidbody2D))]
     internal sealed class EnemyController : MonoBehaviour, IDamageable
     {
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private SpriteRenderer bodySpriteRenderer;
+        [SerializeField] private SpriteRenderer fillSpriteRenderer;
+        [SerializeField] private Transform visuals;
         
+        public Transform VisualsTransform => visuals;
         public Rigidbody2D Rigidbody2D { get; private set;}
         public float Health { get; set; }
         public float Speed { get; set; }
@@ -17,16 +20,15 @@ namespace DuckJam.Entities
 
         public float AttackCooldownCountdown { get; set; }
         
+        public bool Moving { get; set; }
+        public float MovementStartTime { get; set; }
+        
         public bool IsDead => Health <= 0f;
         public Vector2 Position2D => transform.position.XY();
         
         public Color Color 
         {
-            set
-            {
-                if(spriteRenderer == null) return;
-                spriteRenderer.color = value;
-            }
+            set => fillSpriteRenderer.color = value;
         }
 
         private void Awake()

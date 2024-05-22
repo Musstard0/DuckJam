@@ -9,8 +9,14 @@ namespace DuckJam.Modules
     internal sealed class EnemiesConfig : ScriptableObject
     { 
         [SerializeField] private EnemyType[] enemyTypes;
+        
+        [Header("Visuals")]
+        [SerializeField, Min(0f)] private float swaySpeed;
+        [SerializeField, Min(0f)] private float swayAmount;
 
         public IReadOnlyList<EnemyType> EnemyTypes => enemyTypes ?? Array.Empty<EnemyType>();
+        public float SwaySpeed => swaySpeed;
+        public float SwayAmount => swayAmount;
         
         private void OnValidate()
         {
