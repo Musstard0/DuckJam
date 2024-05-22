@@ -62,6 +62,11 @@ namespace DuckJam.Modules
             }
         }
 
+        private void OnDestroy()
+        {
+            _enemiesModel.Dispose();
+        }
+
         private void ClearDeadEnemies()
         {
             foreach (var enemy in _enemiesModel)

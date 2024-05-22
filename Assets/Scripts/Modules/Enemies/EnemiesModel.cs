@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DuckJam.Entities;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace DuckJam.Modules
 {
-    internal sealed class EnemiesModel : IReadOnlyList<EnemyController>
+    internal sealed class EnemiesModel : IReadOnlyList<EnemyController>, IDisposable
     {
         private readonly EnemiesConfig _enemyConfig;
         private readonly List<EnemyController> _activeEnemies = new();
@@ -56,5 +59,15 @@ namespace DuckJam.Modules
         
         public IEnumerator<EnemyController> GetEnumerator() => _activeEnemies.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => _activeEnemies.GetEnumerator();
+        public void Dispose()
+        {
+            foreach (var enemy in _activeEnemies)
+            {
+                if(enemy == null) continue;
+                Object.Destroy(enemy.gameObject);
+            }
+            
+            _activeEnemies.Clear();
+        }
     }
 }

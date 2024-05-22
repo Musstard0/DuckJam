@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace DuckJam
 {
     public static class GameModel
     {
         private static readonly Dictionary<Type, object> Models = new();
-        
+
         /// <summary>
         /// Registers a model instance.
         /// </summary>
@@ -66,9 +67,8 @@ namespace DuckJam
             return false;
         }
         
-        // If (Project Settings > Editor > Enter Play Mode Options > Reload Domain) is disabled, this ensures Models dictionary is cleared before the game starts
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void Reset() 
+        public static void Reset() 
         {
             Models.Clear();
         }

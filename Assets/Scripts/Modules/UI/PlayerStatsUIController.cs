@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,8 +26,9 @@ namespace DuckJam.Modules
 
         private void UpdateHealth()
         {
-            healthText.text = $"{_playerModel.Health} / {_playerModel.MaxHealth}";
-            healthFill.fillAmount = _playerModel.Health / _playerModel.MaxHealth;
+            var health = Mathf.Max(_playerModel.Health, 0f);
+            healthText.text = $"{health} / {_playerModel.MaxHealth}";
+            healthFill.fillAmount = health / _playerModel.MaxHealth;
         }
     }
 }

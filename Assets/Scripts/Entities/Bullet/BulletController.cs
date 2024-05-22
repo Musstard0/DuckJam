@@ -1,3 +1,4 @@
+using System;
 using DuckJam.Entities;
 using UnityEngine;
 
@@ -5,8 +6,10 @@ public class BulletController : MonoBehaviour
 {
     private float _damage;
     
-    public float LifeTime = 2f;
+    //public float LifeTime = 2f;
 
+    public Action<BulletController> DisposeAction;
+    
     public int TargetLayer { get; set; } = -1;
 
     public float Damage
@@ -17,7 +20,7 @@ public class BulletController : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, LifeTime);
+        //Destroy(gameObject, LifeTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -28,7 +31,9 @@ public class BulletController : MonoBehaviour
         var damageable = other.GetComponent<IDamageable>();
         if(damageable != null) damageable.TakeDamage(Damage);
         
-        Destroy(gameObject);
+        DisposeAction?.Invoke(this);
+        
+        //Destroy(gameObject);
         
         // Handle collision with enemies
         //if (other.CompareTag("Enemy"))
