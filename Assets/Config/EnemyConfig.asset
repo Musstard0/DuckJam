@@ -20,9 +20,20 @@ MonoBehaviour:
     attack:
       isRanged: 1
       damage: 5
-      minDistance: 4
+      minDistance: 6
+      maxDistance: 17
+      cooldown: 0.8
+      speed: 25
+  - name: Mob 3
+    prefab: {fileID: 5911068686392948138, guid: 841aaad01f315ec46a1c72969552f4f3, type: 3}
+    maxHealth: 30
+    speed: 5
+    attack:
+      isRanged: 1
+      damage: 10
+      minDistance: 2
       maxDistance: 12
-      cooldown: 1
+      cooldown: 1.2
       speed: 25
   - name: Mob 4
     prefab: {fileID: 1585416676206313591, guid: c94fc6063872b424188819e4a9dc91f9, type: 3}
@@ -30,8 +41,8 @@ MonoBehaviour:
     speed: 5
     attack:
       isRanged: 0
-      damage: 5
+      damage: 15
       minDistance: 0
       maxDistance: 3
-      cooldown: 1
-      speed: 0.5
+      cooldown: 1.5
+      speed: 0

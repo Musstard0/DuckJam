@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efb17d14c0546bab19b008ada3065a7, type: 3}
   m_Name: EnemySpawnConfig
   m_EditorClassIdentifier: 
-  spawnInterval: 1
+  spawnInterval: 0.4
   spawnIntervalDeviation: 0.1
   maxEnemies: 32
   mapEdgeSpawnBuffer: 1
+  spawnPositionZ: 0
