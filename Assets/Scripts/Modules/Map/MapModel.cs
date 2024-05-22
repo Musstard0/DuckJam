@@ -115,6 +115,18 @@ namespace DuckJam.Modules
         {
             return _mapRect.Contains(position);
         }
+
+        public void ClampMovementToMapBounds(Vector2 startPosition, ref Vector2 endPosition, float edgeBuffer = 0.1f)
+        {
+            if (IsPositionInMapBounds(endPosition)) return;
+            
+            if(TryGetMapEdgeLineIntersection(startPosition, endPosition, out var intersection))
+            {
+                var direction = (endPosition - startPosition).normalized;
+                
+                endPosition = intersection - direction * edgeBuffer;
+            }
+        }
         
         private bool TryGetMapEdgeLineIntersection(Vector2 lineStart, Vector2 lineEnd, out Vector2 intersection)
         {

@@ -1,23 +1,29 @@
+using System;
 using DuckJam.Entities;
+using DuckJam.Utilities;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class BulletController : MonoBehaviour
 {
-    private float _damage;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     
-    public float LifeTime = 2f;
-
+    public SpriteRenderer SpriteRenderer => spriteRenderer;
+    public Rigidbody2D Rigidbody2D { get; private set; }
+    
+    public Action<BulletController> DisposeAction;
+    
+    public Vector2 Direction { get; set; }
     public int TargetLayer { get; set; } = -1;
+    public float Damage { get; set; }
+    public float Speed { get; set; }
+    public float TimeScale { get; set; } = 1f;
+    
+    public Vector2 Position2D => transform.position.XY();
 
-    public float Damage
+    private void Awake()
     {
-        get => _damage;
-        set => _damage = Mathf.Max(value, 0f);
-    }
-
-    private void Start()
-    {
-        Destroy(gameObject, LifeTime);
+        Rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -28,13 +34,6 @@ public class BulletController : MonoBehaviour
         var damageable = other.GetComponent<IDamageable>();
         if(damageable != null) damageable.TakeDamage(Damage);
         
-        Destroy(gameObject);
-        
-        // Handle collision with enemies
-        //if (other.CompareTag("Enemy"))
-        //{
-        //    // Deal damage to enemy
-        //    Destroy(gameObject);
-        //}
+        DisposeAction.Invoke(this);
     }
 }

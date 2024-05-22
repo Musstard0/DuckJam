@@ -1,17 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DuckJam.Entities;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace DuckJam.Modules
 {
-    internal sealed class EnemiesModel : IReadOnlyList<EnemyController>
+    internal sealed class EnemiesModel : IReadOnlyList<EnemyController>, IDisposable
     {
         private readonly EnemiesConfig _enemyConfig;
         private readonly List<EnemyController> _activeEnemies = new();
         
         public int Count => _activeEnemies.Count;
         public EnemyController this[int index] => _activeEnemies[index];
+        public int DeadEnemyCount { get; private set; }
         
         public EnemiesModel(EnemiesConfig config)
         {
@@ -27,34 +31,31 @@ namespace DuckJam.Modules
             enemy.Attack = type.Attack;
             enemy.Speed = type.Speed;
             enemy.TimeScale = 1f;
-            enemy.LastAttackTime = 0f;
+            enemy.AttackCooldownCountdown = 0f;
             enemy.Color = Color.white;
             
             _activeEnemies.Add(enemy);
         }
-        
-        // public void SpawnRangedEnemy(Vector3 position)
-        // {
-        //     var enemy = Object.Instantiate(_enemyConfig.RangedEnemyPrefab, position, Quaternion.identity);
-        //     
-        //     enemy.Ranged = true;
-        //     enemy.TimeScale = 1f;
-        //     enemy.LastAttackTime = 0f;
-        //     enemy.Health = _enemyConfig.RangedEnemyMaxHealth;
-        //     
-        //     enemy.Color = Color.white;
-        //     
-        //     _activeEnemies.Add(enemy);
-        // }
         
         public void DestroyEnemy(EnemyController enemy)
         {
             if(enemy == null) return;
             _activeEnemies.Remove(enemy);
             Object.Destroy(enemy.gameObject);
+            DeadEnemyCount++;
         }
         
         public IEnumerator<EnemyController> GetEnumerator() => _activeEnemies.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => _activeEnemies.GetEnumerator();
+        public void Dispose()
+        {
+            foreach (var enemy in _activeEnemies)
+            {
+                if(enemy == null) continue;
+                Object.Destroy(enemy.gameObject);
+            }
+            
+            _activeEnemies.Clear();
+        }
     }
 }

@@ -1,3 +1,5 @@
+using DuckJam.PersistentSystems;
+using DuckJam.SharedConfiguration;
 using DuckJam.Utilities;
 using UnityEngine;
 
@@ -9,22 +11,37 @@ namespace DuckJam.Modules
         
         private MapModel _mapModel;
         private EnemiesModel _enemiesModel;
+        private PlayerModel _playerModel;
+        private TimeScaleConfig _timeScaleConfig;
         
         private float _nextEnemySpawnTime;
         private bool _nextSpawnAtLineStart;
+        
+        private bool _gameOver;
         
         private void Start()
         {
             _mapModel = GameModel.Get<MapModel>();
             _enemiesModel = GameModel.Get<EnemiesModel>();
+            _playerModel = GameModel.Get<PlayerModel>();
+            _timeScaleConfig = GameModel.Get<TimeScaleConfig>();
             
             _nextEnemySpawnTime = Time.time + enemySpawnConfig.RandomSpawnInterval;
         }
 
         private void Update()
         {
-            _mapModel.RotateTimeScaleLine(Time.deltaTime);
+            var deltaTime = Time.deltaTime;
+            
+            _mapModel.RotateTimeScaleLine(deltaTime);
+            
+            if(_gameOver) return;
+            
+            UpdatePlayer(deltaTime);
             SpawnEnemies();
+            
+            if(_playerModel.Health > 0) return;
+            EndGame();
         }
         
         private void SpawnEnemies()
@@ -43,6 +60,24 @@ namespace DuckJam.Modules
             _enemiesModel.SpawnEnemy(spawnPosition);
             _nextEnemySpawnTime = time + enemySpawnConfig.RandomSpawnInterval;
             _nextSpawnAtLineStart = !_nextSpawnAtLineStart;
+        }
+
+        private void UpdatePlayer(float deltaTime)
+        {
+            var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
+            var timeScaleDelta = _mapModel.GetTimeScaleSignAtPosition(_playerModel.Transform.position) * timeScaleDeltaAbs;
+            _playerModel.TimeScale = Mathf.Clamp
+            (
+                _playerModel.TimeScale + timeScaleDelta, 
+                _timeScaleConfig.MinTimeScale, 
+                _timeScaleConfig.MaxTimeScale
+            );
+        }
+
+        public void EndGame()
+        {
+            _gameOver = true;
+            CanvasManager.Instance.ShowGameOverMenu(_enemiesModel.DeadEnemyCount);
         }
     }
 }
