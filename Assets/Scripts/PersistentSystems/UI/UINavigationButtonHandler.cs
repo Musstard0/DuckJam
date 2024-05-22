@@ -1,16 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DuckJam.Modules
+namespace DuckJam.PersistentSystems
 {
     [RequireComponent(typeof(Button))]
-    internal sealed class UIBackButtonNavigationHandler : MonoBehaviour
+    internal sealed class UINavigationButtonHandler : MonoBehaviour
     {
+        [SerializeField] private UIPanel navigateToPanel;
         private Button _button;
         
         private void Awake()
         {
             _button = GetComponent<Button>();
+            if (navigateToPanel == UIPanel.None)
+            {
+                Debug.LogError($"No panel to navigate to", this);
+            }
         }
 
         private void OnEnable() => _button.onClick.AddListener(Navigate);
@@ -18,7 +23,7 @@ namespace DuckJam.Modules
 
         private void Navigate()
         {
-            CanvasManager.Instance.NavigateToParent();
+            CanvasManager.Instance.NavigateTo(navigateToPanel);
         }
     }
 }

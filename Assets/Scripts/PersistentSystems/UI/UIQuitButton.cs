@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DuckJam.Modules
+namespace DuckJam.PersistentSystems
 {
     [RequireComponent(typeof(Button))]
     internal sealed class UIQuitButton : MonoBehaviour

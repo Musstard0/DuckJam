@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DuckJam.Modules
+namespace DuckJam.PersistentSystems
 {
     [RequireComponent(typeof(Canvas))]
     internal sealed class CanvasManager : MonoBehaviour

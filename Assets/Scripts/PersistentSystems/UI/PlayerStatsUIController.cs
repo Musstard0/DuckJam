@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DuckJam.Modules
+namespace DuckJam.PersistentSystems
 {
     internal sealed class PlayerStatsUIController : MonoBehaviour
     {

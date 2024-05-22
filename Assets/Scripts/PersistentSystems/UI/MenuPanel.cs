@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace DuckJam.Modules
+namespace DuckJam.PersistentSystems
 {
     [RequireComponent(typeof(CanvasGroup))]
     internal sealed class MenuPanel : MonoBehaviour

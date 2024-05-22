@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace DuckJam.Modules
+namespace DuckJam.PersistentSystems
 {
     internal sealed class SceneLoader : MonoBehaviour
     {
@@ -11,9 +13,12 @@ namespace DuckJam.Modules
         private const string MainMenuSceneName = "Scene_MainMenu";
         private const string GameSceneName = "Scene_Main";
         
+        private readonly List<AsyncOperation> _loadOperations = new();
+        
         public static SceneLoader Instance { get; private set; }
         
         public SceneId CurrentScene { get; private set; }
+
         
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Init() 
@@ -45,14 +50,12 @@ namespace DuckJam.Modules
             }
 #endif
             
-            
             if(!isMainMenuSceneLoaded && !isGameSceneLoaded)
             {
                 SceneManager.LoadScene(MainMenuSceneName, LoadSceneMode.Additive);
                 CurrentScene = SceneId.MainMenu;
                 return;
             }
-            
             
             CurrentScene = isMainMenuSceneLoaded ? SceneId.MainMenu : SceneId.Game;
         }
@@ -66,38 +69,43 @@ namespace DuckJam.Modules
         public void LoadMainMenu()
         {
             if(CurrentScene == SceneId.MainMenu) return;
-
-            StartCoroutine(LoadSceneAsync(GameSceneName, MainMenuSceneName));
+            StartCoroutine(LoadSceneAsync(MainMenuSceneName));
             CurrentScene = SceneId.MainMenu;
         }
         
         public void LoadGame()
         {
-            if (CurrentScene == SceneId.Game)
-            {
-                StartCoroutine(LoadSceneAsync(GameSceneName, GameSceneName));
-                return;
-            }
-            
-            StartCoroutine(LoadSceneAsync(MainMenuSceneName, GameSceneName));
-            
+            StartCoroutine(LoadSceneAsync(GameSceneName));
             CurrentScene = SceneId.Game;
         }
-        
-        private IEnumerator LoadSceneAsync(string unloadSceneName, string loadSceneName)
+
+        private IEnumerator LoadSceneAsync(string sceneName)
         {
             CurrentScene = SceneId.Loading;
             CanvasManager.Instance.ShowLoadingScreen();
             
-            var unloadOperation = SceneManager.UnloadSceneAsync(unloadSceneName);
-            while (!unloadOperation.isDone)
+            for (var i = 0; i < SceneManager.loadedSceneCount; i++)
             {
+                var scene = SceneManager.GetSceneAt(i);
+                if(scene.name == PersistantSceneName) continue;
+                _loadOperations.Add(SceneManager.UnloadSceneAsync(scene));
+            }
+            
+            while (_loadOperations.Count > 0)
+            {
+                var operation = _loadOperations[0];
+                if (operation.isDone)
+                {
+                    _loadOperations.RemoveAt(0);
+                    continue;
+                }
+                
                 yield return null;
             }
             
             GameModel.Reset();
             
-            var loadOperation = SceneManager.LoadSceneAsync(loadSceneName, LoadSceneMode.Additive);
+            var loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             loadOperation.allowSceneActivation = false;
             
             while (!loadOperation.isDone)
