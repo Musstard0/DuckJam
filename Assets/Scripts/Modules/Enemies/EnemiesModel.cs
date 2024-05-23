@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DuckJam.Entities;
+using DuckJam.PersistentSystems;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -12,6 +13,8 @@ namespace DuckJam.Modules
     {
         private readonly EnemiesConfig _enemyConfig;
         private readonly List<EnemyController> _activeEnemies = new();
+        
+        private float _lastDeathSoundTime;
         
         public int Count => _activeEnemies.Count;
         public EnemyController this[int index] => _activeEnemies[index];
@@ -43,6 +46,11 @@ namespace DuckJam.Modules
             _activeEnemies.Remove(enemy);
             Object.Destroy(enemy.gameObject);
             DeadEnemyCount++;
+            
+            if(Time.time - _lastDeathSoundTime < _enemyConfig.DeathSoundMinInterval) return;
+            
+            AudioFXManager.Instance.PlayClip(_enemyConfig.DeathSound, enemy.TimeScale, 0.6f);
+            _lastDeathSoundTime = Time.time;
         }
         
         public IEnumerator<EnemyController> GetEnumerator() => _activeEnemies.GetEnumerator();

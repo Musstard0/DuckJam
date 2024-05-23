@@ -17,11 +17,7 @@ namespace DuckJam.PersistentSystems
         public float Volume
         {
             get => _volume;
-            set
-            {
-                _volume = Mathf.Clamp01(value);
-                foreach (var source in _activeAudioSources) source.volume = _volume;
-            }
+            set => _volume = Mathf.Clamp01(value);
         }
 
         private void Awake()
@@ -69,12 +65,11 @@ namespace DuckJam.PersistentSystems
 
             source.loop = false;
             source.playOnAwake = false;
-            source.volume = Volume;
             
             return source;
         }
         
-        public void PlayClip(AudioClip clip, float pitch = 1f)
+        public void PlayClip(AudioClip clip, float pitch = 1f, float volume = 1f)
         {
             if (!_inactiveAudioSources.TryPop(out var source))
             {
@@ -82,7 +77,7 @@ namespace DuckJam.PersistentSystems
             }
             
             source.clip = clip;
-            source.volume = Volume;
+            source.volume = Volume * Mathf.Clamp01(volume);
             source.pitch = pitch;
             
             _activeAudioSources.Add(source);

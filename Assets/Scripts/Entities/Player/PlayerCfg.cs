@@ -25,7 +25,9 @@ namespace DuckJam
         [Header("Audio Clips")]
         [SerializeField] private AudioClip[] footstepClips;
         [SerializeField] private AudioClip[] gunshotClips;
-        
+        public AudioClip deathClip;
+        public AudioClip hurtClip;
+        [Min(0f)] public float minHurtSoundInterval = 0.1f;
         
         public IReadOnlyList<AudioClip> FootstepClips => footstepClips;
         public IReadOnlyList<AudioClip> GunshotClips => gunshotClips;

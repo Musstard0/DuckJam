@@ -10,11 +10,16 @@ namespace DuckJam.Modules
     { 
         [SerializeField] private EnemyType[] enemyTypes;
         
+        [SerializeField] private AudioClip deathSound;
+        [SerializeField, Min(0f)] private float deathSoundMinInterval = 0.1f;
+        
         [Header("Visuals")]
         [SerializeField, Min(0f)] private float swaySpeed;
         [SerializeField, Min(0f)] private float swayAmount;
 
         public IReadOnlyList<EnemyType> EnemyTypes => enemyTypes ?? Array.Empty<EnemyType>();
+        public AudioClip DeathSound => deathSound;
+        public float DeathSoundMinInterval => deathSoundMinInterval;
         public float SwaySpeed => swaySpeed;
         public float SwayAmount => swayAmount;
         
@@ -47,6 +52,7 @@ namespace DuckJam.Modules
             [SerializeField, Min(0f)] private float minDistance;
             [SerializeField, Min(0f)] private float maxDistance;
             [SerializeField, Min(0f)] private float cooldown;
+            [SerializeField] private AudioClip attackSound;
             
             [Tooltip("If attack is ranged - the speed of the projectile")]
             [SerializeField, Min(0f)] private float speed;
@@ -57,6 +63,7 @@ namespace DuckJam.Modules
             public float MaxDistance => maxDistance;
             public float Cooldown => cooldown;
             public float Speed => speed;
+            public AudioClip AttackSound => attackSound;
             
 #if UNITY_EDITOR
             internal void Validate()

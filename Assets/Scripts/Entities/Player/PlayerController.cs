@@ -26,6 +26,7 @@ namespace DuckJam
         private Quaternion initialVisualsRotation; // Initial rotation of the visuals
         private float _swayTime; // timescale dynamic so need to keep track of sway time outside of Time.time
         private float _lastFootstepTime;
+        private float _lastHurtSoundTime;
         
         private void Awake()
         {
@@ -252,7 +253,16 @@ namespace DuckJam
 
         public void TakeDamage(float damage)
         {
-            playerModel.Health -= damage;
+            if(playerModel.Health <= 0) return;
+            
+            playerModel.Health = Mathf.Max(playerModel.Health - damage, 0f);
+
+            if (Time.time - _lastHurtSoundTime >= playerCfg.minHurtSoundInterval)
+            {
+                AudioFXManager.Instance.PlayClip(playerCfg.hurtClip, playerModel.TimeScale);
+                _lastHurtSoundTime = Time.time;
+            }
+            
             if (playerModel.Health <= 0)
             {
                 Die();
@@ -261,6 +271,8 @@ namespace DuckJam
 
         private void Die()
         {
+            AudioFXManager.Instance.PlayClip(playerCfg.deathClip, playerModel.TimeScale);
+            
             // Handle player death
             // Debug.Log("Player has died");
             // Destroy(gameObject);

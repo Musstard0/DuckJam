@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af7fe7749a96924f95e676315443360, type: 3}
   m_Name: PlayerCfg
   m_EditorClassIdentifier: 
-  Health: 9999
+  Health: 100
   Speed: 15
   Damage: 10
   BulletSpeed: 25
@@ -88,7 +88,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   SwaySpeed: 10
   SwayAmount: 10
-  footstepInterval: 0.25
+  minFootstepInterval: 0.2
   footstepClips:
   - {fileID: 8300000, guid: 18124f0051bf4d249901e7f166a7c0e9, type: 3}
   - {fileID: 8300000, guid: b082e0f2f4fa2d6489b95d21e22f6a0e, type: 3}
@@ -101,3 +101,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b4978bee54a64a1478c28256f1326809, type: 3}
   - {fileID: 8300000, guid: b5907009fde8f6646a058eabb35e4ee3, type: 3}
   - {fileID: 8300000, guid: 47a40e11a66bd564881ab823477fd560, type: 3}
+  deathClip: {fileID: 8300000, guid: 82ccd80e0a3526144b0b8bd932284e79, type: 3}
+  hurtClip: {fileID: 8300000, guid: d15adb43a22ae0748a8372128a1eb335, type: 3}
+  minHurtSoundInterval: 0.1
