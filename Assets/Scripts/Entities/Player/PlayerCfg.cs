@@ -12,6 +12,11 @@ namespace DuckJam
         public float FireRate = 0.5f;
         public float Inertia = 0.1f;
         
+        public float acceleration = 200f;
+        public AnimationCurve accelerationFactorFromDot;
+        public float maxAccelerationForce = 150f;
+        public AnimationCurve maxAccelerationForceFactorFromDot;
+        
         [Header("Time Scale Effects")]
         public bool timeScaleEffectsMovementSpeed = true;
         public bool timeScaleEffectsShootingRate = true;

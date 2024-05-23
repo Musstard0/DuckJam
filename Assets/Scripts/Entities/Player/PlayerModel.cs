@@ -20,6 +20,7 @@ namespace DuckJam
         public float horizontalInput;
         public float verticalInput;
 
+        public Vector2 goalVelocity;
 
         public float SwaySpeed; // Speed of the sway animation
         public float SwayAmount; // Amount of sway

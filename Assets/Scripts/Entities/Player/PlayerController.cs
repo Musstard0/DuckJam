@@ -17,7 +17,6 @@ namespace DuckJam
         // Centralized location for creating and managing projectiles
         private ProjectileManager _projectileManager;
         private Rigidbody2D _rigidbody2D;
-        private MapModel _mapModel;
         private Transform visuals; // Reference to the child object representing visuals
         private Quaternion initialVisualsRotation; // Initial rotation of the visuals
 
@@ -38,7 +37,6 @@ namespace DuckJam
         private void Start()
         {
             _projectileManager = GameModel.Get<ProjectileManager>();
-            _mapModel = GameModel.Get<MapModel>();
         }
 
         private void InitializeModel()
@@ -65,7 +63,8 @@ namespace DuckJam
 
             var deltaTime = Time.deltaTime;
 
-            HandleFlip();
+            // body sprite is symmetrical, so currently not needed
+            //HandleFlip();
             HandleNextShotCountDown(deltaTime);
             HandleShooting();
             AnimateVisuals();
@@ -78,25 +77,51 @@ namespace DuckJam
             HandleMovement(Time.fixedDeltaTime);
         }
 
+
+
+        
+        
         private void HandleMovement(float deltaTime)
         {
             playerModel.horizontalInput = Input.GetAxis("Horizontal");
             playerModel.verticalInput = Input.GetAxis("Vertical");
 
             var moveDirection = new Vector2(playerModel.horizontalInput, playerModel.verticalInput).normalized;
-            var moveDistance = playerModel.Speed * deltaTime;
-
-            if (playerCfg.timeScaleEffectsMovementSpeed)
-            {
-                moveDistance *= playerModel.TimeScale;
-            }
-
-            var delta = moveDirection * moveDistance;
-            var newPosition = _rigidbody2D.position + delta;
-
-            _mapModel.ClampMovementToMapBounds(_rigidbody2D.position, ref newPosition);
-            _rigidbody2D.MovePosition(newPosition);
+            var maxSpeed = playerCfg.timeScaleEffectsMovementSpeed 
+                ? playerModel.Speed * playerModel.TimeScale 
+                : playerModel.Speed;
+            
+            var immediateGoalVelocity = moveDirection * maxSpeed;
+            var velDot = Vector2.Dot(moveDirection, playerModel.goalVelocity.normalized);
+            var accel = playerCfg.acceleration * playerCfg.accelerationFactorFromDot.Evaluate(velDot);
+            playerModel.goalVelocity = Vector2.MoveTowards(playerModel.goalVelocity, immediateGoalVelocity, accel * deltaTime);
+            
+            var neededAcceleration = (playerModel.goalVelocity - _rigidbody2D.velocity) / deltaTime;
+            var maxAcceleration = playerCfg.maxAccelerationForce * playerCfg.maxAccelerationForceFactorFromDot.Evaluate(velDot);
+            neededAcceleration = Vector2.ClampMagnitude(neededAcceleration, maxAcceleration);
+            
+            _rigidbody2D.AddForce(neededAcceleration * _rigidbody2D.mass);
         }
+        
+        // private void HandleMovement(float deltaTime)
+        // {
+        //     playerModel.horizontalInput = Input.GetAxis("Horizontal");
+        //     playerModel.verticalInput = Input.GetAxis("Vertical");
+        //
+        //     var moveDirection = new Vector2(playerModel.horizontalInput, playerModel.verticalInput).normalized;
+        //     var moveDistance = playerModel.Speed * deltaTime;
+        //
+        //     if (playerCfg.timeScaleEffectsMovementSpeed)
+        //     {
+        //         moveDistance *= playerModel.TimeScale;
+        //     }
+        //
+        //     var delta = moveDirection * moveDistance;
+        //     var newPosition = _rigidbody2D.position + delta;
+        //
+        //     //_mapModel.ClampMovementToMapBounds(_rigidbody2D.position, ref newPosition);
+        //     _rigidbody2D.MovePosition(newPosition);
+        // }
 
         private void HandleFlip()
         {
@@ -105,11 +130,11 @@ namespace DuckJam
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             if (Mathf.Abs(angle) < 90)
             {
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
+                visuals.localScale = Vector3.one;
             }
             else
             {
-                transform.localRotation = Quaternion.Euler(0, -180, 0);
+                visuals.localScale = new Vector3(-1f, 1f, 1f);
             }
         }
 
@@ -126,8 +151,11 @@ namespace DuckJam
 
         private void AnimateVisuals()
         {
-            if (visuals != null && (playerModel.horizontalInput != 0 || playerModel.verticalInput != 0))
+            //if (visuals != null && (playerModel.horizontalInput != 0 || playerModel.verticalInput != 0))
+            if (visuals != null && _rigidbody2D.velocity.sqrMagnitude > 0.01f)
             {
+                // swing amount effected by unscaled speed, swing speed effected by time scale
+                
                 // TODO: Speed must affect it
                 float swayAmount = Mathf.Sin(Time.time * playerModel.SwaySpeed) * playerModel.SwayAmount;
                 visuals.localRotation = initialVisualsRotation * Quaternion.Euler(0, 0, swayAmount);
