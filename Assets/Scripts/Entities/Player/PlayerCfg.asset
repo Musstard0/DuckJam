@@ -52,7 +52,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxAccelerationForce: 50
+  maxAccelerationForce: 150
   maxAccelerationForceFactorFromDot:
     serializedVersion: 2
     m_Curve:
@@ -86,7 +86,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeScaleEffectsMovementSpeed: 1
-  timeScaleEffectsShootingRate: 1
   SwaySpeed: 10
   SwayAmount: 10

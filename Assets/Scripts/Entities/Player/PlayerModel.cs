@@ -24,6 +24,8 @@ namespace DuckJam
 
         public float SwaySpeed; // Speed of the sway animation
         public float SwayAmount; // Amount of sway
+        
+        public Animator MuzzleFlashAnimator;
 
     }
 }

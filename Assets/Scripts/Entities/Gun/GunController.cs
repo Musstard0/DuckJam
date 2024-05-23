@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private Vector3 firePointInvertedPositionOffset;
+    
+    private Vector3 _firePointDefaultLocalPosition;
+    
     public Transform player;
     private SpriteRenderer playerSpriteRenderer;
     private SpriteRenderer gunSpriteRenderer;
@@ -10,6 +15,8 @@ public class GunController : MonoBehaviour
     {
         playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
         gunSpriteRenderer = GetComponent<SpriteRenderer>();
+        
+        _firePointDefaultLocalPosition = firePoint.localPosition;
     }
 
     void Update()
@@ -29,10 +36,12 @@ public class GunController : MonoBehaviour
             if (mousePos.x < player.position.x)
             {
                 gunSpriteRenderer.flipY = true; // Assuming the gun sprite is horizontal by default
+                firePoint.localPosition = _firePointDefaultLocalPosition + firePointInvertedPositionOffset;
             }
             else
             {
                 gunSpriteRenderer.flipY = false;
+                firePoint.localPosition = _firePointDefaultLocalPosition;
             }
         }
     }

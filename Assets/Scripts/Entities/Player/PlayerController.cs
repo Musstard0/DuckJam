@@ -1,4 +1,3 @@
-using System;
 using DuckJam.Entities;
 using DuckJam.Modules;
 using DuckJam.Modules.Projectiles;
@@ -59,7 +58,8 @@ namespace DuckJam
                 FireRate = playerCfg.FireRate,
                 Inertia = playerCfg.Inertia,
                 SwaySpeed = playerCfg.SwaySpeed,
-                SwayAmount = playerCfg.SwayAmount
+                SwayAmount = playerCfg.SwayAmount,
+                MuzzleFlashAnimator = transform.Find("Gun").Find("FirePoint").Find("MuzzleFlash").GetComponent<Animator>() // lol
             };
             
             _lastTimeScale = playerModel.TimeScale;
@@ -207,6 +207,9 @@ namespace DuckJam
             playerModel.NextShotCountDown = playerModel.FireRate;
         }
 
+        private static readonly int MuzzleFlashAnimationHash = Animator.StringToHash("PlayerMuzzleFlashAnimation");
+        
+        
         private void Shoot()
         {
             _projectileManager.ShootBullet
@@ -218,6 +221,9 @@ namespace DuckJam
                 playerModel.BulletSpeed,
                 playerModel.TimeScale
             );
+            
+            
+            playerModel.MuzzleFlashAnimator.Play(MuzzleFlashAnimationHash);
         }
 
         public void TakeDamage(float damage)
