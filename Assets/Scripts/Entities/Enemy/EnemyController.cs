@@ -25,7 +25,7 @@ namespace DuckJam.Entities
         public float AttackCooldownCountdown { get; set; }
         
         public bool Moving { get; set; }
-        public float MovementStartTime { get; set; }
+        public float SwayTime { get; set; }
         
         public bool IsDead => Health <= 0f;
         public Vector2 Position2D => transform.position.XY();

@@ -50,7 +50,7 @@ namespace DuckJam.Modules
             {
                 SetTimeScale(enemy, timeScaleDeltaAbs);
                 ProgressAttackCooldownCountdown(enemy, deltaTime);
-                AnimateVisuals(enemy);
+                AnimateVisuals(enemy, deltaTime);
                 HandleAttack(enemy, playerPosition);
             }
         }
@@ -118,16 +118,19 @@ namespace DuckJam.Modules
             enemyController.AttackCooldownCountdown = Mathf.Max(enemyController.AttackCooldownCountdown - delta, 0f);
         }
         
-        private void AnimateVisuals(EnemyController enemyController)
+        private void AnimateVisuals(EnemyController enemyController, float deltaTime)
         {
             if (!enemyController.Moving)
             {
+                enemyController.SwayTime = 0f;
                 enemyController.VisualsTransform.rotation = Quaternion.identity;
                 return;
             }
             
-            var timeSinceMovementStart = Time.time - enemyController.MovementStartTime;
-            var swayAmount = Mathf.Sin(timeSinceMovementStart * enemyConfig.SwaySpeed) * enemyConfig.SwayAmount;
+            var swaySpeed = enemyConfig.SwaySpeed * enemyController.TimeScale;
+            enemyController.SwayTime += swaySpeed * deltaTime;
+            
+            var swayAmount = Mathf.Sin(enemyController.SwayTime) * enemyConfig.SwayAmount;
             
             enemyController.VisualsTransform.rotation = Quaternion.Euler(0f, 0f, swayAmount);
         }
@@ -183,13 +186,9 @@ namespace DuckJam.Modules
                 enemy.Moving = false;
                 return;
             }
-
-            if (!enemy.Moving)
-            {
-                enemy.MovementStartTime = Time.time;
-                enemy.Moving = true;
-            }
-
+            
+            enemy.Moving = true;
+            
             if 
             (
                 !enemy.NavMeshAgent.hasPath || 
