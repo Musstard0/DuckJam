@@ -222,7 +222,7 @@ namespace DuckJam
                 playerModel.TimeScale
             );
             
-            
+            playerModel.MuzzleFlashAnimator.speed = playerModel.TimeScale;
             playerModel.MuzzleFlashAnimator.Play(MuzzleFlashAnimationHash);
         }
 
