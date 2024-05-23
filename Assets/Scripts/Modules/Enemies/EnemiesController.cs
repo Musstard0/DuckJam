@@ -189,11 +189,22 @@ namespace DuckJam.Modules
                 enemy.MovementStartTime = Time.time;
                 enemy.Moving = true;
             }
+
+            if 
+            (
+                !enemy.NavMeshAgent.hasPath || 
+                (enemy.NavMeshAgent.destination.XY() - targetPosition).magnitude > enemy.Attack.MaxDistance
+            )
+            {
+                enemy.NavMeshAgent.SetDestination(targetPosition.XY0());
+            }
+
+            var moveDirection = enemy.NavMeshAgent.velocity.XY().normalized;
             
-            
+            enemy.NavMeshAgent.nextPosition = enemy.transform.position;
             
             // move towards/away from target
-            var moveDirection = distance > enemy.Attack.MaxDistance ? offset.normalized : -offset.normalized;
+            //var moveDirection = distance > enemy.Attack.MaxDistance ? offset.normalized : -offset.normalized;
             var deltaDistance = enemy.Speed * enemy.TimeScale * deltaTime;
             
             enemy.Rigidbody2D.MovePosition(enemy.transform.position + moveDirection.XY0() * deltaDistance);

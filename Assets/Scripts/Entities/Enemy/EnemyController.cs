@@ -1,10 +1,12 @@
+using System;
 using DuckJam.Modules;
 using DuckJam.Utilities;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace DuckJam.Entities
 {
-    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(NavMeshAgent))]
     internal sealed class EnemyController : MonoBehaviour, IDamageable
     {
         [SerializeField] private SpriteRenderer bodySpriteRenderer;
@@ -13,6 +15,8 @@ namespace DuckJam.Entities
         
         public Transform VisualsTransform => visuals;
         public Rigidbody2D Rigidbody2D { get; private set;}
+        public NavMeshAgent NavMeshAgent { get; private set; }
+        
         public float Health { get; set; }
         public float Speed { get; set; }
         public EnemiesConfig.Attack Attack { get; set; }
@@ -34,6 +38,14 @@ namespace DuckJam.Entities
         private void Awake()
         {
             Rigidbody2D = GetComponent<Rigidbody2D>();
+            NavMeshAgent = GetComponent<NavMeshAgent>();
+        }
+
+        private void Start()
+        {
+            NavMeshAgent.updateRotation = false;
+            NavMeshAgent.updatePosition = false;
+            NavMeshAgent.updateUpAxis = false;
         }
 
         public void TakeDamage(float damage)
