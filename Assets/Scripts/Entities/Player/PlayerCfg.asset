@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af7fe7749a96924f95e676315443360, type: 3}
   m_Name: PlayerCfg
   m_EditorClassIdentifier: 
-  Health: 9999
+  Health: 100
   Speed: 15
   Damage: 10
   BulletSpeed: 25

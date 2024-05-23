@@ -28,7 +28,13 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(TargetLayer < 0) return;
+        var collisionLayer = other.gameObject.layer;
+
+        if (collisionLayer == LayerUtils.TerrainLayer)
+        {
+            DisposeAction.Invoke(this);
+        }
+        
         if(other.gameObject.layer != TargetLayer) return;
         
         var damageable = other.GetComponent<IDamageable>();
