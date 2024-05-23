@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 namespace DuckJam.PersistentSystems
@@ -6,6 +7,10 @@ namespace DuckJam.PersistentSystems
     [RequireComponent(typeof(Canvas))]
     internal sealed class CanvasManager : MonoBehaviour
     {
+        [SerializeField, Min(0f)] private float loadingScreenFadeDuration = 0.5f;
+        [SerializeField] private Ease loadingScreenFadeInEase = Ease.Linear;
+        [SerializeField] private Ease loadingScreenFadeOutEase = Ease.Linear;
+        
         [SerializeField] private CanvasGroup loadingScreen;
         
         [SerializeField] private MenuPanel mainMenu;
@@ -19,7 +24,11 @@ namespace DuckJam.PersistentSystems
         private bool _isPaused;
         private MenuPanel _currentPanel;
         
+        private Tween _loadingScreenFadeTween;
+        
         private MenuPanel ParentPanel => SceneLoader.Instance.CurrentScene == SceneId.MainMenu ? mainMenu : pauseMenu;
+        
+        public float LoadingScreenFadeDuration => loadingScreenFadeDuration;
         
         private void Awake()
         {
@@ -34,7 +43,9 @@ namespace DuckJam.PersistentSystems
 
         private void Start()
         {
-            HidePanel(loadingScreen);
+            loadingScreen.interactable = false;
+            loadingScreen.blocksRaycasts = false;
+            loadingScreen.alpha = 0f;
             
             if (SceneLoader.Instance.CurrentScene == SceneId.MainMenu)
             {
@@ -51,6 +62,8 @@ namespace DuckJam.PersistentSystems
 
         private void OnDestroy()
         {
+            _loadingScreenFadeTween?.Kill();
+            
             if (Instance != this) return;
             Instance = null;
         }
@@ -137,7 +150,7 @@ namespace DuckJam.PersistentSystems
                 UIPanel.MainMenu => mainMenu,
                 UIPanel.PauseMenu => pauseMenu,
                 UIPanel.GameOverMenu => gameOverMenu,
-                UIPanel.ControlsMenu => controlsMenu,
+                UIPanel.ExplanationMenu => controlsMenu,
                 UIPanel.CreditsMenu => creditsMenu,
                 _ => null
             };
@@ -188,14 +201,28 @@ namespace DuckJam.PersistentSystems
             SceneLoader.Instance.LoadGame();
         }
         
+        
+        
         public void ShowLoadingScreen()
         {
-            ShowPanel(loadingScreen);
+            loadingScreen.blocksRaycasts = true;
+
+            _loadingScreenFadeTween?.Complete();
+            
+            _loadingScreenFadeTween = loadingScreen.DOFade(1f, loadingScreenFadeDuration)
+                .From(0f)
+                .SetEase(loadingScreenFadeInEase);
         }
         
         public void HideLoadingScreen()
         {
-            HidePanel(loadingScreen);
+            loadingScreen.blocksRaycasts = false;
+            
+            _loadingScreenFadeTween?.Complete();
+            
+            _loadingScreenFadeTween = loadingScreen.DOFade(0f, loadingScreenFadeDuration)
+                .From(1f)
+                .SetEase(loadingScreenFadeInEase);
         }
         
         public void ShowGameOverMenu(int score)
@@ -228,7 +255,7 @@ namespace DuckJam.PersistentSystems
         MainMenu,
         PauseMenu,
         GameOverMenu,
-        ControlsMenu,
+        ExplanationMenu,
         CreditsMenu
     }
     

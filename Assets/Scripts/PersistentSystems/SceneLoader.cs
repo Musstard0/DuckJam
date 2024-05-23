@@ -94,10 +94,19 @@ namespace DuckJam.PersistentSystems
         private IEnumerator LoadSceneAsync(string sceneName, Action onComplete)
         {
             CurrentScene = SceneId.Loading;
-            CanvasManager.Instance.ShowLoadingScreen();
-            MusicManager.Instance.PlayTransitionMusic();
             
+            MusicManager.Instance.PlayTransitionMusic();
             var transitionMusicEndTime = Time.time + MusicManager.Instance.TransitionClipDuration;
+            
+            
+            CanvasManager.Instance.ShowLoadingScreen();
+            var loadingScreenEndTime = Time.time + CanvasManager.Instance.LoadingScreenFadeDuration;
+
+            while (Time.time < loadingScreenEndTime)
+            {
+                yield return null;
+            }
+            
             
             for (var i = 0; i < SceneManager.loadedSceneCount; i++)
             {
