@@ -222,7 +222,7 @@ namespace DuckJam.PersistentSystems
             
             _loadingScreenFadeTween = loadingScreen.DOFade(0f, loadingScreenFadeDuration)
                 .From(1f)
-                .SetEase(loadingScreenFadeInEase);
+                .SetEase(loadingScreenFadeOutEase);
         }
         
         public void ShowGameOverMenu(int score)

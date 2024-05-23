@@ -76,6 +76,7 @@ namespace DuckJam
         private void Update()
         {
             if (playerModel.Health <= 0) return;
+            if(Time.timeScale <= 0f) return;
 
             var deltaTime = Time.deltaTime;
             

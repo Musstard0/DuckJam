@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DuckJam.Entities;
 using DuckJam.Modules.Projectiles;
+using DuckJam.PersistentSystems;
 using DuckJam.SharedConfiguration;
 using DuckJam.Utilities;
 using UnityEngine;
@@ -157,11 +158,6 @@ namespace DuckJam.Modules
                     enemy.TimeScale,
                     enemy.Attack.ProjectileColor
                 );
-                
-                // var bullet = _projectileManager.GetBullet(enemy.Position2D);
-                // bullet.TargetLayer = LayerUtils.PlayerLayer;
-                // bullet.Damage = enemy.Attack.Damage;
-                // bullet.Rigidbody2D.velocity = offset.normalized * enemy.Attack.Speed;
             }
             else
             {
