@@ -154,7 +154,8 @@ namespace DuckJam.Modules
                     LayerUtils.PlayerLayer, 
                     enemy.Attack.Damage, 
                     enemy.Attack.Speed, 
-                    enemy.TimeScale
+                    enemy.TimeScale,
+                    enemy.Attack.ProjectileColor
                 );
                 
                 // var bullet = _projectileManager.GetBullet(enemy.Position2D);

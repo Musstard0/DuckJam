@@ -358,6 +358,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37175b1fb54541dc8c6599c4bdc0d5b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orangeBulletSprite: {fileID: 1699730608, guid: 362e2ce079be7c34a89db06685b99858, type: 3}
+  purpleBulletSprite: {fileID: 557475826, guid: 440da2b649312c842842d9be1e96272d, type: 3}
+  blueBulletSprite: {fileID: -811792210, guid: 0c602e41a38caaa4db2845ce5bec8be6, type: 3}
+  greenBulletSprite: {fileID: 1426324338, guid: 1a521e92b8dd2c7419af9064ee95e6fd, type: 3}
+  pinkBulletSprite: {fileID: 828026351, guid: 7ed7f219acced4c49800d251ff64c917, type: 3}
+  whiteBulletSprite: {fileID: -2086874425, guid: 9bf9d00d87414ab4c970274e93016801, type: 3}
   prefab: {fileID: 1244102424471242536, guid: 3c2ac21560a97f54ba8c98dfa172bcc8, type: 3}
   boundsPaddingFactor: 2
   zPosition: 0

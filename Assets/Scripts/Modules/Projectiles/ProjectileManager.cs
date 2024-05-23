@@ -9,6 +9,13 @@ namespace DuckJam.Modules.Projectiles
 {
     internal sealed class ProjectileManager : MonoBehaviour
     {
+        [SerializeField] private Sprite orangeBulletSprite;
+        [SerializeField] private Sprite purpleBulletSprite;
+        [SerializeField] private Sprite blueBulletSprite;
+        [SerializeField] private Sprite greenBulletSprite;
+        [SerializeField] private Sprite pinkBulletSprite;
+        [SerializeField] private Sprite whiteBulletSprite;
+        
         [SerializeField] private BulletController prefab;
         [SerializeField, Min(1f)] private float boundsPaddingFactor = 2f;
         [SerializeField] private float zPosition = 0f;
@@ -117,8 +124,22 @@ namespace DuckJam.Modules.Projectiles
             _activeBullets.Clear();
         }
 
+        private Sprite GetBulletSprite(ImpactFXColor color)
+        {
+            return color switch
+            {
+                ImpactFXColor.Orange => orangeBulletSprite,
+                ImpactFXColor.Purple => purpleBulletSprite,
+                ImpactFXColor.Blue => blueBulletSprite,
+                ImpactFXColor.Green => greenBulletSprite,
+                ImpactFXColor.Pink => pinkBulletSprite,
+                ImpactFXColor.White => whiteBulletSprite,
+                _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
+            };
+        }
+        
 
-        public void ShootBullet(Vector2 position, Vector2 targetPosition, int targetLayer, float damage, float baseSpeed, float initialTimeScale)
+        public void ShootBullet(Vector2 position, Vector2 targetPosition, int targetLayer, float damage, float baseSpeed, float initialTimeScale, ImpactFXColor color)
         {
             var bullet = _bulletPool.Get();
             bullet.transform.position = position.XY0(zPosition);
@@ -131,6 +152,7 @@ namespace DuckJam.Modules.Projectiles
             bullet.Damage = Mathf.Max(damage, 0f);
             bullet.Speed = Mathf.Max(baseSpeed, 0f);
             bullet.TimeScale = Mathf.Clamp(initialTimeScale, _timeScaleConfig.MinTimeScale, _timeScaleConfig.MaxTimeScale);
+            bullet.SpriteRenderer.sprite = GetBulletSprite(color);
             
             bullet.Rigidbody2D.velocity = bullet.Direction * (bullet.Speed * bullet.TimeScale);
         }
@@ -139,10 +161,6 @@ namespace DuckJam.Modules.Projectiles
         {
             _activeBullets.Remove(bulletController);
             _bulletPool.Release(bulletController);
-            
-            
-            //if(bulletController == null) return;
-            //Destroy(bulletController.gameObject);
         }
         
         private void OnDrawGizmos()

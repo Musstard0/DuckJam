@@ -25,6 +25,7 @@ MonoBehaviour:
       cooldown: 0.8
       attackSound: {fileID: 0}
       speed: 20
+      projectileColor: 3
   - name: Mob 3
     prefab: {fileID: 5911068686392948138, guid: 841aaad01f315ec46a1c72969552f4f3, type: 3}
     maxHealth: 30
@@ -37,6 +38,7 @@ MonoBehaviour:
       cooldown: 1.2
       attackSound: {fileID: 0}
       speed: 20
+      projectileColor: 3
   - name: Mob 4
     prefab: {fileID: 1585416676206313591, guid: c94fc6063872b424188819e4a9dc91f9, type: 3}
     maxHealth: 20
@@ -49,6 +51,8 @@ MonoBehaviour:
       cooldown: 1.5
       attackSound: {fileID: 0}
       speed: 0
+      projectileColor: 3
   deathSound: {fileID: 8300000, guid: cf69ec4dc2be74b4498810c7332b3e18, type: 3}
+  deathSoundMinInterval: 0.1
   swaySpeed: 10
   swayAmount: 10

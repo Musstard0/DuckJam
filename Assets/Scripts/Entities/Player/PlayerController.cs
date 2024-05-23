@@ -242,7 +242,8 @@ namespace DuckJam
                 LayerUtils.EnemyLayer,
                 playerModel.Damage,
                 playerModel.BulletSpeed,
-                playerModel.TimeScale
+                playerModel.TimeScale,
+                ImpactFXColor.Orange
             );
             
             playerModel.MuzzleFlashAnimator.speed = playerModel.TimeScale;

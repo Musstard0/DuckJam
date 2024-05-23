@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DuckJam.Entities;
+using DuckJam.Utilities;
 using UnityEngine;
 
 namespace DuckJam.Modules
@@ -56,6 +57,7 @@ namespace DuckJam.Modules
             
             [Tooltip("If attack is ranged - the speed of the projectile")]
             [SerializeField, Min(0f)] private float speed;
+            [SerializeField] private ImpactFXColor projectileColor;
             
             public bool IsRanged => isRanged;
             public float Damage => damage;
@@ -64,6 +66,7 @@ namespace DuckJam.Modules
             public float Cooldown => cooldown;
             public float Speed => speed;
             public AudioClip AttackSound => attackSound;
+            public ImpactFXColor ProjectileColor => projectileColor;
             
 #if UNITY_EDITOR
             internal void Validate()
