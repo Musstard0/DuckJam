@@ -37,7 +37,7 @@ namespace DuckJam.Modules
             
             if(_gameOver) return;
             
-            UpdatePlayer(deltaTime);
+            //UpdatePlayer(deltaTime);
             SpawnEnemies();
             
             if(_playerModel.Health > 0) return;
@@ -62,17 +62,17 @@ namespace DuckJam.Modules
             _nextSpawnAtLineStart = !_nextSpawnAtLineStart;
         }
 
-        private void UpdatePlayer(float deltaTime)
-        {
-            var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
-            var timeScaleDelta = _mapModel.GetTimeScaleSignAtPosition(_playerModel.Transform.position) * timeScaleDeltaAbs;
-            _playerModel.TimeScale = Mathf.Clamp
-            (
-                _playerModel.TimeScale + timeScaleDelta, 
-                _timeScaleConfig.MinTimeScale, 
-                _timeScaleConfig.MaxTimeScale
-            );
-        }
+        // private void UpdatePlayer(float deltaTime)
+        // {
+        //     var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
+        //     var timeScaleDelta = _mapModel.GetTimeScaleSignAtPosition(_playerModel.Transform.position) * timeScaleDeltaAbs;
+        //     _playerModel.TimeScale = Mathf.Clamp
+        //     (
+        //         _playerModel.TimeScale + timeScaleDelta, 
+        //         _timeScaleConfig.MinTimeScale, 
+        //         _timeScaleConfig.MaxTimeScale
+        //     );
+        // }
 
         public void EndGame()
         {

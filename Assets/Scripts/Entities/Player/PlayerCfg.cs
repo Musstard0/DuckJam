@@ -16,10 +16,6 @@ namespace DuckJam
         public AnimationCurve accelerationFactorFromDot;
         public float maxAccelerationForce = 150f;
         public AnimationCurve maxAccelerationForceFactorFromDot;
-        
-        [Header("Time Scale Effects")]
-        public bool timeScaleEffectsMovementSpeed = true;
-        public bool timeScaleEffectsShootingRate = true;
 
         public float SwaySpeed; // Speed of the sway animation
         public float SwayAmount; // Amount of sway

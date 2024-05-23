@@ -16,10 +16,14 @@ namespace DuckJam
 
         // Centralized location for creating and managing projectiles
         private ProjectileManager _projectileManager;
+        private TimeScaleConfig _timeScaleConfig;
+        private MapModel _mapModel;
+        
         private Rigidbody2D _rigidbody2D;
         private Transform visuals; // Reference to the child object representing visuals
         private Quaternion initialVisualsRotation; // Initial rotation of the visuals
-
+        private float _swayTime; // timescale dynamic so need to keep track of sway time outside of Time.time
+        
         private void Awake()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -37,6 +41,8 @@ namespace DuckJam
         private void Start()
         {
             _projectileManager = GameModel.Get<ProjectileManager>();
+            _timeScaleConfig = GameModel.Get<TimeScaleConfig>();
+            _mapModel = GameModel.Get<MapModel>();
         }
 
         private void InitializeModel()
@@ -55,6 +61,8 @@ namespace DuckJam
                 SwaySpeed = playerCfg.SwaySpeed,
                 SwayAmount = playerCfg.SwayAmount
             };
+            
+            _lastTimeScale = playerModel.TimeScale;
         }
 
         private void Update()
@@ -62,12 +70,12 @@ namespace DuckJam
             if (playerModel.Health <= 0) return;
 
             var deltaTime = Time.deltaTime;
-
-            // body sprite is symmetrical, so currently not needed
-            //HandleFlip();
+            
+            //HandleFlip(); // body sprite is symmetrical, so currently not needed
+            SetTimeScale(deltaTime);
             HandleNextShotCountDown(deltaTime);
             HandleShooting();
-            AnimateVisuals();
+            AnimateVisuals(deltaTime);
             HandleColor();
         }
 
@@ -76,24 +84,27 @@ namespace DuckJam
             if (playerModel.Health <= 0) return;
             HandleMovement(Time.fixedDeltaTime);
         }
-
-
-
         
+        private float _lastTimeScale;
         
         private void HandleMovement(float deltaTime)
         {
+            var maxSpeed = playerModel.Speed * playerModel.TimeScale;
+            var scaleFactor = playerModel.TimeScale / _lastTimeScale;
+            _rigidbody2D.velocity = Vector2.ClampMagnitude(_rigidbody2D.velocity * scaleFactor, maxSpeed);
+            playerModel.goalVelocity = Vector2.ClampMagnitude(playerModel.goalVelocity * scaleFactor, maxSpeed);
+            _lastTimeScale = playerModel.TimeScale;
+            
+            
             playerModel.horizontalInput = Input.GetAxis("Horizontal");
             playerModel.verticalInput = Input.GetAxis("Vertical");
 
             var moveDirection = new Vector2(playerModel.horizontalInput, playerModel.verticalInput).normalized;
-            var maxSpeed = playerCfg.timeScaleEffectsMovementSpeed 
-                ? playerModel.Speed * playerModel.TimeScale 
-                : playerModel.Speed;
+
             
             var immediateGoalVelocity = moveDirection * maxSpeed;
             var velDot = Vector2.Dot(moveDirection, playerModel.goalVelocity.normalized);
-            var accel = playerCfg.acceleration * playerCfg.accelerationFactorFromDot.Evaluate(velDot);
+            var accel = playerCfg.acceleration * playerCfg.accelerationFactorFromDot.Evaluate(velDot) * playerModel.TimeScale;
             playerModel.goalVelocity = Vector2.MoveTowards(playerModel.goalVelocity, immediateGoalVelocity, accel * deltaTime);
             
             var neededAcceleration = (playerModel.goalVelocity - _rigidbody2D.velocity) / deltaTime;
@@ -102,26 +113,6 @@ namespace DuckJam
             
             _rigidbody2D.AddForce(neededAcceleration * _rigidbody2D.mass);
         }
-        
-        // private void HandleMovement(float deltaTime)
-        // {
-        //     playerModel.horizontalInput = Input.GetAxis("Horizontal");
-        //     playerModel.verticalInput = Input.GetAxis("Vertical");
-        //
-        //     var moveDirection = new Vector2(playerModel.horizontalInput, playerModel.verticalInput).normalized;
-        //     var moveDistance = playerModel.Speed * deltaTime;
-        //
-        //     if (playerCfg.timeScaleEffectsMovementSpeed)
-        //     {
-        //         moveDistance *= playerModel.TimeScale;
-        //     }
-        //
-        //     var delta = moveDirection * moveDistance;
-        //     var newPosition = _rigidbody2D.position + delta;
-        //
-        //     //_mapModel.ClampMovementToMapBounds(_rigidbody2D.position, ref newPosition);
-        //     _rigidbody2D.MovePosition(newPosition);
-        // }
 
         private void HandleFlip()
         {
@@ -148,22 +139,41 @@ namespace DuckJam
             }
             return Vector3.zero;
         }
-
-        private void AnimateVisuals()
+        
+        private void AnimateVisuals(float deltaTime)
         {
-            //if (visuals != null && (playerModel.horizontalInput != 0 || playerModel.verticalInput != 0))
-            if (visuals != null && _rigidbody2D.velocity.sqrMagnitude > 0.01f)
+            if (visuals != null && _rigidbody2D.velocity.sqrMagnitude > 0.001f)
             {
-                // swing amount effected by unscaled speed, swing speed effected by time scale
+                // sway amount greater when closer to max speed.
+                // Time scale has no effect as even though player is slower/faster, max speed is also slower/faster
+                var maxSpeed = playerModel.Speed * playerModel.TimeScale;
+                var speed = _rigidbody2D.velocity.magnitude;
+                var swaySize = Mathf.Clamp01(speed / maxSpeed) * playerModel.SwayAmount;
                 
-                // TODO: Speed must affect it
-                float swayAmount = Mathf.Sin(Time.time * playerModel.SwaySpeed) * playerModel.SwayAmount;
+                // sway speed directly effected by time scale
+                var swaySpeed = playerModel.SwaySpeed * playerModel.TimeScale;
+                _swayTime += swaySpeed * deltaTime;
+                
+                var swayAmount = Mathf.Sin(_swayTime) * swaySize;
                 visuals.localRotation = initialVisualsRotation * Quaternion.Euler(0, 0, swayAmount);
             }
             else
             {
+                _swayTime = 0f;
                 visuals.localRotation = initialVisualsRotation;
             }
+        }
+
+        private void SetTimeScale(float deltaTime)
+        {
+            var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
+            var timeScaleDelta = _mapModel.GetTimeScaleSignAtPosition(transform.position.XY()) * timeScaleDeltaAbs;
+            playerModel.TimeScale = Mathf.Clamp
+            (
+                playerModel.TimeScale + timeScaleDelta,
+                _timeScaleConfig.MinTimeScale,
+                _timeScaleConfig.MaxTimeScale
+            );
         }
 
         private void HandleColor()
@@ -184,13 +194,7 @@ namespace DuckJam
         private void HandleNextShotCountDown(float deltaTime)
         {
             if (playerModel.NextShotCountDown <= 0f) return;
-            var countDownDelta = deltaTime;
-
-            if (playerCfg.timeScaleEffectsShootingRate)
-            {
-                countDownDelta *= playerModel.TimeScale;
-            }
-
+            var countDownDelta = deltaTime * playerModel.TimeScale;
             playerModel.NextShotCountDown = Mathf.Max(playerModel.NextShotCountDown - countDownDelta, 0f);
         }
 
