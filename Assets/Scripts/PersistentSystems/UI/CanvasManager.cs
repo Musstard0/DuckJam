@@ -11,7 +11,6 @@ namespace DuckJam.PersistentSystems
         [SerializeField] private MenuPanel mainMenu;
         [SerializeField] private MenuPanel pauseMenu;
         [SerializeField] private MenuPanel gameOverMenu;
-        [SerializeField] private MenuPanel settingsMenu;
         [SerializeField] private MenuPanel controlsMenu;
         [SerializeField] private MenuPanel creditsMenu;
         
@@ -138,7 +137,6 @@ namespace DuckJam.PersistentSystems
                 UIPanel.MainMenu => mainMenu,
                 UIPanel.PauseMenu => pauseMenu,
                 UIPanel.GameOverMenu => gameOverMenu,
-                UIPanel.SettingsMenu => settingsMenu,
                 UIPanel.ControlsMenu => controlsMenu,
                 UIPanel.CreditsMenu => creditsMenu,
                 _ => null
@@ -230,7 +228,6 @@ namespace DuckJam.PersistentSystems
         MainMenu,
         PauseMenu,
         GameOverMenu,
-        SettingsMenu,
         ControlsMenu,
         CreditsMenu
     }
