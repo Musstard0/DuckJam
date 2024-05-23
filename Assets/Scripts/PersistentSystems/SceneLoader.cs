@@ -60,6 +60,18 @@ namespace DuckJam.PersistentSystems
             CurrentScene = isMainMenuSceneLoaded ? SceneId.MainMenu : SceneId.Game;
         }
 
+        private void Start()
+        {
+            if (CurrentScene == SceneId.MainMenu)
+            {
+                MusicManager.Instance.PlayMenuMusic();
+            }
+            else
+            {
+                MusicManager.Instance.PlayGameMusic();
+            }
+        }
+
         private void OnDestroy()
         {
             if (Instance != this) return;
@@ -69,20 +81,23 @@ namespace DuckJam.PersistentSystems
         public void LoadMainMenu()
         {
             if(CurrentScene == SceneId.MainMenu) return;
-            StartCoroutine(LoadSceneAsync(MainMenuSceneName));
+            StartCoroutine(LoadSceneAsync(MainMenuSceneName, MusicManager.Instance.PlayMenuMusic));
             CurrentScene = SceneId.MainMenu;
         }
         
         public void LoadGame()
         {
-            StartCoroutine(LoadSceneAsync(GameSceneName));
+            StartCoroutine(LoadSceneAsync(GameSceneName, MusicManager.Instance.PlayGameMusic));
             CurrentScene = SceneId.Game;
         }
 
-        private IEnumerator LoadSceneAsync(string sceneName)
+        private IEnumerator LoadSceneAsync(string sceneName, Action onComplete)
         {
             CurrentScene = SceneId.Loading;
             CanvasManager.Instance.ShowLoadingScreen();
+            MusicManager.Instance.PlayTransitionMusic();
+            
+            var transitionMusicEndTime = Time.time + MusicManager.Instance.TransitionClipDuration;
             
             for (var i = 0; i < SceneManager.loadedSceneCount; i++)
             {
@@ -110,7 +125,7 @@ namespace DuckJam.PersistentSystems
             
             while (!loadOperation.isDone)
             {
-                if (loadOperation.progress >= 0.9f)
+                if (loadOperation.progress >= 0.9f && Time.time >= transitionMusicEndTime)
                 {
                     loadOperation.allowSceneActivation = true;
                 }
@@ -118,6 +133,7 @@ namespace DuckJam.PersistentSystems
                 yield return null;
             }
             
+            onComplete?.Invoke();
             CanvasManager.Instance.HideLoadingScreen();
         }
     }

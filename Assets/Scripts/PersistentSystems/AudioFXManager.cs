@@ -5,14 +5,14 @@ namespace DuckJam.PersistentSystems
 {
     internal sealed class AudioFXManager : MonoBehaviour
     {
+        public static AudioFXManager Instance { get; private set; }
+        
         [SerializeField, Min(1)] private int initialAudioSourceCount = 8;
         
         private readonly Stack<AudioSource> _inactiveAudioSources = new();
         private readonly List<AudioSource> _activeAudioSources = new();
      
         private float _volume = 1f;
-        
-        public static AudioFXManager Instance { get; private set; }
 
         public float Volume
         {
