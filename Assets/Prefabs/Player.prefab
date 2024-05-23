@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25108468c41d38d42a16c1423ae8fba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muzzleFlashAnimator: {fileID: 7643825501887980992}
   playerCfg: {fileID: 11400000, guid: 6383b73866a706a488d36069b4209ee4, type: 2}
 --- !u!70 &1362698050815852298
 CapsuleCollider2D:

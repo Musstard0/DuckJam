@@ -1,6 +1,7 @@
 using DuckJam.Entities;
 using DuckJam.Modules;
 using DuckJam.Modules.Projectiles;
+using DuckJam.PersistentSystems;
 using DuckJam.SharedConfiguration;
 using DuckJam.Utilities;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace DuckJam
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IDamageable
     {
+        [SerializeField] private Animator muzzleFlashAnimator;
+        
         private PlayerModel playerModel;
         public PlayerCfg playerCfg;
 
@@ -22,6 +25,7 @@ namespace DuckJam
         private Transform visuals; // Reference to the child object representing visuals
         private Quaternion initialVisualsRotation; // Initial rotation of the visuals
         private float _swayTime; // timescale dynamic so need to keep track of sway time outside of Time.time
+        private float _lastFootstepTime;
         
         private void Awake()
         {
@@ -59,7 +63,7 @@ namespace DuckJam
                 Inertia = playerCfg.Inertia,
                 SwaySpeed = playerCfg.SwaySpeed,
                 SwayAmount = playerCfg.SwayAmount,
-                MuzzleFlashAnimator = transform.Find("Gun").Find("FirePoint").Find("MuzzleFlash").GetComponent<Animator>() // lol
+                MuzzleFlashAnimator = muzzleFlashAnimator
             };
             
             _lastTimeScale = playerModel.TimeScale;
@@ -139,6 +143,9 @@ namespace DuckJam
             }
             return Vector3.zero;
         }
+
+        private float _previousSwayAmount;
+        private float _previousSwayDelta;
         
         private void AnimateVisuals(float deltaTime)
         {
@@ -155,6 +162,21 @@ namespace DuckJam
                 _swayTime += swaySpeed * deltaTime;
                 
                 var swayAmount = Mathf.Sin(_swayTime) * swaySize;
+                var swayDelta = swayAmount - _previousSwayAmount;
+                
+                // footstep sound synced with sway
+                if(_previousSwayDelta < 0f && swayDelta > 0f || _previousSwayDelta > 0f && swayDelta < 0f)
+                {
+                    if (Time.time - _lastFootstepTime > playerCfg.minFootstepInterval)
+                    {
+                        AudioFXManager.Instance.PlayClip(playerCfg.RandomFootstepClip, playerModel.TimeScale);
+                        _lastFootstepTime = Time.time;
+                    }
+                }
+                
+                _previousSwayDelta = swayDelta;
+                _previousSwayAmount = swayAmount;
+                
                 visuals.localRotation = initialVisualsRotation * Quaternion.Euler(0, 0, swayAmount);
             }
             else
@@ -224,6 +246,8 @@ namespace DuckJam
             
             playerModel.MuzzleFlashAnimator.speed = playerModel.TimeScale;
             playerModel.MuzzleFlashAnimator.Play(MuzzleFlashAnimationHash);
+            
+            AudioFXManager.Instance.PlayClip(playerCfg.RandomGunshotClip, playerModel.TimeScale);
         }
 
         public void TakeDamage(float damage)

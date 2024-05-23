@@ -88,3 +88,16 @@ MonoBehaviour:
     m_RotationOrder: 4
   SwaySpeed: 10
   SwayAmount: 10
+  footstepInterval: 0.25
+  footstepClips:
+  - {fileID: 8300000, guid: 18124f0051bf4d249901e7f166a7c0e9, type: 3}
+  - {fileID: 8300000, guid: b082e0f2f4fa2d6489b95d21e22f6a0e, type: 3}
+  - {fileID: 8300000, guid: 039d600693e1a5b49987817ea8954552, type: 3}
+  - {fileID: 8300000, guid: 9977cc8ec6e4cbb4793c832ebe26f846, type: 3}
+  - {fileID: 8300000, guid: ef6b690b5ffa46342b18310d1e4b82fb, type: 3}
+  gunshotClips:
+  - {fileID: 8300000, guid: 2cd8cab2b964a414385f7157c75e7661, type: 3}
+  - {fileID: 8300000, guid: 7b3299030a1560f42abd072a836f849f, type: 3}
+  - {fileID: 8300000, guid: b4978bee54a64a1478c28256f1326809, type: 3}
+  - {fileID: 8300000, guid: b5907009fde8f6646a058eabb35e4ee3, type: 3}
+  - {fileID: 8300000, guid: 47a40e11a66bd564881ab823477fd560, type: 3}

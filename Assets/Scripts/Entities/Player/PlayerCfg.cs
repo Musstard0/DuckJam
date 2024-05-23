@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DuckJam
@@ -19,5 +20,16 @@ namespace DuckJam
 
         public float SwaySpeed; // Speed of the sway animation
         public float SwayAmount; // Amount of sway
+        public float minFootstepInterval = 0.1f;
+        
+        [Header("Audio Clips")]
+        [SerializeField] private AudioClip[] footstepClips;
+        [SerializeField] private AudioClip[] gunshotClips;
+        
+        
+        public IReadOnlyList<AudioClip> FootstepClips => footstepClips;
+        public IReadOnlyList<AudioClip> GunshotClips => gunshotClips;
+        public AudioClip RandomFootstepClip => footstepClips[Random.Range(0, footstepClips.Length)];
+        public AudioClip RandomGunshotClip => gunshotClips[Random.Range(0, gunshotClips.Length)];
     }
 }
