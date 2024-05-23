@@ -38,7 +38,7 @@ public class BulletController : MonoBehaviour
         if(other.gameObject.layer != TargetLayer) return;
         
         var damageable = other.GetComponent<IDamageable>();
-        if(damageable != null) damageable.TakeDamage(Damage);
+        if(damageable != null) damageable.TakeDamage(Damage, Direction);
         
         DisposeAction.Invoke(this);
     }

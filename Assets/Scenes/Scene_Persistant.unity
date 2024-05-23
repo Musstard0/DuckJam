@@ -4178,11 +4178,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuMusic: {fileID: 8300000, guid: 44fdbbe00030213478f2082fc76f2761, type: 3}
-  menuMusicVolume: 0.7
+  menuMusicVolume: 0.5
   transitionMusic: {fileID: 8300000, guid: 8f8c1e204d97c3a49908c0c05cb4a89e, type: 3}
   transitionMusicVolume: 1
   gameMusic: {fileID: 8300000, guid: c41fed1673574814ab3b34f191a3dc16, type: 3}
-  gameMusicVolume: 0.7
+  gameMusicVolume: 0.5
 --- !u!4 &1194481986
 Transform:
   m_ObjectHideFlags: 0

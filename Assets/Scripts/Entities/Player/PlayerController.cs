@@ -1,3 +1,4 @@
+using Cinemachine;
 using DuckJam.Entities;
 using DuckJam.Modules;
 using DuckJam.Modules.Projectiles;
@@ -12,6 +13,8 @@ namespace DuckJam
     public class PlayerController : MonoBehaviour, IDamageable
     {
         [SerializeField] private Animator muzzleFlashAnimator;
+        [SerializeField] private CinemachineImpulseSource impulseSource;
+        
         
         private PlayerModel playerModel;
         public PlayerCfg playerCfg;
@@ -252,11 +255,15 @@ namespace DuckJam
             AudioFXManager.Instance.PlayClip(playerCfg.RandomGunshotClip, playerModel.TimeScale);
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, Vector2 blowbackDirection)
         {
             if(playerModel.Health <= 0) return;
             
             playerModel.Health = Mathf.Max(playerModel.Health - damage, 0f);
+            
+            
+            impulseSource.GenerateImpulseWithVelocity(blowbackDirection.XY0());
+            
 
             if (Time.time - _lastHurtSoundTime >= playerCfg.minHurtSoundInterval)
             {

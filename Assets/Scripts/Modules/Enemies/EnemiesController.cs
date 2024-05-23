@@ -165,7 +165,7 @@ namespace DuckJam.Modules
             }
             else
             {
-                _playerDamageable.TakeDamage(enemy.Attack.Damage);
+                _playerDamageable.TakeDamage(enemy.Attack.Damage, offset.normalized);
             }
             
             enemy.AttackCooldownCountdown = enemy.Attack.Cooldown;

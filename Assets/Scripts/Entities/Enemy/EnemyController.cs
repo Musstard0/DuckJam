@@ -49,7 +49,7 @@ namespace DuckJam.Entities
             NavMeshAgent.updateUpAxis = false;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, Vector2 blowbackDirection)
         {
             if(IsDead) return;
 
