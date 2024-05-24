@@ -14,6 +14,7 @@ namespace DuckJam
     {
         [SerializeField] private Animator muzzleFlashAnimator;
         [SerializeField] private CinemachineImpulseSource impulseSource;
+        [SerializeField] private ParticleSystem trailParticleSystem;
         
         
         private PlayerModel playerModel;
@@ -208,16 +209,24 @@ namespace DuckJam
         private void HandleColor()
         {
             // This is unlikely to remain - for now allows to see the effect of time scale on enemies
-            var color = Color.white;
+            var color = _timeScaleConfig.NormalColor;
             if (playerModel.TimeScale > 1f)
             {
-                color = Color.Lerp(Color.white, Color.red, (playerModel.TimeScale - 1f) / (GameModel.Get<TimeScaleConfig>().MaxTimeScale - 1f));
+                color = Color.Lerp(_timeScaleConfig.NormalColor, _timeScaleConfig.FastColor, (playerModel.TimeScale - 1f) / (_timeScaleConfig.MaxTimeScale - 1f));
             }
             else if (playerModel.TimeScale < 1f)
             {
-                color = Color.Lerp(Color.white, Color.blue, (1f - playerModel.TimeScale) / (1f - GameModel.Get<TimeScaleConfig>().MinTimeScale));
+                color = Color.Lerp(_timeScaleConfig.NormalColor, _timeScaleConfig.SlowColor, (1f - playerModel.TimeScale) / (1f - _timeScaleConfig.MinTimeScale));
             }
-            visuals.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
+
+            
+            
+            var a = trailParticleSystem.main;
+
+            a.startColor = new ParticleSystem.MinMaxGradient(color);
+            a.simulationSpeed = playerModel.TimeScale;
+
+            //visuals.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
         }
 
         private void HandleNextShotCountDown(float deltaTime)
