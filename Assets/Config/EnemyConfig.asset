@@ -29,6 +29,22 @@ MonoBehaviour:
       attackFXScale: 10
       attackFXOffsetPositionDistance: 2.5
       attackFXIndex: 4
+  - name: Mob 2
+    prefab: {fileID: 8495232132460610413, guid: 501827ef5024689498805cbc71fe8eac, type: 3}
+    maxHealth: 10
+    speed: 8
+    attack:
+      isRanged: 0
+      damage: 8
+      minDistance: 0
+      maxDistance: 4
+      cooldown: 1
+      attackSound: {fileID: 0}
+      speed: 0
+      color: 1
+      attackFXScale: 10
+      attackFXOffsetPositionDistance: 2.5
+      attackFXIndex: 11
   - name: Mob 3
     prefab: {fileID: 5911068686392948138, guid: 841aaad01f315ec46a1c72969552f4f3, type: 3}
     maxHealth: 30
