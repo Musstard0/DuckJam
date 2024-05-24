@@ -81,7 +81,11 @@ namespace DuckJam.PersistentSystems
         public void LoadMainMenu()
         {
             if(CurrentScene == SceneId.MainMenu) return;
-            StartCoroutine(LoadSceneAsync(MainMenuSceneName, MusicManager.Instance.PlayMenuMusic));
+            StartCoroutine(LoadSceneAsync(MainMenuSceneName, () =>
+            {
+                CanvasManager.Instance.ShowMainMenu();
+                MusicManager.Instance.PlayMenuMusic();
+            }));
             CurrentScene = SceneId.MainMenu;
         }
         

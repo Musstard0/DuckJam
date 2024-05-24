@@ -176,12 +176,12 @@ namespace DuckJam.PersistentSystems
             }
             
             SceneLoader.Instance.LoadMainMenu();
+        }
 
-            if (SceneLoader.Instance.CurrentScene == SceneId.MainMenu)
-            {
-                mainMenu.Show();
-                _currentPanel = mainMenu;
-            }
+        public void ShowMainMenu()
+        {
+            mainMenu.Show();
+            _currentPanel = mainMenu;
         }
         
         public void LoadGame()
