@@ -12,8 +12,10 @@ namespace DuckJam
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IDamageable
     {
+        [SerializeField] private GunController gunController;
         [SerializeField] private Animator muzzleFlashAnimator;
         [SerializeField] private CinemachineImpulseSource impulseSource;
+        [SerializeField] private ParticleSystem trailParticleSystem;
         
         
         private PlayerModel playerModel;
@@ -30,6 +32,8 @@ namespace DuckJam
         private float _swayTime; // timescale dynamic so need to keep track of sway time outside of Time.time
         private float _lastFootstepTime;
         private float _lastHurtSoundTime;
+
+        public float Health => playerModel.Health;
         
         private void Awake()
         {
@@ -76,6 +80,7 @@ namespace DuckJam
         private void Update()
         {
             if (playerModel.Health <= 0) return;
+            if(Time.timeScale <= 0f) return;
 
             var deltaTime = Time.deltaTime;
             
@@ -205,16 +210,24 @@ namespace DuckJam
         private void HandleColor()
         {
             // This is unlikely to remain - for now allows to see the effect of time scale on enemies
-            var color = Color.white;
+            var color = _timeScaleConfig.NormalColor;
             if (playerModel.TimeScale > 1f)
             {
-                color = Color.Lerp(Color.white, Color.red, (playerModel.TimeScale - 1f) / (GameModel.Get<TimeScaleConfig>().MaxTimeScale - 1f));
+                color = Color.Lerp(_timeScaleConfig.NormalColor, _timeScaleConfig.FastColor, (playerModel.TimeScale - 1f) / (_timeScaleConfig.MaxTimeScale - 1f));
             }
             else if (playerModel.TimeScale < 1f)
             {
-                color = Color.Lerp(Color.white, Color.blue, (1f - playerModel.TimeScale) / (1f - GameModel.Get<TimeScaleConfig>().MinTimeScale));
+                color = Color.Lerp(_timeScaleConfig.NormalColor, _timeScaleConfig.SlowColor, (1f - playerModel.TimeScale) / (1f - _timeScaleConfig.MinTimeScale));
             }
-            visuals.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
+
+            
+            
+            var a = trailParticleSystem.main;
+
+            a.startColor = new ParticleSystem.MinMaxGradient(color);
+            a.simulationSpeed = playerModel.TimeScale;
+
+            //visuals.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
         }
 
         private void HandleNextShotCountDown(float deltaTime)
@@ -253,7 +266,10 @@ namespace DuckJam
             playerModel.MuzzleFlashAnimator.Play(MuzzleFlashAnimationHash);
             
             AudioFXManager.Instance.PlayClip(playerCfg.RandomGunshotClip, playerModel.TimeScale);
+            gunController.OnFire();
         }
+
+        
 
         public void TakeDamage(float damage, Vector2 blowbackDirection)
         {
@@ -280,10 +296,24 @@ namespace DuckJam
         private void Die()
         {
             AudioFXManager.Instance.PlayClip(playerCfg.deathClip, playerModel.TimeScale);
+
+            var frames1 = SpriteAnimationManager.Instance.ImpactFXSpriteArr[16].GetFramesForColor(ImpactFXColor.Orange);
+            var frames2 = SpriteAnimationManager.Instance.ImpactFXSpriteArr[18].GetFramesForColor(ImpactFXColor.Orange);
+            var position = transform.position.XY();
+            var rotation1 = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+            var rotation2 = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+
+            var spriteAnimator1 = SpriteAnimationManager.Instance.CreateAnimation(frames1, position, playerCfg.deathFxScale, playerModel.TimeScale, 10);
+            spriteAnimator1.transform.rotation = rotation1;
             
+            var spriteAnimator2 = SpriteAnimationManager.Instance.CreateAnimation(frames2, position, playerCfg.deathFxScale * 3f, playerModel.TimeScale, 9);
+            spriteAnimator2.transform.rotation = rotation2;
+
             // Handle player death
             // Debug.Log("Player has died");
             // Destroy(gameObject);
+            
+            gameObject.SetActive(false);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DuckJam.Entities;
 using DuckJam.Modules.Projectiles;
+using DuckJam.PersistentSystems;
 using DuckJam.SharedConfiguration;
 using DuckJam.Utilities;
 using UnityEngine;
@@ -137,6 +138,7 @@ namespace DuckJam.Modules
 
         private void HandleAttack(EnemyController enemy, Vector2 targetPosition)
         {
+            if(_playerDamageable.Health <= 0) return;
             if(enemy.AttackCooldownCountdown > 0f) return;
             
             var offset = targetPosition - enemy.Position2D;
@@ -145,6 +147,9 @@ namespace DuckJam.Modules
             if(distance < enemy.Attack.MinDistance || distance > enemy.Attack.MaxDistance) return;
 
 
+            
+            var attackDirection = offset.normalized;
+            
             if (enemy.Attack.IsRanged)
             {
                 _projectileManager.ShootBullet
@@ -155,18 +160,28 @@ namespace DuckJam.Modules
                     enemy.Attack.Damage, 
                     enemy.Attack.Speed, 
                     enemy.TimeScale,
-                    enemy.Attack.ProjectileColor
+                    enemy.Attack.Color
                 );
-                
-                // var bullet = _projectileManager.GetBullet(enemy.Position2D);
-                // bullet.TargetLayer = LayerUtils.PlayerLayer;
-                // bullet.Damage = enemy.Attack.Damage;
-                // bullet.Rigidbody2D.velocity = offset.normalized * enemy.Attack.Speed;
             }
             else
             {
-                _playerDamageable.TakeDamage(enemy.Attack.Damage, offset.normalized);
+                _playerDamageable.TakeDamage(enemy.Attack.Damage, attackDirection);
             }
+            
+            AudioFXManager.Instance.PlayClip(enemy.Attack.AttackSound, enemy.TimeScale);
+            
+            var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[enemy.Attack.AttackFXIndex]
+                .GetFramesForColor(enemy.Attack.Color);
+            var position = enemy.Position2D + attackDirection * enemy.Attack.AttackFXOffsetPositionDistance;
+            var spriteAnimator = SpriteAnimationManager.Instance.CreateAnimation
+            (
+                frames, 
+                position, 
+                enemy.Attack.AttackFXScale,
+                enemy.TimeScale
+            );
+            var angle = Mathf.Atan2(-attackDirection.y, -attackDirection.x);
+            spriteAnimator.transform.rotation = Quaternion.Euler(0f, 0f, angle * Mathf.Rad2Deg);
             
             enemy.AttackCooldownCountdown = enemy.Attack.Cooldown;
         }

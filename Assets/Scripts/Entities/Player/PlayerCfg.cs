@@ -21,6 +21,8 @@ namespace DuckJam
         public float SwaySpeed; // Speed of the sway animation
         public float SwayAmount; // Amount of sway
         public float minFootstepInterval = 0.1f;
+        public float deathFxScale = 15f;
+        
         
         [Header("Audio Clips")]
         [SerializeField] private AudioClip[] footstepClips;

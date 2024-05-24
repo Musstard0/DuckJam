@@ -89,6 +89,7 @@ MonoBehaviour:
   SwaySpeed: 10
   SwayAmount: 10
   minFootstepInterval: 0.2
+  deathFxScale: 35
   footstepClips:
   - {fileID: 8300000, guid: 18124f0051bf4d249901e7f166a7c0e9, type: 3}
   - {fileID: 8300000, guid: b082e0f2f4fa2d6489b95d21e22f6a0e, type: 3}

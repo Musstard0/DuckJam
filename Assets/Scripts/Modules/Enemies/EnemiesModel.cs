@@ -47,6 +47,19 @@ namespace DuckJam.Modules
             Object.Destroy(enemy.gameObject);
             DeadEnemyCount++;
             
+            
+            
+            var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[_enemyConfig.DeathSpriteEffectIndex]
+                .GetFramesForColor(enemy.Attack.Color);
+            SpriteAnimationManager.Instance.CreateAnimation
+            (
+                frames, 
+                enemy.Position2D, 
+                _enemyConfig.DeathEffectSizeScale, 
+                enemy.TimeScale
+            );
+            
+            
             if(Time.time - _lastDeathSoundTime < _enemyConfig.DeathSoundMinInterval) return;
             
             AudioFXManager.Instance.PlayClip(_enemyConfig.DeathSound, enemy.TimeScale, 0.6f);

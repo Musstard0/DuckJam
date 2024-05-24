@@ -12,7 +12,7 @@ namespace DuckJam.PersistentSystems
         private readonly Stack<AudioSource> _inactiveAudioSources = new();
         private readonly List<AudioSource> _activeAudioSources = new();
      
-        private float _volume = 1f;
+        private float _volume = .5f;
 
         public float Volume
         {

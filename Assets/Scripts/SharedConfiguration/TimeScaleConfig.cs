@@ -9,9 +9,17 @@ namespace DuckJam.SharedConfiguration
         [SerializeField, Min(0f)] private float maxTimeScale = 1.5f;
         [SerializeField, Min(0f)] private float timeScaleChangeSpeed = .2f;
 
+        [SerializeField] private Color slowColor = Color.blue;
+        [SerializeField] private Color fastColor = Color.red;
+        [SerializeField] private Color normalColor = Color.white;
+
         public float MinTimeScale => minTimeScale;
         public float MaxTimeScale => maxTimeScale;
         public float TimeScaleChangeSpeed => timeScaleChangeSpeed;
+        
+        public Color SlowColor => slowColor;
+        public Color FastColor => fastColor;
+        public Color NormalColor => normalColor;
         
         private void OnValidate()
         {

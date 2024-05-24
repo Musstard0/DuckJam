@@ -15,7 +15,7 @@ namespace DuckJam.PersistentSystems
      
         private AudioSource _audioSource;
         
-        private float _volume = 1f;
+        private float _volume = .5f;
         private CurrentClip _currentClip = CurrentClip.None;
         
         public float Volume
