@@ -94,12 +94,13 @@ namespace DuckJam.Modules
             Instance = null;
         }
         
-        public SpriteAnimator CreateImpactAnimationEffect
+        public SpriteAnimator CreateAnimation
         (
             IReadOnlyList<Sprite> frames,
             Vector2 position, 
             float sizeScale,
-            float timeScale
+            float timeScale,
+            int orderInLayer = 10
         )
         {
             var spriteAnimator  = _pool.Get();
@@ -107,6 +108,7 @@ namespace DuckJam.Modules
             spriteAnimator.transform.localScale = Vector3.one * sizeScale;
             spriteAnimator.Frames = frames;
             spriteAnimator.FramesPerSecond = defaultFramesPerSecond * timeScale;
+            spriteAnimator.SpriteRenderer.sortingOrder = orderInLayer;
             spriteAnimator.StartAnimation();
 
             return spriteAnimator;

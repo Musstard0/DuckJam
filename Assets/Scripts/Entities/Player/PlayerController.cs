@@ -281,10 +281,24 @@ namespace DuckJam
         private void Die()
         {
             AudioFXManager.Instance.PlayClip(playerCfg.deathClip, playerModel.TimeScale);
+
+            var frames1 = SpriteAnimationManager.Instance.ImpactFXSpriteArr[16].GetFramesForColor(ImpactFXColor.Orange);
+            var frames2 = SpriteAnimationManager.Instance.ImpactFXSpriteArr[18].GetFramesForColor(ImpactFXColor.Orange);
+            var position = transform.position.XY();
+            var rotation1 = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+            var rotation2 = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+
+            var spriteAnimator1 = SpriteAnimationManager.Instance.CreateAnimation(frames1, position, playerCfg.deathFxScale, playerModel.TimeScale, 10);
+            spriteAnimator1.transform.rotation = rotation1;
             
+            var spriteAnimator2 = SpriteAnimationManager.Instance.CreateAnimation(frames2, position, playerCfg.deathFxScale * 3f, playerModel.TimeScale, 9);
+            spriteAnimator2.transform.rotation = rotation2;
+
             // Handle player death
             // Debug.Log("Player has died");
             // Destroy(gameObject);
+            
+            gameObject.SetActive(false);
         }
     }
 }

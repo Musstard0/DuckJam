@@ -170,7 +170,7 @@ namespace DuckJam.Modules
             var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[enemy.Attack.AttackFXIndex]
                 .GetFramesForColor(enemy.Attack.Color);
             var position = enemy.Position2D + attackDirection * enemy.Attack.AttackFXOffsetPositionDistance;
-            var spriteAnimator = SpriteAnimationManager.Instance.CreateImpactAnimationEffect
+            var spriteAnimator = SpriteAnimationManager.Instance.CreateAnimation
             (
                 frames, 
                 position, 

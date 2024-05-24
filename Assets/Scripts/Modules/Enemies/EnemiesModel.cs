@@ -51,7 +51,7 @@ namespace DuckJam.Modules
             
             var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[_enemyConfig.DeathSpriteEffectIndex]
                 .GetFramesForColor(enemy.Attack.Color);
-            SpriteAnimationManager.Instance.CreateImpactAnimationEffect
+            SpriteAnimationManager.Instance.CreateAnimation
             (
                 frames, 
                 enemy.Position2D, 
