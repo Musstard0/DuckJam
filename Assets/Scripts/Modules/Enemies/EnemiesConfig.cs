@@ -65,6 +65,9 @@ namespace DuckJam.Modules
             [Tooltip("If attack is ranged - the speed of the projectile")]
             [SerializeField, Min(0f)] private float speed;
             [SerializeField] private ImpactFXColor color = ImpactFXColor.Purple;
+            [SerializeField, Min(0f)] private float attackFXScale = 10f;
+            [SerializeField, Min(0f)] private float attackFXOffsetPositionDistance = 1f;
+            [SerializeField, Min(0)] private int attackFXIndex;
             
             public bool IsRanged => isRanged;
             public float Damage => damage;
@@ -74,6 +77,9 @@ namespace DuckJam.Modules
             public float Speed => speed;
             public AudioClip AttackSound => attackSound;
             public ImpactFXColor Color => color;
+            public float AttackFXScale => attackFXScale;
+            public float AttackFXOffsetPositionDistance => attackFXOffsetPositionDistance;
+            public int AttackFXIndex => attackFXIndex;
             
 #if UNITY_EDITOR
             internal void Validate()

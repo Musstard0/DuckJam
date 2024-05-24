@@ -146,6 +146,9 @@ namespace DuckJam.Modules
             if(distance < enemy.Attack.MinDistance || distance > enemy.Attack.MaxDistance) return;
 
 
+            
+            var attackDirection = offset.normalized;
+            
             if (enemy.Attack.IsRanged)
             {
                 _projectileManager.ShootBullet
@@ -161,8 +164,21 @@ namespace DuckJam.Modules
             }
             else
             {
-                _playerDamageable.TakeDamage(enemy.Attack.Damage, offset.normalized);
+                _playerDamageable.TakeDamage(enemy.Attack.Damage, attackDirection);
             }
+            
+            var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[enemy.Attack.AttackFXIndex]
+                .GetFramesForColor(enemy.Attack.Color);
+            var position = enemy.Position2D + attackDirection * enemy.Attack.AttackFXOffsetPositionDistance;
+            var spriteAnimator = SpriteAnimationManager.Instance.CreateImpactAnimationEffect
+            (
+                frames, 
+                position, 
+                enemy.Attack.AttackFXScale,
+                enemy.TimeScale
+            );
+            var angle = Mathf.Atan2(-attackDirection.y, -attackDirection.x);
+            spriteAnimator.transform.rotation = Quaternion.Euler(0f, 0f, angle * Mathf.Rad2Deg);
             
             enemy.AttackCooldownCountdown = enemy.Attack.Cooldown;
         }
