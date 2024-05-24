@@ -101,9 +101,16 @@ namespace DuckJam.Modules
             var directionToPosition = position - CenterPosition2D;
             var angleToPosition = Mathf.Atan2(directionToPosition.y, directionToPosition.x) * Mathf.Rad2Deg;
             var adjustedAngle = angleToPosition - TimeScaleLineAngle;
-            adjustedAngle = Mathf.Repeat(adjustedAngle + 180f, 360f) - 180f;
+            // adjustedAngle = Mathf.Repeat(adjustedAngle + 180f, 360f) - 180f;
+            //
+            // return Mathf.Sign(adjustedAngle);
             
-            return Mathf.Sign(adjustedAngle);
+            adjustedAngle = Mathf.Repeat(adjustedAngle, 360f);
+            
+            var value = (int)(adjustedAngle / 90f);
+            
+            if(value is 0 or 2) return 1;
+            return -1;
         }
 
         public bool IsPositionInMapBounds(Vector2 position)
