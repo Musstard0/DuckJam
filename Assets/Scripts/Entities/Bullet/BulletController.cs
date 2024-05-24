@@ -38,6 +38,18 @@ public class BulletController : MonoBehaviour
         if (collisionLayer == LayerUtils.TerrainLayer)
         {
             Explode();
+            return;
+        }
+
+        if (collisionLayer == LayerUtils.ProjectileLayer)
+        {
+            var otherBullet = other.GetComponent<BulletController>();
+            if (otherBullet != null && otherBullet.TargetLayer != TargetLayer)
+            {
+                Explode();
+                otherBullet.Explode();
+                return;
+            }
         }
         
         if(other.gameObject.layer != TargetLayer) return;
@@ -55,7 +67,7 @@ public class BulletController : MonoBehaviour
         Exploded = true;
 
         var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[6].GetFramesForColor(ImpactFXColor);
-        SpriteAnimationManager.Instance.CreateImpactAnimationEffect(frames, transform.position.XY(), 10);
+        SpriteAnimationManager.Instance.CreateImpactAnimationEffect(frames, transform.position.XY(), 10f, TimeScale);
         DisposeAction.Invoke(this);
     }
 }

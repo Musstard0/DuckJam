@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 
 namespace DuckJam.Modules
@@ -11,12 +10,10 @@ namespace DuckJam.Modules
         private const string InvokeMethodName = nameof(NextFrame);
         
         private SpriteRenderer _spriteRenderer;
-        private Tween _fadeOutTween;
         
         private bool _enabled;
         private float _framesPerSecond = 30f;
         private int _currentFrameIndex;
-        private float _fadeOutTime;
         
         public Action<SpriteAnimator> OnAnimationComplete { get; set; }
         
@@ -27,12 +24,6 @@ namespace DuckJam.Modules
         {
             get => _framesPerSecond;
             set => _framesPerSecond = Mathf.Max(0f, value);
-        }
-        
-        public float FadeOutTime
-        {
-            get => _fadeOutTime;
-            set => _fadeOutTime = Mathf.Max(0f, value);
         }
 
         public void StartAnimation()
@@ -50,19 +41,14 @@ namespace DuckJam.Modules
         private void OnDestroy()
         {
             CancelInvoke(InvokeMethodName);
-            _fadeOutTween?.Kill();
         }
 
         private void NextFrame()
         {
             if (_currentFrameIndex >= Frames.Count)
             {
+                OnAnimationComplete?.Invoke(this);
                 CancelInvoke(InvokeMethodName);
-                
-                _spriteRenderer
-                    .DOFade(0f, FadeOutTime)
-                    .OnComplete(() => OnAnimationComplete?.Invoke(this));
-                
                 return;
             }
             
