@@ -1,5 +1,6 @@
 using System;
 using DuckJam.Entities;
+using DuckJam.Modules;
 using DuckJam.Utilities;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ public class BulletController : MonoBehaviour
     public float Damage { get; set; }
     public float Speed { get; set; }
     public float TimeScale { get; set; } = 1f;
+    public bool Exploded { get; set; }
+    public ImpactFXColor ImpactFXColor { get; set; }
     
     public Vector2 Position2D => transform.position.XY();
 
@@ -28,18 +31,31 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if(Exploded) return;
+        
         var collisionLayer = other.gameObject.layer;
 
         if (collisionLayer == LayerUtils.TerrainLayer)
         {
-            DisposeAction.Invoke(this);
+            Explode();
         }
         
         if(other.gameObject.layer != TargetLayer) return;
         
         var damageable = other.GetComponent<IDamageable>();
         if(damageable != null) damageable.TakeDamage(Damage, Direction);
-        
+
+        Explode();
+    }
+
+
+    private void Explode()
+    {
+        if(Exploded) return;
+        Exploded = true;
+
+        var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[6].GetFramesForColor(ImpactFXColor);
+        SpriteAnimationManager.Instance.CreateImpactAnimationEffect(frames, transform.position.XY(), 10);
         DisposeAction.Invoke(this);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DuckJam.PersistentSystems;
 using DuckJam.SharedConfiguration;
 using DuckJam.Utilities;
 using UnityEngine;
@@ -62,6 +63,7 @@ namespace DuckJam.Modules.Projectiles
             bullet.gameObject.layer = LayerUtils.ProjectileLayer;
             bullet.Rigidbody2D.WakeUp();
             bullet.SpriteRenderer.enabled = true;
+            bullet.Exploded = false;
         }
         
         private static void OnReleaseBullet(BulletController bullet)
@@ -153,6 +155,7 @@ namespace DuckJam.Modules.Projectiles
             bullet.Speed = Mathf.Max(baseSpeed, 0f);
             bullet.TimeScale = Mathf.Clamp(initialTimeScale, _timeScaleConfig.MinTimeScale, _timeScaleConfig.MaxTimeScale);
             bullet.SpriteRenderer.sprite = GetBulletSprite(color);
+            bullet.ImpactFXColor = color;
             
             bullet.Rigidbody2D.velocity = bullet.Direction * (bullet.Speed * bullet.TimeScale);
         }
