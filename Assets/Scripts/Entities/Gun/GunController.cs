@@ -22,6 +22,7 @@ public class GunController : MonoBehaviour
     private PlayerModel _playerModel;
     
     private Sequence _sequence;
+    private Camera _mainCamera;
 
     private void Start()
     {
@@ -31,6 +32,7 @@ public class GunController : MonoBehaviour
         
         _defaultLocalPosition = transform.localPosition;
         _firePointDefaultLocalPosition = firePoint.localPosition;
+        _mainCamera = Camera.main;
     }
 
     private void OnDestroy()
@@ -41,13 +43,21 @@ public class GunController : MonoBehaviour
     private void Update()
     {
         // Convert mouse position to world position considering the perspective camera
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane xyPlane = new Plane(Vector3.forward, new Vector3(0, 0, player.position.z));
-        if (xyPlane.Raycast(ray, out float distance))
+        var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        var xyPlane = new Plane(Vector3.forward, new Vector3(0, 0, player.position.z));
+        if (xyPlane.Raycast(ray, out var distance))
         {
             var mousePos = ray.GetPoint(distance).XY();
-            Vector2 direction = (mousePos - firePoint.position.XY()).normalized;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            var direction = (mousePos - firePoint.position.XY()).normalized;
+            var directionFromPlayer = (mousePos - player.position.XY()).normalized;
+            
+            // to prevent the gun from jittering when the mouse is close to the player
+            if (Vector2.Dot(direction, directionFromPlayer) < 0f)
+            {
+                direction = directionFromPlayer;
+            }
+            
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             var targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
             
             // Rotate the gun towards the mouse position
@@ -106,6 +116,6 @@ public class GunController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(firePoint.position, firePoint.position + firePoint.right * 5f);
+        Gizmos.DrawLine(firePoint.position, firePoint.position + firePoint.right * 100f);
     }
 }

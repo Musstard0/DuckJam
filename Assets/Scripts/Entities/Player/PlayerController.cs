@@ -275,10 +275,13 @@ namespace DuckJam
         
         private void Shoot()
         {
+            var firePosition = playerModel.FirePoint.position.XY();
+            var targetPosition = firePosition + playerModel.FirePoint.right.XY();
+            
             _projectileManager.ShootBullet
             (
-                playerModel.FirePoint.position.XY(),
-                GetMouseWorldPosition().XY(),
+                firePosition,
+                targetPosition,
                 LayerUtils.EnemyLayer,
                 playerModel.Damage,
                 playerModel.BulletSpeed,
