@@ -19,11 +19,13 @@ namespace DuckJam.Modules
         
         [SerializeField, Min(0)] private int initialPoolSize = 128;
         [SerializeField, Min(0)] private int maxPoolSize = 1024;
-        [SerializeField] private ImpactFXSprites[] impactFXSprites;
+        [SerializeField] private SpriteImpactEffectDB impactFXSpriteDB;
+       // [SerializeField] private ImpactFXSprites[] impactFXSprites;
         
         private ObjectPool<SpriteAnimator> _pool;
+        private ImpactFXSprites[] _impactFXSprites;
         
-        public IReadOnlyList<ImpactFXSprites> ImpactFXSpriteArr => impactFXSprites;
+        public IReadOnlyList<ImpactFXSprites> ImpactFXSpriteArr => _impactFXSprites;
         
         private SpriteAnimator OnCreateBullet()
         {
@@ -79,6 +81,8 @@ namespace DuckJam.Modules
                 initialPoolSize,
                 maxPoolSize
             );
+            
+            _impactFXSprites = impactFXSpriteDB.CreateEffects();
         }
         
         private void OnDestroy()
@@ -107,47 +111,15 @@ namespace DuckJam.Modules
 
             return spriteAnimator;
         }
-        
-        [Serializable]
-        internal sealed class ImpactFXSprites
-        {
-            [SerializeField] private Sprite[] orange;
-            [SerializeField] private Sprite[] purple;
-            [SerializeField] private Sprite[] blue;
-            [SerializeField] private Sprite[] green;
-            [SerializeField] private Sprite[] pink;
-            [SerializeField] private Sprite[] white;
-            
-            public IReadOnlyList<Sprite> Orange => orange;
-            public IReadOnlyList<Sprite> Purple => purple;
-            public IReadOnlyList<Sprite> Blue => blue;
-            public IReadOnlyList<Sprite> Green => green;
-            public IReadOnlyList<Sprite> Pink => pink;
-            public IReadOnlyList<Sprite> White => white;
-
-            public IReadOnlyList<Sprite> GetFramesForColor(ImpactFXColor color)
-            {
-                return color switch 
-                {
-                    ImpactFXColor.Orange => Orange,
-                    ImpactFXColor.Purple => Purple,
-                    ImpactFXColor.Blue => Blue,
-                    ImpactFXColor.Green => Green,
-                    ImpactFXColor.Pink => Pink,
-                    ImpactFXColor.White => White,
-                    _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
-                };
-            }
-        }
     }
+    
+
     
     public enum ImpactFXColor : byte
     {
         Orange = 0,
         Purple = 1,
         Blue = 2,
-        Green = 3,
-        Pink = 4,
-        White = 5
+        White = 3
     }
 }

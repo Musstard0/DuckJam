@@ -314,7 +314,7 @@ Transform:
   m_GameObject: {fileID: 91428939}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.21, z: -14}
+  m_LocalPosition: {x: 0, y: -5.21, z: -19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51696,7 +51696,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 15
+  m_CameraDistance: 20
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -51916,7 +51916,7 @@ Transform:
   m_GameObject: {fileID: 1936200542}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.21, z: -14}
+  m_LocalPosition: {x: 0, y: -5.21, z: -19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -52205,184 +52205,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrder: 10
   zPosition: 0
-  defaultFramesPerSecond: 30
+  defaultFramesPerSecond: 20
   initialPoolSize: 128
   maxPoolSize: 1024
-  impactFXSprites:
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange:
-    - {fileID: -1909444805, guid: 362e2ce079be7c34a89db06685b99858, type: 3}
-    - {fileID: 342909707, guid: 362e2ce079be7c34a89db06685b99858, type: 3}
-    - {fileID: -41123382, guid: 362e2ce079be7c34a89db06685b99858, type: 3}
-    - {fileID: -894577055, guid: 362e2ce079be7c34a89db06685b99858, type: 3}
-    - {fileID: 449094654, guid: 362e2ce079be7c34a89db06685b99858, type: 3}
-    purple:
-    - {fileID: -922173918, guid: 440da2b649312c842842d9be1e96272d, type: 3}
-    - {fileID: -1493906377, guid: 440da2b649312c842842d9be1e96272d, type: 3}
-    - {fileID: 1534254936, guid: 440da2b649312c842842d9be1e96272d, type: 3}
-    - {fileID: -261020296, guid: 440da2b649312c842842d9be1e96272d, type: 3}
-    - {fileID: -263519750, guid: 440da2b649312c842842d9be1e96272d, type: 3}
-    blue:
-    - {fileID: -792134416, guid: 0c602e41a38caaa4db2845ce5bec8be6, type: 3}
-    - {fileID: 1726867810, guid: 0c602e41a38caaa4db2845ce5bec8be6, type: 3}
-    - {fileID: 298570913, guid: 0c602e41a38caaa4db2845ce5bec8be6, type: 3}
-    - {fileID: -788181027, guid: 0c602e41a38caaa4db2845ce5bec8be6, type: 3}
-    - {fileID: -968941034, guid: 0c602e41a38caaa4db2845ce5bec8be6, type: 3}
-    green:
-    - {fileID: -1971860232, guid: 1a521e92b8dd2c7419af9064ee95e6fd, type: 3}
-    - {fileID: 437634229, guid: 1a521e92b8dd2c7419af9064ee95e6fd, type: 3}
-    - {fileID: -582795515, guid: 1a521e92b8dd2c7419af9064ee95e6fd, type: 3}
-    - {fileID: 1030023459, guid: 1a521e92b8dd2c7419af9064ee95e6fd, type: 3}
-    - {fileID: 401106826, guid: 1a521e92b8dd2c7419af9064ee95e6fd, type: 3}
-    pink:
-    - {fileID: 545952424, guid: 7ed7f219acced4c49800d251ff64c917, type: 3}
-    - {fileID: -431187157, guid: 7ed7f219acced4c49800d251ff64c917, type: 3}
-    - {fileID: -1145120729, guid: 7ed7f219acced4c49800d251ff64c917, type: 3}
-    - {fileID: -678785169, guid: 7ed7f219acced4c49800d251ff64c917, type: 3}
-    - {fileID: 447740180, guid: 7ed7f219acced4c49800d251ff64c917, type: 3}
-    white:
-    - {fileID: 91378912, guid: 9bf9d00d87414ab4c970274e93016801, type: 3}
-    - {fileID: 1260214431, guid: 9bf9d00d87414ab4c970274e93016801, type: 3}
-    - {fileID: 963539427, guid: 9bf9d00d87414ab4c970274e93016801, type: 3}
-    - {fileID: 532776578, guid: 9bf9d00d87414ab4c970274e93016801, type: 3}
-    - {fileID: -1215069514, guid: 9bf9d00d87414ab4c970274e93016801, type: 3}
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
-  - orange: []
-    purple: []
-    blue: []
-    green: []
-    pink: []
-    white: []
+  impactFXSpriteDB: {fileID: 11400000, guid: f16a2cd79af166a459a3ac60232585d4, type: 2}
 --- !u!4 &2125334998
 Transform:
   m_ObjectHideFlags: 0

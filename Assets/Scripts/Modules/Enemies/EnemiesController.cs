@@ -156,7 +156,7 @@ namespace DuckJam.Modules
                     enemy.Attack.Damage, 
                     enemy.Attack.Speed, 
                     enemy.TimeScale,
-                    enemy.Attack.ProjectileColor
+                    enemy.Attack.Color
                 );
             }
             else

@@ -4,6 +4,7 @@ using DuckJam.Entities;
 using DuckJam.PersistentSystems;
 using DuckJam.Utilities;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace DuckJam.Modules
 {
@@ -18,12 +19,17 @@ namespace DuckJam.Modules
         [Header("Visuals")]
         [SerializeField, Min(0f)] private float swaySpeed;
         [SerializeField, Min(0f)] private float swayAmount;
+        [SerializeField, Min(0)] private int deathSpriteEffectIndex;
+        [SerializeField] private int[] deathEffectIndices;
+        [SerializeField, Min(0f)] private float deathEffectSizeScale = 10f;
 
         public IReadOnlyList<EnemyType> EnemyTypes => enemyTypes ?? Array.Empty<EnemyType>();
         public AudioClip DeathSound => deathSound;
         public float DeathSoundMinInterval => deathSoundMinInterval;
         public float SwaySpeed => swaySpeed;
         public float SwayAmount => swayAmount;
+        public int DeathSpriteEffectIndex => Random.Range(0, deathEffectIndices.Length);
+        public float DeathEffectSizeScale => deathEffectSizeScale;
         
         private void OnValidate()
         {
@@ -58,7 +64,7 @@ namespace DuckJam.Modules
             
             [Tooltip("If attack is ranged - the speed of the projectile")]
             [SerializeField, Min(0f)] private float speed;
-            [SerializeField] private ImpactFXColor projectileColor;
+            [SerializeField] private ImpactFXColor color = ImpactFXColor.Purple;
             
             public bool IsRanged => isRanged;
             public float Damage => damage;
@@ -67,7 +73,7 @@ namespace DuckJam.Modules
             public float Cooldown => cooldown;
             public float Speed => speed;
             public AudioClip AttackSound => attackSound;
-            public ImpactFXColor ProjectileColor => projectileColor;
+            public ImpactFXColor Color => color;
             
 #if UNITY_EDITOR
             internal void Validate()

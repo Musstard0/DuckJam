@@ -59,7 +59,7 @@ namespace DuckJam.Entities
 
         private void OnDeath()
         {
-            
+
         }
     }
 }

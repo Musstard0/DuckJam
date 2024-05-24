@@ -133,8 +133,6 @@ namespace DuckJam.Modules.Projectiles
                 ImpactFXColor.Orange => orangeBulletSprite,
                 ImpactFXColor.Purple => purpleBulletSprite,
                 ImpactFXColor.Blue => blueBulletSprite,
-                ImpactFXColor.Green => greenBulletSprite,
-                ImpactFXColor.Pink => pinkBulletSprite,
                 ImpactFXColor.White => whiteBulletSprite,
                 _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
             };
