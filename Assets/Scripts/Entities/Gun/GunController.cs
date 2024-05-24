@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using DuckJam;
+using DuckJam.Utilities;
 using UnityEngine;
 
 public class GunController : MonoBehaviour
@@ -10,8 +11,9 @@ public class GunController : MonoBehaviour
     [SerializeField] private Vector3 firePointInvertedPositionOffset;
 
     private Vector3 _defaultLocalPosition;
-    
     private Vector3 _firePointDefaultLocalPosition;
+
+    //private float _firePointPlayerPositionOffset;
     
     public Transform player;
     private SpriteRenderer playerSpriteRenderer;
@@ -43,8 +45,8 @@ public class GunController : MonoBehaviour
         Plane xyPlane = new Plane(Vector3.forward, new Vector3(0, 0, player.position.z));
         if (xyPlane.Raycast(ray, out float distance))
         {
-            Vector3 mousePos = ray.GetPoint(distance);
-            Vector2 direction = mousePos - player.position;
+            var mousePos = ray.GetPoint(distance).XY();
+            Vector2 direction = (mousePos - firePoint.position.XY()).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             var targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
             
@@ -62,10 +64,8 @@ public class GunController : MonoBehaviour
                 gunSpriteRenderer.flipY = true; // Assuming the gun sprite is horizontal by default
                 firePoint.localPosition = _firePointDefaultLocalPosition + firePointInvertedPositionOffset;
             }
-            
         }
-
-
+        
         if(!_sequence.IsActive()) return;
         
         _sequence.timeScale = _playerModel.TimeScale;
@@ -102,14 +102,10 @@ public class GunController : MonoBehaviour
         );
 
         _sequence.Play();
-
-        //_kickbackTween = transform.DOLocalMoveX(_defaultLocalPosition.x + 0.1f, 0.1f).SetLoops(2, LoopType.Yoyo);
-
-        //_kickbackTween =
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, transform.position + -transform.right * 2f);
+        Gizmos.DrawLine(firePoint.position, firePoint.position + firePoint.right * 5f);
     }
 }

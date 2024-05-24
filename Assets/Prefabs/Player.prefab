@@ -5410,6 +5410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0da6b757a908ec4bb6d9eb9b9877fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 0}
   rotationSpeed: 10
   firePoint: {fileID: 3217701603333599655}
   firePointInvertedPositionOffset: {x: 0, y: -0.55, z: 0}
