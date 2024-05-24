@@ -23,6 +23,9 @@ namespace DuckJam
         public float minFootstepInterval = 0.1f;
         public float deathFxScale = 15f;
         
+        [Header("Health Regeneration")]
+        [Min(0f)] public float healthRegenerationRate = 1f;
+        [Min(0f)] public float healthRegenerationDelay = 5f;
         
         [Header("Audio Clips")]
         [SerializeField] private AudioClip[] footstepClips;

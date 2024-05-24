@@ -6,6 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="d786c9c4-1ddd-4dc5-8a0e-bfc70939ccd7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckJam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckJam/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Scene_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Scene_Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerCfg.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerCfg.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerCfg.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerCfg.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerStatsUIController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerStatsUIController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +60,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$USER_HOME$/OneDrive/Desktop/duckJam/V0.1.0_dev\DuckJam.exe" />
+      <option name="EXE_PATH" value="$USER_HOME$/OneDrive/Desktop/duckJam/v0.1.0\DuckJam.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="C:\Users\danie\OneDrive\Desktop\duckJam\V0.1.0_dev" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -111,6 +119,7 @@
       <workItem from="1716329131054" duration="29816000" />
       <workItem from="1716415736297" duration="15000" />
       <workItem from="1716415758584" duration="29937000" />
+      <workItem from="1716586551786" duration="2622000" />
     </task>
     <servers />
   </component>

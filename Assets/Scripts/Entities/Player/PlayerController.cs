@@ -71,7 +71,8 @@ namespace DuckJam
                 Inertia = playerCfg.Inertia,
                 SwaySpeed = playerCfg.SwaySpeed,
                 SwayAmount = playerCfg.SwayAmount,
-                MuzzleFlashAnimator = muzzleFlashAnimator
+                MuzzleFlashAnimator = muzzleFlashAnimator,
+                HealthRegenerationDelay = playerCfg.healthRegenerationDelay
             };
             
             _lastTimeScale = playerModel.TimeScale;
@@ -87,10 +88,13 @@ namespace DuckJam
             //HandleFlip(); // body sprite is symmetrical, so currently not needed
             SetTimeScale(deltaTime);
             HandleNextShotCountDown(deltaTime);
+            HandleHealthRegeneration(deltaTime);
             HandleShooting();
             AnimateVisuals(deltaTime);
             HandleColor();
         }
+
+
 
         private void FixedUpdate()
         {
@@ -236,6 +240,26 @@ namespace DuckJam
             var countDownDelta = deltaTime * playerModel.TimeScale;
             playerModel.NextShotCountDown = Mathf.Max(playerModel.NextShotCountDown - countDownDelta, 0f);
         }
+        
+        
+        
+        private void HandleHealthRegeneration(float deltaTime)
+        {
+            if (playerModel.HealthRegenerationCountdown > 0f)
+            {
+                playerModel.HealthRegenerationCountdown = Mathf.Max
+                (
+                    playerModel.HealthRegenerationCountdown - playerModel.TimeScale * deltaTime, 
+                    0f
+                );
+                
+                return;
+            }
+            
+            var healthRegenDelta = playerCfg.healthRegenerationRate * playerModel.TimeScale * deltaTime;
+            
+            playerModel.Health = Mathf.Min(playerModel.Health + healthRegenDelta, playerModel.MaxHealth);
+        }
 
         private void HandleShooting()
         {
@@ -275,6 +299,7 @@ namespace DuckJam
         {
             if(playerModel.Health <= 0) return;
             
+            playerModel.HealthRegenerationCountdown = playerCfg.healthRegenerationDelay;
             playerModel.Health = Mathf.Max(playerModel.Health - damage, 0f);
             
             

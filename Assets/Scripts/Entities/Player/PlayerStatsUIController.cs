@@ -13,6 +13,7 @@ namespace DuckJam.Entities.Player
         [SerializeField] private TMP_Text healthText;
         [SerializeField] private Image healthFill;
         [SerializeField] private TMP_Text scoreText;
+        [SerializeField] private Image healthRegenDelayFill;
         
         [Header("Time Scale")]
         [SerializeField] private TMP_Text timeScaleText;
@@ -45,8 +46,11 @@ namespace DuckJam.Entities.Player
         private void UpdateHealth()
         {
             var health = Mathf.Max(_playerModel.Health, 0f);
-            healthText.text = $"{health} / {_playerModel.MaxHealth}";
+            healthText.text = $"{(int)health} / {_playerModel.MaxHealth}";
             healthFill.fillAmount = health / _playerModel.MaxHealth;
+            
+            var regenDelayProgress = 1f - Mathf.Clamp01(_playerModel.HealthRegenerationCountdown / _playerModel.HealthRegenerationDelay);
+            healthRegenDelayFill.fillAmount = regenDelayProgress;
         }
 
         private void UpdateTimeScale()
