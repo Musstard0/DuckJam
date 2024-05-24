@@ -138,6 +138,7 @@ namespace DuckJam.Modules
 
         private void HandleAttack(EnemyController enemy, Vector2 targetPosition)
         {
+            if(_playerDamageable.Health <= 0) return;
             if(enemy.AttackCooldownCountdown > 0f) return;
             
             var offset = targetPosition - enemy.Position2D;

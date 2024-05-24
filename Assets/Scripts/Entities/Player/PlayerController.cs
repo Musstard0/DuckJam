@@ -30,6 +30,8 @@ namespace DuckJam
         private float _swayTime; // timescale dynamic so need to keep track of sway time outside of Time.time
         private float _lastFootstepTime;
         private float _lastHurtSoundTime;
+
+        public float Health => playerModel.Health;
         
         private void Awake()
         {
@@ -255,6 +257,8 @@ namespace DuckJam
             
             AudioFXManager.Instance.PlayClip(playerCfg.RandomGunshotClip, playerModel.TimeScale);
         }
+
+        
 
         public void TakeDamage(float damage, Vector2 blowbackDirection)
         {

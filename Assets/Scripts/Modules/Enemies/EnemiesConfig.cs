@@ -28,7 +28,7 @@ namespace DuckJam.Modules
         public float DeathSoundMinInterval => deathSoundMinInterval;
         public float SwaySpeed => swaySpeed;
         public float SwayAmount => swayAmount;
-        public int DeathSpriteEffectIndex => Random.Range(0, deathEffectIndices.Length);
+        public int DeathSpriteEffectIndex => deathEffectIndices[Random.Range(0, deathEffectIndices.Length)];
         public float DeathEffectSizeScale => deathEffectSizeScale;
         
         private void OnValidate()
