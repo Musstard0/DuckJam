@@ -168,6 +168,8 @@ namespace DuckJam.Modules
                 _playerDamageable.TakeDamage(enemy.Attack.Damage, attackDirection);
             }
             
+            AudioFXManager.Instance.PlayClip(enemy.Attack.AttackSound, enemy.TimeScale);
+            
             var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[enemy.Attack.AttackFXIndex]
                 .GetFramesForColor(enemy.Attack.Color);
             var position = enemy.Position2D + attackDirection * enemy.Attack.AttackFXOffsetPositionDistance;

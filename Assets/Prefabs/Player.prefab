@@ -4912,6 +4912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25108468c41d38d42a16c1423ae8fba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunController: {fileID: 1748056500030626866}
   muzzleFlashAnimator: {fileID: 7643825501887980992}
   impulseSource: {fileID: 3454446445500824807}
   trailParticleSystem: {fileID: 2189228747833450311}
@@ -5413,3 +5414,8 @@ MonoBehaviour:
   firePoint: {fileID: 3217701603333599655}
   firePointInvertedPositionOffset: {x: 0, y: -0.55, z: 0}
   player: {fileID: 3818999413278159697}
+  kickbackEase: 18
+  kickbackResetEase: 6
+  kickbackDuration: 0.03
+  kickbackResetDuration: 0.06
+  kickbackDistance: 0.5

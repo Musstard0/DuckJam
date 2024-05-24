@@ -12,6 +12,7 @@ namespace DuckJam
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IDamageable
     {
+        [SerializeField] private GunController gunController;
         [SerializeField] private Animator muzzleFlashAnimator;
         [SerializeField] private CinemachineImpulseSource impulseSource;
         [SerializeField] private ParticleSystem trailParticleSystem;
@@ -265,6 +266,7 @@ namespace DuckJam
             playerModel.MuzzleFlashAnimator.Play(MuzzleFlashAnimationHash);
             
             AudioFXManager.Instance.PlayClip(playerCfg.RandomGunshotClip, playerModel.TimeScale);
+            gunController.OnFire();
         }
 
         

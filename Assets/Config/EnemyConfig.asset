@@ -66,5 +66,5 @@ MonoBehaviour:
   swaySpeed: 10
   swayAmount: 10
   deathSpriteEffectIndex: 13
-  deathEffectIndices: 0d0000000e000000100000001100000017000000
+  deathEffectIndices: 0d0000000e0000001000000011000000
   deathEffectSizeScale: 20

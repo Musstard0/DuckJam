@@ -67,7 +67,7 @@ public class BulletController : MonoBehaviour
         Exploded = true;
 
         var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[6].GetFramesForColor(ImpactFXColor);
-        SpriteAnimationManager.Instance.CreateAnimation(frames, transform.position.XY(), 10f, TimeScale);
+        SpriteAnimationManager.Instance.CreateAnimation(frames, transform.position.XY(), 15f, TimeScale);
         DisposeAction.Invoke(this);
     }
 }
