@@ -33,7 +33,9 @@ namespace DuckJam.Modules
         
         private void OnValidate()
         {
-            foreach (var enemyType in EnemyTypes) enemyType.Attack.Validate();
+#if UNITY_EDITOR
+            foreach (var enemyType in EnemyTypes) enemyType.Attack.Validate(); 
+#endif
         }
         
         [Serializable]

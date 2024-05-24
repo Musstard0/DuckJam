@@ -20,7 +20,7 @@ namespace DuckJam.PersistentSystems
         public SceneId CurrentScene { get; private set; }
 
         
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Init() 
         {
             if(SceneManager.GetSceneByName(PersistantSceneName).isLoaded) return;
@@ -98,6 +98,7 @@ namespace DuckJam.PersistentSystems
         private IEnumerator LoadSceneAsync(string sceneName, Action onComplete)
         {
             CurrentScene = SceneId.Loading;
+            GameModel.Reset();
             
             MusicManager.Instance.PlayTransitionMusic();
             var transitionMusicEndTime = Time.time + MusicManager.Instance.TransitionClipDuration;
