@@ -1,21 +1,27 @@
+using System;
 using DuckJam.PersistentSystems;
-using DuckJam.SharedConfiguration;
-using DuckJam.Utilities;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace DuckJam.Modules
 {
     internal sealed class GameController : MonoBehaviour
     {
         [SerializeField] private EnemySpawnConfig enemySpawnConfig;
+        [SerializeField] private Transform[] enemySpawnPointsTop;
+        [SerializeField] private Transform[] enemySpawnPointsBottom;
+        [SerializeField] private Transform[] enemySpawnPointsLeft;
+        [SerializeField] private Transform[] enemySpawnPointsRight;
         
         private MapModel _mapModel;
         private EnemiesModel _enemiesModel;
         private PlayerModel _playerModel;
-        private TimeScaleConfig _timeScaleConfig;
         
         private float _nextEnemySpawnTime;
         private bool _nextSpawnAtLineStart;
+        
+        private float _nextWaveTime;
+        private bool _verticalWave;
         
         private bool _gameOver;
         
@@ -24,7 +30,6 @@ namespace DuckJam.Modules
             _mapModel = GameModel.Get<MapModel>();
             _enemiesModel = GameModel.Get<EnemiesModel>();
             _playerModel = GameModel.Get<PlayerModel>();
-            _timeScaleConfig = GameModel.Get<TimeScaleConfig>();
             
             _nextEnemySpawnTime = Time.time + enemySpawnConfig.RandomSpawnInterval;
         }
@@ -37,47 +42,89 @@ namespace DuckJam.Modules
             
             if(_gameOver) return;
             
-            //UpdatePlayer(deltaTime);
             SpawnEnemies();
             
             if(_playerModel.Health > 0) return;
             EndGame();
         }
-        
+
         private void SpawnEnemies()
         {
             if(_enemiesModel.Count >= enemySpawnConfig.MaxEnemies) return;
             
             var time = Time.time;
-            if(time < _nextEnemySpawnTime) return;
-            
-            var spawnPosition2D = _nextSpawnAtLineStart ? _mapModel.TimeScaleLineStartPosition2D : _mapModel.TimeScaleLineEndPosition2D;
-            var directionToCenter = (_mapModel.CenterPosition2D - spawnPosition2D).normalized;
-            spawnPosition2D += directionToCenter * enemySpawnConfig.MapEdgeSpawnBuffer;
-            
-            var spawnPosition = spawnPosition2D.XY0(enemySpawnConfig.SpawnPositionZ);
-            
-            _enemiesModel.SpawnEnemy(spawnPosition);
+            if (time < _nextEnemySpawnTime) return;
             _nextEnemySpawnTime = time + enemySpawnConfig.RandomSpawnInterval;
-            _nextSpawnAtLineStart = !_nextSpawnAtLineStart;
-        }
+            
+            Vector3 spawnPosition;
+            switch (Random.Range(0, 4))
+            {
+                case 0:
+                    spawnPosition = enemySpawnPointsTop[Random.Range(0, enemySpawnPointsTop.Length)].position;
+                    break;
+                
+                case 1:
+                    spawnPosition = enemySpawnPointsBottom[Random.Range(0, enemySpawnPointsBottom.Length)].position;
+                    break;
+                
+                case 2:
+                    spawnPosition = enemySpawnPointsLeft[Random.Range(0, enemySpawnPointsLeft.Length)].position;
+                    break;
+                
+                case 3:
+                    spawnPosition = enemySpawnPointsRight[Random.Range(0, enemySpawnPointsRight.Length)].position;
+                    break;
+                
+                default:
+                    throw new Exception();
+            }
+            
+            spawnPosition.z = enemySpawnConfig.SpawnPositionZ;
+            _enemiesModel.SpawnEnemy(spawnPosition);
 
-        // private void UpdatePlayer(float deltaTime)
-        // {
-        //     var timeScaleDeltaAbs = _timeScaleConfig.TimeScaleChangeSpeed * deltaTime;
-        //     var timeScaleDelta = _mapModel.GetTimeScaleSignAtPosition(_playerModel.Transform.position) * timeScaleDeltaAbs;
-        //     _playerModel.TimeScale = Mathf.Clamp
-        //     (
-        //         _playerModel.TimeScale + timeScaleDelta, 
-        //         _timeScaleConfig.MinTimeScale, 
-        //         _timeScaleConfig.MaxTimeScale
-        //     );
-        // }
+        }
 
         public void EndGame()
         {
             _gameOver = true;
             CanvasManager.Instance.ShowGameOverMenu(_enemiesModel.DeadEnemyCount);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.magenta;
+            
+            if (enemySpawnPointsTop != null)
+            {
+                foreach (var spawnPoint in enemySpawnPointsTop)
+                {
+                    Gizmos.DrawSphere(spawnPoint.position, 1f);
+                }
+            }
+            
+            if (enemySpawnPointsBottom != null)
+            {
+                foreach (var spawnPoint in enemySpawnPointsBottom)
+                {
+                    Gizmos.DrawSphere(spawnPoint.position, 1f);
+                }
+            }
+            
+            if (enemySpawnPointsLeft != null)
+            {
+                foreach (var spawnPoint in enemySpawnPointsLeft)
+                {
+                    Gizmos.DrawSphere(spawnPoint.position, 1f);
+                }
+            }
+            
+            if (enemySpawnPointsRight != null)
+            {
+                foreach (var spawnPoint in enemySpawnPointsRight)
+                {
+                    Gizmos.DrawSphere(spawnPoint.position, 1f);
+                }
+            }
         }
     }
 }

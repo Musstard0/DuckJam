@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d786c9c4-1ddd-4dc5-8a0e-bfc70939ccd7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckJam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckJam/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Gun/GunController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Gun/GunController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Config/EnemyConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Config/EnemyConfig.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Scene_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Scene_Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Enemies/EnemiesConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Enemies/EnemiesConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Enemies/EnemiesModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Enemies/EnemiesModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Game/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Game/GameController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +116,7 @@
       <workItem from="1716329131054" duration="29816000" />
       <workItem from="1716415736297" duration="15000" />
       <workItem from="1716415758584" duration="29937000" />
-      <workItem from="1716586551786" duration="3360000" />
+      <workItem from="1716586551786" duration="8125000" />
     </task>
     <servers />
   </component>

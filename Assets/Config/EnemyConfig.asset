@@ -81,6 +81,7 @@ MonoBehaviour:
   deathSoundMinInterval: 0.1
   swaySpeed: 10
   swayAmount: 10
-  deathSpriteEffectIndex: 13
   deathEffectIndices: 0d0000000e0000001000000011000000
   deathEffectSizeScale: 20
+  spawnEffectIndices: 17000000
+  spawnEffectSizeScale: 40

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DuckJam.Entities;
 using DuckJam.PersistentSystems;
+using DuckJam.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -27,7 +28,24 @@ namespace DuckJam.Modules
         
         public void SpawnEnemy(Vector3 position)
         {
-            var type = _enemyConfig.EnemyTypes[Random.Range(0, _enemyConfig.EnemyTypes.Count)];
+            var typeIndex = Random.Range(0, _enemyConfig.EnemyTypes.Count);
+            SpawnEnemy(position, typeIndex);
+        }
+        
+        public void SpawnEnemy(Vector3 position, int enemyTypeIndex)
+        {
+            var frames = SpriteAnimationManager.Instance.ImpactFXSpriteArr[_enemyConfig.SpawnSpriteEffectIndex]
+                .GetFramesForColor(ImpactFXColor.White);
+            SpriteAnimationManager.Instance.CreateAnimation
+            (
+                frames, 
+                position.XY(), 
+                _enemyConfig.SpawnEffectSizeScale, 
+                1f
+            );
+            
+            
+            var type = _enemyConfig.EnemyTypes[enemyTypeIndex];
             var enemy = Object.Instantiate(type.Prefab, position, Quaternion.identity);
 
             enemy.Health = type.MaxHealth;

@@ -19,9 +19,14 @@ namespace DuckJam.Modules
         [Header("Visuals")]
         [SerializeField, Min(0f)] private float swaySpeed;
         [SerializeField, Min(0f)] private float swayAmount;
-        [SerializeField, Min(0)] private int deathSpriteEffectIndex;
+        
+        [Header("Death Effect")]
         [SerializeField] private int[] deathEffectIndices;
         [SerializeField, Min(0f)] private float deathEffectSizeScale = 10f;
+        
+        [Header("Spawn Effect")]
+        [SerializeField] private int[] spawnEffectIndices;
+        [SerializeField, Min(0f)] private float spawnEffectSizeScale = 10f;
 
         public IReadOnlyList<EnemyType> EnemyTypes => enemyTypes ?? Array.Empty<EnemyType>();
         public AudioClip DeathSound => deathSound;
@@ -30,6 +35,9 @@ namespace DuckJam.Modules
         public float SwayAmount => swayAmount;
         public int DeathSpriteEffectIndex => deathEffectIndices[Random.Range(0, deathEffectIndices.Length)];
         public float DeathEffectSizeScale => deathEffectSizeScale;
+        
+        public int SpawnSpriteEffectIndex => spawnEffectIndices[Random.Range(0, spawnEffectIndices.Length)];
+        public float SpawnEffectSizeScale => spawnEffectSizeScale;  
         
         private void OnValidate()
         {
