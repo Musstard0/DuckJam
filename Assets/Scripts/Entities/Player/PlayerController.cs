@@ -16,7 +16,7 @@ namespace DuckJam
         [SerializeField] private Animator muzzleFlashAnimator;
         [SerializeField] private CinemachineImpulseSource impulseSource;
         [SerializeField] private ParticleSystem trailParticleSystem;
-        
+        [SerializeField] private SpriteRenderer[] backgroundSpriteRenderers;
         
         private PlayerModel playerModel;
         public PlayerCfg playerCfg;
@@ -224,14 +224,18 @@ namespace DuckJam
                 color = Color.Lerp(_timeScaleConfig.NormalColor, _timeScaleConfig.SlowColor, (1f - playerModel.TimeScale) / (1f - _timeScaleConfig.MinTimeScale));
             }
 
+
+
+            foreach (var spriteRenderer in backgroundSpriteRenderers)
+            {
+                spriteRenderer.color = color;
+            }
             
             
             var a = trailParticleSystem.main;
 
             a.startColor = new ParticleSystem.MinMaxGradient(color);
             a.simulationSpeed = playerModel.TimeScale;
-
-            //visuals.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
         }
 
         private void HandleNextShotCountDown(float deltaTime)

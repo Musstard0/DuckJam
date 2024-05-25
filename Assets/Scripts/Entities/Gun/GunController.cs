@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer gunBackGroundSpriteRenderer;
     [SerializeField, Min(0f)] private float rotationSpeed = 10f;
     [SerializeField] private Transform firePoint;
     [SerializeField] private Vector3 firePointInvertedPositionOffset;
@@ -67,11 +68,13 @@ public class GunController : MonoBehaviour
             if (transform.eulerAngles.z is >= 270f or <= 90f)
             {
                 gunSpriteRenderer.flipY = false;
+                gunBackGroundSpriteRenderer.flipY = false;
                 firePoint.localPosition = _firePointDefaultLocalPosition;
             }
             else
             {
                 gunSpriteRenderer.flipY = true; // Assuming the gun sprite is horizontal by default
+                gunBackGroundSpriteRenderer.flipY = true;
                 firePoint.localPosition = _firePointDefaultLocalPosition + firePointInvertedPositionOffset;
             }
         }
