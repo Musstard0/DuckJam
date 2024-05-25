@@ -18,10 +18,9 @@ namespace DuckJam.Modules
         private PlayerModel _playerModel;
         
         private float _nextEnemySpawnTime;
-        private bool _nextSpawnAtLineStart;
+        private float _nextMaxEnemiesIncrementTime;
         
-        private float _nextWaveTime;
-        private bool _verticalWave;
+        private int _maxEnemies;
         
         private bool _gameOver;
         
@@ -32,6 +31,8 @@ namespace DuckJam.Modules
             _playerModel = GameModel.Get<PlayerModel>();
             
             _nextEnemySpawnTime = Time.time + enemySpawnConfig.RandomSpawnInterval;
+            _maxEnemies = enemySpawnConfig.InitialMaxEnemies;
+            _nextMaxEnemiesIncrementTime = Time.time + enemySpawnConfig.MaxEnemiesIncrementRate;
         }
 
         private void Update()
@@ -42,7 +43,17 @@ namespace DuckJam.Modules
             
             if(_gameOver) return;
             
+            
+            
             SpawnEnemies();
+
+
+            if (Time.time > _nextMaxEnemiesIncrementTime)
+            {
+                _maxEnemies = Mathf.Min(_maxEnemies + 1, enemySpawnConfig.MaxEnemies);
+                _nextMaxEnemiesIncrementTime = Time.time + enemySpawnConfig.MaxEnemiesIncrementRate;
+            }
+            
             
             if(_playerModel.Health > 0) return;
             EndGame();
@@ -50,7 +61,7 @@ namespace DuckJam.Modules
 
         private void SpawnEnemies()
         {
-            if(_enemiesModel.Count >= enemySpawnConfig.MaxEnemies) return;
+            if(_enemiesModel.Count >= _maxEnemies) return;
             
             var time = Time.time;
             if (time < _nextEnemySpawnTime) return;
