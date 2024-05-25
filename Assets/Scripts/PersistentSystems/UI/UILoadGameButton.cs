@@ -1,20 +1,19 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace DuckJam.PersistentSystems
 {
-    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(UIButtonInteractionHandler))]
     internal sealed class UILoadGameButton : MonoBehaviour
     {
-        private Button _button;
+        private UIButtonInteractionHandler _interactionHandler;
         
         private void Awake()
         {
-            _button = GetComponent<Button>();
+            _interactionHandler = GetComponent<UIButtonInteractionHandler>();
         }
-        
-        private void OnEnable() => _button.onClick.AddListener(LoadGame);
-        private void OnDisable() => _button.onClick.RemoveListener(LoadGame);
+
+        private void OnEnable() => _interactionHandler.Clicked += LoadGame;
+        private void OnDisable() => _interactionHandler.Clicked -= LoadGame;
         
         private void LoadGame()
         {

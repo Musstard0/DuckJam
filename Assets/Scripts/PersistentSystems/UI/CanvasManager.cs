@@ -113,11 +113,14 @@ namespace DuckJam.PersistentSystems
                 
                 case EscapeAction.Close:
                     
-                    _currentPanel.Hide();
+                    _currentPanel.Hide(() =>
+                    {
+                        Time.timeScale = 1f;
+                        _isPaused = false;
+                    });
                     _currentPanel = null;
                     
-                    Time.timeScale = 1f;
-                    _isPaused = false;
+
                     
                     break;
                 case EscapeAction.NavigateToParent:
@@ -139,11 +142,6 @@ namespace DuckJam.PersistentSystems
         {
             if(_currentPanel != null && _currentPanel.Panel == panel) return;
             
-            if (_currentPanel != null)
-            {
-                _currentPanel.Hide();
-            }
-            
             var panelToShow = panel switch
             {
                 UIPanel.None => null,
@@ -154,6 +152,19 @@ namespace DuckJam.PersistentSystems
                 UIPanel.CreditsMenu => creditsMenu,
                 _ => null
             };
+            
+            if (_currentPanel != null)
+            {
+                _currentPanel.Hide(() =>
+                {
+                    if (panelToShow == null) return;
+                    _currentPanel = panelToShow;
+                    _currentPanel.Show();
+                });
+                
+                _currentPanel = null;
+                return;
+            }
             
             if(panelToShow == null) return;
             

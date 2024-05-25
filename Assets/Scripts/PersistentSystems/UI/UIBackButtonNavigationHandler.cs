@@ -3,18 +3,18 @@ using UnityEngine.UI;
 
 namespace DuckJam.PersistentSystems
 {
-    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(UIButtonInteractionHandler))]
     internal sealed class UIBackButtonNavigationHandler : MonoBehaviour
     {
-        private Button _button;
+        private UIButtonInteractionHandler _interactionHandler;
         
         private void Awake()
         {
-            _button = GetComponent<Button>();
+            _interactionHandler = GetComponent<UIButtonInteractionHandler>();
         }
 
-        private void OnEnable() => _button.onClick.AddListener(Navigate);
-        private void OnDisable() => _button.onClick.RemoveListener(Navigate);
+        private void OnEnable() => _interactionHandler.Clicked += Navigate;
+        private void OnDisable() => _interactionHandler.Clicked -= Navigate;
 
         private void Navigate()
         {

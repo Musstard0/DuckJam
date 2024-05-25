@@ -1,3 +1,5 @@
+using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -6,10 +8,16 @@ namespace DuckJam.PersistentSystems
     [RequireComponent(typeof(CanvasGroup))]
     internal sealed class MenuPanel : MonoBehaviour
     {
+        private const float FadeDuration = 0.3f;
+        
+        
         [SerializeField] private TMP_Text optionalText;
         
         [SerializeField] private UIPanel panel = UIPanel.None;
         [SerializeField] private EscapeAction escapeAction = EscapeAction.None;
+        
+        private Sequence _sequence;
+        
         
         public string OptionalText
         {
@@ -33,34 +41,53 @@ namespace DuckJam.PersistentSystems
         
         public void HideImmediate()
         {
-            HidePanel(CanvasGroup);
+            CanvasGroup.alpha = 0f;
+            DisablePanel(CanvasGroup);
         }
         
         public void ShowImmediate()
         {
-            ShowPanel(CanvasGroup);
+            CanvasGroup.alpha = 1f;
+            EnablePanel(CanvasGroup);
         }
         
-        public void Hide()
+        public void Hide(Action onComplete = null)
         {
-            HidePanel(CanvasGroup);
+            _sequence?.Complete();
+            
+            _sequence = DOTween.Sequence()
+                .AppendCallback(() => DisablePanel(CanvasGroup))
+                .Append(CanvasGroup.DOFade(0f, FadeDuration).From(1f).SetEase(Ease.InSine))
+                .OnComplete(() => onComplete?.Invoke());
+
+            _sequence.SetUpdate(true);
         }
         
-        public void Show()
+        public void Show(Action onComplete = null)
         {
-            ShowPanel(CanvasGroup);
+            _sequence?.Complete();
+            
+            _sequence = DOTween.Sequence()
+                .Append(CanvasGroup.DOFade(1f, FadeDuration).From(0f).SetEase(Ease.OutSine))
+                .OnComplete(() =>
+                {
+                    EnablePanel(CanvasGroup);
+                    onComplete?.Invoke();
+                });
+            
+            _sequence.SetUpdate(true);
         }
         
-        private static void HidePanel(CanvasGroup canvasGroup)
+        private static void DisablePanel(CanvasGroup canvasGroup)
         {
-            canvasGroup.alpha = 0f;
+            //canvasGroup.alpha = 0f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
         }
         
-        private static void ShowPanel(CanvasGroup canvasGroup)
+        private static void EnablePanel(CanvasGroup canvasGroup)
         {
-            canvasGroup.alpha = 1f;
+            //canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
         }

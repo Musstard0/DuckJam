@@ -1,25 +1,24 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace DuckJam.PersistentSystems
 {
-    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(UIButtonInteractionHandler))]
     internal sealed class UIQuitButton : MonoBehaviour
     {
-        private Button _button;
+        private UIButtonInteractionHandler _interactionHandler;
         
         private void Awake()
         {
-            _button = GetComponent<Button>();
+            _interactionHandler = GetComponent<UIButtonInteractionHandler>();
             
 #if UNITY_WEBGL
             Destroy(gameObject);
             return;
 #endif
         }
-        
-        private void OnEnable() => _button.onClick.AddListener(ExitGame);
-        private void OnDisable() => _button.onClick.RemoveListener(ExitGame);
+
+        private void OnEnable() => _interactionHandler.Clicked += ExitGame;
+        private void OnDisable() => _interactionHandler.Clicked -= ExitGame;
         
         public void ExitGame()
         {
