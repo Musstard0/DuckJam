@@ -86,3 +86,4 @@ MonoBehaviour:
   deathEffectSizeScale: 20
   spawnEffectIndices: 17000000
   spawnEffectSizeScale: 40
+  gridCellSize: 5

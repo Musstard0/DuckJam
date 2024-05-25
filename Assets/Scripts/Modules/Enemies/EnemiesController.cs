@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using DuckJam.Entities;
 using DuckJam.Modules.Projectiles;
 using DuckJam.PersistentSystems;
 using DuckJam.SharedConfiguration;
 using DuckJam.Utilities;
+using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 namespace DuckJam.Modules
@@ -53,6 +56,7 @@ namespace DuckJam.Modules
                 ProgressAttackCooldownCountdown(enemy, deltaTime);
                 AnimateVisuals(enemy, deltaTime);
                 HandleAttack(enemy, playerPosition);
+                _enemiesModel.UpdateGridCell(enemy);
             }
         }
 
@@ -176,9 +180,10 @@ namespace DuckJam.Modules
             enemy.AttackCooldownCountdown = enemy.Attack.Cooldown;
         }
         
-        private static void HandleMovement(EnemyController enemy, Vector2 targetPosition, float deltaTime)
+        private void HandleMovement(EnemyController enemy, Vector2 targetPosition, float deltaTime)
         {
             var offset = targetPosition - enemy.Position2D;
+            
             
             // flip sprite to face target
             var angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
@@ -203,16 +208,65 @@ namespace DuckJam.Modules
             {
                 enemy.NavMeshAgent.SetDestination(targetPosition.XY0());
             }
-
-            var moveDirection = enemy.NavMeshAgent.velocity.XY().normalized;
             
             enemy.NavMeshAgent.nextPosition = enemy.transform.position;
             
-            // move towards/away from target
-            //var moveDirection = distance > enemy.Attack.MaxDistance ? offset.normalized : -offset.normalized;
             var deltaDistance = enemy.Speed * enemy.TimeScale * deltaTime;
+            var moveDirection = enemy.NavMeshAgent.velocity.XY().normalized;
+            var localAvoidanceDirection = _enemiesModel.GetLocalAvoidanceVector(enemy);
+            var direction = (moveDirection + localAvoidanceDirection * enemyConfig.LocalAvoidanceWeight).normalized;
             
-            enemy.Rigidbody2D.MovePosition(enemy.transform.position + moveDirection.XY0() * deltaDistance);
+            enemy.Rigidbody2D.MovePosition(enemy.transform.position.XY() + direction * deltaDistance);
         }
+
+        // private void OnDrawGizmos()
+        // {
+        //     var cellSize = new Vector2(enemyConfig.GridCellSize, enemyConfig.GridCellSize);
+        //     
+        //     // draw grid lines
+        //
+        //     var minX = -20;
+        //     var maxX = 20;
+        //     var minY = -20;
+        //     var maxY = 20;
+        //     
+        //     Gizmos.color = Color.cyan;
+        //     
+        //     for (var x = minX; x <= maxX; x++)
+        //     {
+        //         var start = new Vector2(x, minY) * cellSize;
+        //         var end = new Vector2(x, maxY) * cellSize;
+        //         Gizmos.DrawLine(start, end);
+        //     }
+        //     
+        //     for (var y = minY; y <= maxY; y++)
+        //     {
+        //         var start = new Vector2(minX, y) * cellSize;
+        //         var end = new Vector2(maxX, y) * cellSize;
+        //         Gizmos.DrawLine(start, end);
+        //     }
+        //     
+        //     if(_enemiesModel is null) return;
+        //
+        //
+        //     
+        //     
+        //     
+        //     Handles.BeginGUI();
+        //     foreach (var (cell, count) in _enemiesModel.GridCellEnemyCount)
+        //     {
+        //         GridUtils.CoordinatesToPosition(cell, cellSize, out var position);
+        //         position += (float2)(cellSize * 0.5f);
+        //         
+        //         var p = new Vector3(position.x, position.y, 0f);
+        //         
+        //         //Gizmos.color = Color.Lerp(Color.white, Color.black, count / 5f);
+        //         //Gizmos.DrawCube(p, new Vector3(cellSize.x, cellSize.y, 0f));
+        //         
+        //         Handles.Label(p, count.ToString());
+        //     }
+        //     Handles.EndGUI();
+        //     
+        // }
     }
 }

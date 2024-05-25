@@ -29,6 +29,10 @@ namespace DuckJam.Modules
         [SerializeField] private int[] spawnEffectIndices;
         [SerializeField, Min(0f)] private float spawnEffectSizeScale = 10f;
 
+        [Header("Grid")]
+        [SerializeField, Min(1f)] private float gridCellSize = 1f;
+        [SerializeField, Range(0f, 1f)] private float localAvoidanceWeight = 0.5f;
+
         public IReadOnlyList<EnemyType> EnemyTypes => enemyTypes ?? Array.Empty<EnemyType>();
         public AudioClip DeathSound => deathSound;
         public float DeathSoundMinInterval => deathSoundMinInterval;
@@ -40,6 +44,9 @@ namespace DuckJam.Modules
         
         public int SpawnSpriteEffectIndex => spawnEffectIndices[Random.Range(0, spawnEffectIndices.Length)];
         public float SpawnEffectSizeScale => spawnEffectSizeScale;  
+        
+        public float GridCellSize => gridCellSize;
+        public float LocalAvoidanceWeight => localAvoidanceWeight;
         
         private void OnValidate()
         {

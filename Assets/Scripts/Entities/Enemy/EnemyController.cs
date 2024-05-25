@@ -1,5 +1,6 @@
 using DuckJam.Modules;
 using DuckJam.Utilities;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -26,6 +27,7 @@ namespace DuckJam.Entities
         
         public bool Moving { get; set; }
         public float SwayTime { get; set; }
+        public int2 GridPosition { get; set; }
         
         public bool IsDead => Health <= 0f;
         public Vector2 Position2D => transform.position.XY();
