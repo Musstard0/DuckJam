@@ -58,7 +58,14 @@ namespace DuckJam.PersistentSystems
             var currentScene = SceneLoader.Instance.CurrentScene;
 
 #if UNITY_WEBGL
-            
+
+            if (currentScene == SceneId.Loading)
+            {
+                Destroy(introCutscene.gameObject);
+                Destroy(tempCamera.gameObject);
+                LoadMainMenu(false);
+                return;
+            }
 #else
             if (currentScene == SceneId.Loading)
             {
@@ -78,16 +85,7 @@ namespace DuckJam.PersistentSystems
                         Destroy(tempCamera.gameObject);
                         LoadMainMenu(false);
                     });
-                
-                // introCutscene.loopPointReached += source =>
-                // {
-                //     ShowLoadingScreen(() =>
-                //     {
-                //         Destroy(introCutscene.gameObject);
-                //         Destroy(tempCamera.gameObject);
-                //         LoadMainMenu(false);
-                //     });
-                // };
+
                 introCutscene.Play();
                 
                 return;
