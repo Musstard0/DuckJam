@@ -60,6 +60,14 @@ public class BulletController : MonoBehaviour
         Explode();
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if(Exploded) return;
+        if (other.gameObject.layer != LayerUtils.TerrainLayer) return;
+        
+        Explode();
+    }
+    
 
     private void Explode()
     {

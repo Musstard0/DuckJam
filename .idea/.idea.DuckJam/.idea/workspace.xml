@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d786c9c4-1ddd-4dc5-8a0e-bfc70939ccd7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/CanvasManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/CanvasManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Bullet/BulletController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Bullet/BulletController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +52,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$USER_HOME$/OneDrive/Desktop/duckJam/v0.1.0\DuckJam.exe" />
+      <option name="EXE_PATH" value="$USER_HOME$/OneDrive/Desktop/duckJam/v0.2.0\DuckJam.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="C:\Users\danie\OneDrive\Desktop\duckJam\V0.1.0_dev" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -112,7 +111,7 @@
       <workItem from="1716329131054" duration="29816000" />
       <workItem from="1716415736297" duration="15000" />
       <workItem from="1716415758584" duration="29937000" />
-      <workItem from="1716586551786" duration="25754000" />
+      <workItem from="1716586551786" duration="26409000" />
     </task>
     <servers />
   </component>
