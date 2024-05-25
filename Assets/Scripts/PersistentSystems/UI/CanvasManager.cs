@@ -1,12 +1,19 @@
 using System;
 using DG.Tweening;
+using DuckJam.Entities.MainMenuCharacter;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace DuckJam.PersistentSystems
 {
     [RequireComponent(typeof(Canvas))]
     internal sealed class CanvasManager : MonoBehaviour
     {
+        // hackity hack hack
+        [SerializeField] private Camera tempCamera;
+        [SerializeField] private VideoPlayer introCutscene;
+        
+        
         [SerializeField, Min(0f)] private float loadingScreenFadeDuration = 0.5f;
         [SerializeField] private Ease loadingScreenFadeInEase = Ease.Linear;
         [SerializeField] private Ease loadingScreenFadeOutEase = Ease.Linear;
@@ -25,6 +32,8 @@ namespace DuckJam.PersistentSystems
         private MenuPanel _currentPanel;
         
         private Tween _loadingScreenFadeTween;
+        private Sequence _introVideoSequence;
+        private Sequence _mainMenuDuckFallSequence;
         
         private MenuPanel ParentPanel => SceneLoader.Instance.CurrentScene == SceneId.MainMenu ? mainMenu : pauseMenu;
         
@@ -45,12 +54,56 @@ namespace DuckJam.PersistentSystems
         {
             loadingScreen.interactable = false;
             loadingScreen.blocksRaycasts = false;
-            loadingScreen.alpha = 0f;
+            loadingScreen.alpha = 1f;
             
-            if (SceneLoader.Instance.CurrentScene == SceneId.MainMenu)
+            var currentScene = SceneLoader.Instance.CurrentScene;
+            
+            if (currentScene == SceneId.Loading)
+            {
+                // intro cutscene
+                
+                HideLoadingScreen();
+
+                var pauseBeforeFade = Mathf.Max((float)introCutscene.length - loadingScreenFadeDuration, 0f);
+                
+                _introVideoSequence = DOTween.Sequence()
+                    .AppendInterval(pauseBeforeFade)
+                    .AppendCallback(() => ShowLoadingScreen())
+                    .AppendInterval(loadingScreenFadeDuration)
+                    .AppendCallback(() =>
+                    {
+                        Destroy(introCutscene.gameObject);
+                        Destroy(tempCamera.gameObject);
+                        LoadMainMenu(false);
+                    });
+                
+                // introCutscene.loopPointReached += source =>
+                // {
+                //     ShowLoadingScreen(() =>
+                //     {
+                //         Destroy(introCutscene.gameObject);
+                //         Destroy(tempCamera.gameObject);
+                //         LoadMainMenu(false);
+                //     });
+                // };
+                introCutscene.Play();
+                
+                return;
+            }
+            
+            Destroy(introCutscene.gameObject);
+            Destroy(tempCamera.gameObject);
+            HideLoadingScreen();
+            
+            if (currentScene == SceneId.MainMenu)
             {
                 mainMenu.Show();
                 _currentPanel = mainMenu;
+                MusicManager.Instance.PlayMenuMusic();
+            }
+            else
+            {
+                MusicManager.Instance.PlayGameMusic();
             }
         }
 
@@ -63,6 +116,8 @@ namespace DuckJam.PersistentSystems
         private void OnDestroy()
         {
             _loadingScreenFadeTween?.Kill();
+            _introVideoSequence?.Kill();
+            _mainMenuDuckFallSequence?.Kill();
             
             if (Instance != this) return;
             Instance = null;
@@ -172,7 +227,7 @@ namespace DuckJam.PersistentSystems
             _currentPanel.Show();
         }
         
-        public void LoadMainMenu()
+        public void LoadMainMenu(bool playTransitionMusic = true)
         {
             if (_isPaused)
             {
@@ -186,7 +241,7 @@ namespace DuckJam.PersistentSystems
                 _currentPanel = null;
             }
             
-            SceneLoader.Instance.LoadMainMenu();
+            SceneLoader.Instance.LoadMainMenu(playTransitionMusic);
         }
 
         public void ShowMainMenu()
@@ -195,7 +250,7 @@ namespace DuckJam.PersistentSystems
             _currentPanel = mainMenu;
         }
         
-        public void LoadGame()
+        public void LoadGame(bool playTransitionMusic = true)
         {
             if (_isPaused)
             {
@@ -208,21 +263,43 @@ namespace DuckJam.PersistentSystems
                 _currentPanel.Hide();
                 _currentPanel = null;
             }
+
+            // hackity hack hack - make the main menu character fall out of frame before game loads
+            if (SceneLoader.Instance.CurrentScene == SceneId.MainMenu)
+            {
+                var mainMenuCharacterController = FindAnyObjectByType<MainMenuCharacterController>();
+                if (mainMenuCharacterController != null)
+                {
+                    mainMenuCharacterController.FallOut();
+                    
+                    _mainMenuDuckFallSequence?.Kill();
+                    _mainMenuDuckFallSequence = DOTween.Sequence()
+                        .AppendInterval(0.7f)
+                        .AppendCallback(() => SceneLoader.Instance.LoadGame(playTransitionMusic));
+                    
+                    return;
+                }
+            }
             
-            SceneLoader.Instance.LoadGame();
+            SceneLoader.Instance.LoadGame(playTransitionMusic);
         }
         
-        
-        
-        public void ShowLoadingScreen()
+        public float ShowLoadingScreen()
         {
             loadingScreen.blocksRaycasts = true;
-
+            
+            if (loadingScreen.alpha >= 1f)
+            {
+                return 0f;
+            }
+            
             _loadingScreenFadeTween?.Complete();
             
             _loadingScreenFadeTween = loadingScreen.DOFade(1f, loadingScreenFadeDuration)
                 .From(0f)
                 .SetEase(loadingScreenFadeInEase);
+
+            return loadingScreenFadeDuration;
         }
         
         public void HideLoadingScreen()
@@ -241,22 +318,6 @@ namespace DuckJam.PersistentSystems
             NavigateTo(UIPanel.GameOverMenu);
             _currentPanel = gameOverMenu;
             _currentPanel.OptionalText = $"Score: {score}";
-        }
-        
-        private static void HidePanel(CanvasGroup canvasGroup)
-        {
-            if(canvasGroup == null) return;
-            canvasGroup.alpha = 0f;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
-        
-        private static void ShowPanel(CanvasGroup canvasGroup)
-        {
-            if(canvasGroup == null) return;
-            canvasGroup.alpha = 1f;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
         }
     }
     

@@ -32,16 +32,16 @@ namespace DuckJam.PersistentSystems
         
         public void PlayButtonHoverSound()
         {
-            if(Time.time - _lastHoverSoundTime < minSoundRepeatInterval) return;
+            if(Time.unscaledTime - _lastHoverSoundTime < minSoundRepeatInterval) return;
             AudioFXManager.Instance.PlayClip(buttonHoverSound);
-            _lastHoverSoundTime = Time.time;
+            _lastHoverSoundTime = Time.unscaledTime;
         }
         
         public void PlayButtonClickSound()
         {
-            if(Time.time - _lastClickSoundTime < minSoundRepeatInterval) return;
+            if(Time.unscaledTime - _lastClickSoundTime < minSoundRepeatInterval) return;
             AudioFXManager.Instance.PlayClip(buttonClickSound);
-            _lastClickSoundTime = Time.time;
+            _lastClickSoundTime = Time.unscaledTime;
         }
     }
 }

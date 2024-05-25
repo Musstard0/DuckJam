@@ -52,25 +52,27 @@ namespace DuckJam.PersistentSystems
             
             if(!isMainMenuSceneLoaded && !isGameSceneLoaded)
             {
-                SceneManager.LoadScene(MainMenuSceneName, LoadSceneMode.Additive);
-                CurrentScene = SceneId.MainMenu;
+                CurrentScene = SceneId.Loading;
+                
+                //SceneManager.LoadScene(MainMenuSceneName, LoadSceneMode.Additive);
+                //CurrentScene = SceneId.MainMenu;
                 return;
             }
             
             CurrentScene = isMainMenuSceneLoaded ? SceneId.MainMenu : SceneId.Game;
         }
 
-        private void Start()
-        {
-            if (CurrentScene == SceneId.MainMenu)
-            {
-                MusicManager.Instance.PlayMenuMusic();
-            }
-            else
-            {
-                MusicManager.Instance.PlayGameMusic();
-            }
-        }
+        // private void Start()
+        // {
+        //     if (CurrentScene == SceneId.MainMenu)
+        //     {
+        //         MusicManager.Instance.PlayMenuMusic();
+        //     }
+        //     else
+        //     {
+        //         MusicManager.Instance.PlayGameMusic();
+        //     }
+        // }
 
         private void OnDestroy()
         {
@@ -78,34 +80,46 @@ namespace DuckJam.PersistentSystems
             Instance = null;
         }
 
-        public void LoadMainMenu()
+        public void LoadMainMenu(bool playTransitionMusic = true)
         {
             if(CurrentScene == SceneId.MainMenu) return;
-            StartCoroutine(LoadSceneAsync(MainMenuSceneName, () =>
-            {
-                CanvasManager.Instance.ShowMainMenu();
-                MusicManager.Instance.PlayMenuMusic();
-            }));
+            StartCoroutine(LoadSceneAsync
+            (
+                MainMenuSceneName, 
+                () => 
+                {
+                    CanvasManager.Instance.ShowMainMenu();
+                    MusicManager.Instance.PlayMenuMusic(); 
+                }, 
+                playTransitionMusic
+            ));
             CurrentScene = SceneId.MainMenu;
         }
         
-        public void LoadGame()
+        public void LoadGame(bool playTransitionMusic = true)
         {
-            StartCoroutine(LoadSceneAsync(GameSceneName, MusicManager.Instance.PlayGameMusic));
+            StartCoroutine(LoadSceneAsync(GameSceneName, MusicManager.Instance.PlayGameMusic, playTransitionMusic));
             CurrentScene = SceneId.Game;
         }
 
-        private IEnumerator LoadSceneAsync(string sceneName, Action onComplete)
+        private IEnumerator LoadSceneAsync(string sceneName, Action onComplete, bool playTransitionMusic)
         {
             CurrentScene = SceneId.Loading;
             GameModel.Reset();
+
+            var transitionMusicEndTime = Time.time;
+
+            if (playTransitionMusic)
+            {
+                MusicManager.Instance.PlayTransitionMusic();
+                transitionMusicEndTime += MusicManager.Instance.TransitionClipDuration;
+            }
             
-            MusicManager.Instance.PlayTransitionMusic();
-            var transitionMusicEndTime = Time.time + MusicManager.Instance.TransitionClipDuration;
+
             
             
-            CanvasManager.Instance.ShowLoadingScreen();
-            var loadingScreenEndTime = Time.time + CanvasManager.Instance.LoadingScreenFadeDuration;
+            var loadingScreenFadeDuration = CanvasManager.Instance.ShowLoadingScreen();
+            var loadingScreenEndTime = Time.time + loadingScreenFadeDuration;
 
             while (Time.time < loadingScreenEndTime)
             {
