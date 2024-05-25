@@ -13,7 +13,6 @@ namespace DuckJam.PersistentSystems
         [SerializeField] private Camera tempCamera;
         [SerializeField] private VideoPlayer introCutscene;
         
-        
         [SerializeField, Min(0f)] private float loadingScreenFadeDuration = 0.5f;
         [SerializeField] private Ease loadingScreenFadeInEase = Ease.Linear;
         [SerializeField] private Ease loadingScreenFadeOutEase = Ease.Linear;
@@ -57,7 +56,10 @@ namespace DuckJam.PersistentSystems
             loadingScreen.alpha = 1f;
             
             var currentScene = SceneLoader.Instance.CurrentScene;
+
+#if UNITY_WEBGL
             
+#else
             if (currentScene == SceneId.Loading)
             {
                 // intro cutscene
@@ -90,6 +92,7 @@ namespace DuckJam.PersistentSystems
                 
                 return;
             }
+#endif
             
             Destroy(introCutscene.gameObject);
             Destroy(tempCamera.gameObject);
