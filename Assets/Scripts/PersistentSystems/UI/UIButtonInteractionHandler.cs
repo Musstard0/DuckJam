@@ -10,7 +10,8 @@ namespace DuckJam.PersistentSystems
     internal sealed class UIButtonInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         private Button _button;
-        private Tween _tween;
+        //private Tween _tween;
+        private Sequence _sequence;
         
         public event Action Clicked;
         
@@ -21,35 +22,37 @@ namespace DuckJam.PersistentSystems
 
         private void OnDestroy()
         {
-            _tween?.Kill();
+            _sequence?.Kill();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             UIAudioManager.Instance.PlayButtonHoverSound();
             
-            _tween?.Complete();
-            _tween = _button.transform.DOScale(1.2f, 0.2f).SetEase(Ease.OutBack);
-            _tween.SetUpdate(true);
-
+            _sequence?.Complete();
+            _sequence = DOTween.Sequence()
+                .Append(_button.transform.DOScale(1.2f, 0.2f).SetEase(Ease.OutBack))
+                .SetUpdate(true);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _tween?.Complete();
-            _tween = _button.transform.DOScale(1f, 0.2f).SetEase(Ease.InBack);
-            _tween.SetUpdate(true);
+            _sequence?.Complete();
+            _sequence = DOTween.Sequence()
+                .Append(_button.transform.DOScale(1f, 0.2f).SetEase(Ease.InBack))
+                .SetUpdate(true);
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            _tween?.Complete();
-            _tween = _button.transform.DOScale(1f, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
-            {
-                UIAudioManager.Instance.PlayButtonClickSound();
-                Clicked?.Invoke();
-            });
-            _tween.SetUpdate(true);
+            _sequence?.Complete();
+            _sequence = DOTween.Sequence()
+                .Append(_button.transform.DOScale(0.8f, 0.1f).SetEase(Ease.OutBack))
+                .AppendCallback(() => UIAudioManager.Instance.PlayButtonClickSound())
+                .Append(_button.transform.DOScale(1f, 0.1f).SetEase(Ease.OutBack))
+                .OnComplete(() => Clicked?.Invoke())
+                .SetUpdate(true);
+
         }
     }
 }

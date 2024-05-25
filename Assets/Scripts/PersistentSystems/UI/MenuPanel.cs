@@ -16,6 +16,7 @@ namespace DuckJam.PersistentSystems
         [SerializeField] private UIPanel panel = UIPanel.None;
         [SerializeField] private EscapeAction escapeAction = EscapeAction.None;
         
+        private RectTransform _rectTransform;
         private Sequence _sequence;
         
         
@@ -36,6 +37,7 @@ namespace DuckJam.PersistentSystems
         private void Awake()
         {
             CanvasGroup = GetComponent<CanvasGroup>();
+            _rectTransform = GetComponent<RectTransform>();
             HideImmediate();
         }
         
@@ -47,6 +49,7 @@ namespace DuckJam.PersistentSystems
         
         public void ShowImmediate()
         {
+            _rectTransform.localScale = Vector3.one;
             CanvasGroup.alpha = 1f;
             EnablePanel(CanvasGroup);
         }
@@ -58,9 +61,9 @@ namespace DuckJam.PersistentSystems
             _sequence = DOTween.Sequence()
                 .AppendCallback(() => DisablePanel(CanvasGroup))
                 .Append(CanvasGroup.DOFade(0f, FadeDuration).From(1f).SetEase(Ease.InSine))
-                .OnComplete(() => onComplete?.Invoke());
-
-            _sequence.SetUpdate(true);
+                .Join(_rectTransform.DOScale(0.7f, FadeDuration).From(1f).SetEase(Ease.InBack))
+                .OnComplete(() => onComplete?.Invoke())
+                .SetUpdate(true);
         }
         
         public void Show(Action onComplete = null)
@@ -69,13 +72,13 @@ namespace DuckJam.PersistentSystems
             
             _sequence = DOTween.Sequence()
                 .Append(CanvasGroup.DOFade(1f, FadeDuration).From(0f).SetEase(Ease.OutSine))
+                .Join(_rectTransform.DOScale(1f, FadeDuration).From(0.7f).SetEase(Ease.OutBack))
                 .OnComplete(() =>
                 {
                     EnablePanel(CanvasGroup);
                     onComplete?.Invoke();
-                });
-            
-            _sequence.SetUpdate(true);
+                })
+                .SetUpdate(true);
         }
         
         private static void DisablePanel(CanvasGroup canvasGroup)

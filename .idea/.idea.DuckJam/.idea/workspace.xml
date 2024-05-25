@@ -6,14 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d786c9c4-1ddd-4dc5-8a0e-bfc70939ccd7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckJam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckJam/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Scene_Persistant.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Scene_Persistant.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/CanvasManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/CanvasManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/MenuPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/MenuPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UIBackButtonNavigationHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UIBackButtonNavigationHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UILoadGameButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UILoadGameButton.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UILoadMainMenuButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UILoadMainMenuButton.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UINavigationButtonHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UINavigationButtonHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UIQuitButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UIQuitButton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UIButtonInteractionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PersistentSystems/UI/UIButtonInteractionHandler.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +113,7 @@
       <workItem from="1716329131054" duration="29816000" />
       <workItem from="1716415736297" duration="15000" />
       <workItem from="1716415758584" duration="29937000" />
-      <workItem from="1716586551786" duration="18262000" />
+      <workItem from="1716586551786" duration="19094000" />
     </task>
     <servers />
   </component>
