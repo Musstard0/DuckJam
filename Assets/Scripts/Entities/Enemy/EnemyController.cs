@@ -1,6 +1,4 @@
-using System;
 using DuckJam.Modules;
-using DuckJam.PersistentSystems;
 using DuckJam.Utilities;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,6 +10,7 @@ namespace DuckJam.Entities
     {
         [SerializeField] private SpriteRenderer bodySpriteRenderer;
         [SerializeField] private SpriteRenderer fillSpriteRenderer;
+        [SerializeField] private SpriteRenderer backgroundSpriteRenderer;
         [SerializeField] private Transform visuals;
         
         public Transform VisualsTransform => visuals;
@@ -34,6 +33,11 @@ namespace DuckJam.Entities
         public Color Color 
         {
             set => fillSpriteRenderer.color = value;
+        }
+        
+        public Color BackgroundColor
+        {
+            set => backgroundSpriteRenderer.color = value;
         }
 
         private void Awake()

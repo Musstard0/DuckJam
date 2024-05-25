@@ -17,6 +17,7 @@ namespace DuckJam.Modules
         [SerializeField, Min(0f)] private float deathSoundMinInterval = 0.1f;
         
         [Header("Visuals")]
+        [SerializeField] private Color fillSpriteColor = Color.white;
         [SerializeField, Min(0f)] private float swaySpeed;
         [SerializeField, Min(0f)] private float swayAmount;
         
@@ -31,6 +32,7 @@ namespace DuckJam.Modules
         public IReadOnlyList<EnemyType> EnemyTypes => enemyTypes ?? Array.Empty<EnemyType>();
         public AudioClip DeathSound => deathSound;
         public float DeathSoundMinInterval => deathSoundMinInterval;
+        public Color FillSpriteColor => fillSpriteColor;
         public float SwaySpeed => swaySpeed;
         public float SwayAmount => swayAmount;
         public int DeathSpriteEffectIndex => deathEffectIndices[Random.Range(0, deathEffectIndices.Length)];

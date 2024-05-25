@@ -53,7 +53,7 @@ namespace DuckJam.Modules
             enemy.Speed = type.Speed;
             enemy.TimeScale = 1f;
             enemy.AttackCooldownCountdown = 0f;
-            enemy.Color = Color.white;
+            enemy.Color = _enemyConfig.FillSpriteColor;
             
             _activeEnemies.Add(enemy);
         }

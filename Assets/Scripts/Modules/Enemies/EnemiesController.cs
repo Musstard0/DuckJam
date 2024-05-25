@@ -97,17 +97,32 @@ namespace DuckJam.Modules
                 _timeScaleConfig.MaxTimeScale
             );
             
+            
+            
+            
             // this is unlikely to remain - for now allows to see the effect of time scale on enemies
-            var color = Color.white;
+            
+            
+            var normalColor = _timeScaleConfig.NormalColor;
+            var fastColor = _timeScaleConfig.FastColor;
+            var slowColor = _timeScaleConfig.SlowColor;
+            
+            //normalColor.a = 0.2f;
+            //fastColor.a = 0.5f;
+            //slowColor.a = 0.5f;
+            
+            
+            
+            var color = normalColor;
             if (enemy.TimeScale > 1f)
             {
-                color = Color.Lerp(Color.white, Color.red, (enemy.TimeScale - 1f) / (_timeScaleConfig.MaxTimeScale - 1f));
+                color = Color.Lerp(normalColor, fastColor, (enemy.TimeScale - 1f) / (_timeScaleConfig.MaxTimeScale - 1f));
             }
             else if(enemy.TimeScale < 1f)
             {
-                color = Color.Lerp(Color.white, Color.blue, (1f - enemy.TimeScale) / (1f - _timeScaleConfig.MinTimeScale));
+                color = Color.Lerp(normalColor, slowColor, (1f - enemy.TimeScale) / (1f - _timeScaleConfig.MinTimeScale));
             }
-            enemy.Color = color;
+            enemy.BackgroundColor = color;
         }
 
         private void ProgressAttackCooldownCountdown(EnemyController enemyController, float deltaTime)

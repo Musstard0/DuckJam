@@ -79,6 +79,7 @@ MonoBehaviour:
       attackFXIndex: 11
   deathSound: {fileID: 8300000, guid: cf69ec4dc2be74b4498810c7332b3e18, type: 3}
   deathSoundMinInterval: 0.1
+  fillSpriteColor: {r: 0.87058824, g: 0.31764707, b: 0.9254902, a: 1}
   swaySpeed: 10
   swayAmount: 10
   deathEffectIndices: 0d0000000e0000001000000011000000
