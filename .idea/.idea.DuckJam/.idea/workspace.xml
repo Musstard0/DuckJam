@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d786c9c4-1ddd-4dc5-8a0e-bfc70939ccd7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckJam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckJam/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Gun/GunController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Gun/GunController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Enemies/EnemiesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Enemies/EnemiesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SharedConfiguration/TimeScaleConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SharedConfiguration/TimeScaleConfig.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +113,7 @@
       <workItem from="1716329131054" duration="29816000" />
       <workItem from="1716415736297" duration="15000" />
       <workItem from="1716415758584" duration="29937000" />
-      <workItem from="1716586551786" duration="13102000" />
+      <workItem from="1716586551786" duration="13666000" />
     </task>
     <servers />
   </component>
