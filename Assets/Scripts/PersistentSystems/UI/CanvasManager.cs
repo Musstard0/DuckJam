@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using DuckJam.Entities.MainMenuCharacter;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 namespace DuckJam.PersistentSystems
@@ -249,6 +250,9 @@ namespace DuckJam.PersistentSystems
         {
             mainMenu.Show();
             _currentPanel = mainMenu;
+
+            GameObject.Find("Altushka").GetComponent<Image>().enabled = true;
+            GameObject.Find("Altushka2").GetComponent<Image>().enabled = false;
         }
         
         public void LoadGame(bool playTransitionMusic = true)
@@ -264,7 +268,8 @@ namespace DuckJam.PersistentSystems
                 _currentPanel.Hide();
                 _currentPanel = null;
             }
-
+            GameObject.Find("Altushka").GetComponent<Image>().enabled = false;
+            GameObject.Find("Altushka2").GetComponent<Image>().enabled = true;
             // hackity hack hack - make the main menu character fall out of frame before game loads
             if (SceneLoader.Instance.CurrentScene == SceneId.MainMenu)
             {
@@ -277,11 +282,11 @@ namespace DuckJam.PersistentSystems
                     _mainMenuDuckFallSequence = DOTween.Sequence()
                         .AppendInterval(0.7f)
                         .AppendCallback(() => SceneLoader.Instance.LoadGame(playTransitionMusic));
-                    
+
                     return;
                 }
             }
-            
+
             SceneLoader.Instance.LoadGame(playTransitionMusic);
         }
         
@@ -319,6 +324,9 @@ namespace DuckJam.PersistentSystems
             NavigateTo(UIPanel.GameOverMenu);
             _currentPanel = gameOverMenu;
             _currentPanel.OptionalText = $"Score: {score}";
+
+            if (score >= 250)
+                _currentPanel.transform.GetChild(0).transform.Find("Easter egg").GetComponent<Image>().enabled = true;
         }
     }
     

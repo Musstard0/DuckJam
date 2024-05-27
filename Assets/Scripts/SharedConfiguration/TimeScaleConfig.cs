@@ -27,7 +27,7 @@ namespace DuckJam.SharedConfiguration
             
             if (timeScale > 1f)
             {
-                return Color.Lerp(normalColor, fastColor, (timeScale - 1f) / (maxTimeScale - 1f));
+                return Color.Lerp(normalColor, fastColor, (timeScale - 1f) / (2 - 1f));
             }
             
             if (timeScale < 1f)

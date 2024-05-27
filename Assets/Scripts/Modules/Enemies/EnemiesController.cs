@@ -102,6 +102,7 @@ namespace DuckJam.Modules
             );
             
             enemy.BackgroundColor = _timeScaleConfig.GetTimeScaleColor(enemy.TimeScale);
+            enemy.Color = _timeScaleConfig.GetTimeScaleColor(enemy.TimeScale);
         }
 
         private void ProgressAttackCooldownCountdown(EnemyController enemyController, float deltaTime)

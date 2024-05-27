@@ -182,7 +182,7 @@ namespace DuckJam
                 {
                     if (Time.time - _lastFootstepTime > playerCfg.minFootstepInterval)
                     {
-                        AudioFXManager.Instance.PlayClip(playerCfg.RandomFootstepClip, playerModel.TimeScale);
+                        AudioFXManager.Instance.PlayClip(playerCfg.RandomFootstepClip, playerModel.TimeScale,2);
                         _lastFootstepTime = Time.time;
                     }
                 }
@@ -302,7 +302,7 @@ namespace DuckJam
 
             if (Time.time - _lastHurtSoundTime >= playerCfg.minHurtSoundInterval)
             {
-                AudioFXManager.Instance.PlayClip(playerCfg.hurtClip, playerModel.TimeScale);
+                AudioFXManager.Instance.PlayClip(playerCfg.hurtClip);
                 _lastHurtSoundTime = Time.time;
             }
             
@@ -314,7 +314,7 @@ namespace DuckJam
 
         private void Die()
         {
-            AudioFXManager.Instance.PlayClip(playerCfg.deathClip, playerModel.TimeScale);
+            AudioFXManager.Instance.PlayClip(playerCfg.deathClip);
 
             var frames1 = SpriteAnimationManager.Instance.ImpactFXSpriteArr[16].GetFramesForColor(ImpactFXColor.Orange);
             var frames2 = SpriteAnimationManager.Instance.ImpactFXSpriteArr[18].GetFramesForColor(ImpactFXColor.Orange);

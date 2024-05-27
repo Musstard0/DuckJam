@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TimeScaleConfiguration
   m_EditorClassIdentifier: 
   minTimeScale: 0.5
-  maxTimeScale: 1.5
-  timeScaleChangeSpeed: 0.2
+  maxTimeScale: 5
+  timeScaleChangeSpeed: 0.35
   slowColor: {r: 0.21764861, g: 0.32436076, b: 0.6886792, a: 1}
   fastColor: {r: 0.8018868, g: 0.22316661, b: 0.22316661, a: 1}
   normalColor: {r: 1, g: 1, b: 1, a: 1}

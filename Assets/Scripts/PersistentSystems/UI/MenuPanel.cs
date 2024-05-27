@@ -8,7 +8,7 @@ namespace DuckJam.PersistentSystems
     [RequireComponent(typeof(CanvasGroup))]
     internal sealed class MenuPanel : MonoBehaviour
     {
-        private const float FadeDuration = 0.3f;
+        private const float FadeDuration = 0.4f;
         
         
         [SerializeField] private TMP_Text optionalText;

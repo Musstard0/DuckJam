@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnInterval: 0.4
   spawnIntervalDeviation: 0.1
-  initialMaxEnemies: 8
-  maxEnemies: 48
+  initialMaxEnemies: 10
+  maxEnemies: 100
   maxEnemesIncrementRate: 10
   mapEdgeSpawnBuffer: 1
   spawnPositionZ: 0

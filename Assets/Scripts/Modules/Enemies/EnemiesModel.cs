@@ -93,7 +93,7 @@ namespace DuckJam.Modules
             
             if(Time.time - _lastDeathSoundTime < _enemyConfig.DeathSoundMinInterval) return;
             
-            AudioFXManager.Instance.PlayClip(_enemyConfig.DeathSound, enemy.TimeScale, 0.6f);
+            AudioFXManager.Instance.PlayClip(_enemyConfig.DeathSound, 0.6f);
             _lastDeathSoundTime = Time.time;
         }
 

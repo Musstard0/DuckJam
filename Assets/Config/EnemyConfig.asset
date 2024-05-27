@@ -23,9 +23,9 @@ MonoBehaviour:
       minDistance: 6
       maxDistance: 17
       cooldown: 0.8
-      attackSound: {fileID: 0}
+      attackSound: {fileID: 8300000, guid: 91eb628f0a71bd84c8c7ef189aa523d7, type: 3}
       speed: 20
-      color: 1
+      color: 3
       attackFXScale: 10
       attackFXOffsetPositionDistance: 2.5
       attackFXIndex: 4
@@ -34,33 +34,33 @@ MonoBehaviour:
     maxHealth: 10
     speed: 8
     attack:
-      isRanged: 0
-      damage: 8
-      minDistance: 0
-      maxDistance: 4
-      cooldown: 1
-      attackSound: {fileID: 0}
-      speed: 0
-      color: 1
+      isRanged: 1
+      damage: 5
+      minDistance: 6
+      maxDistance: 17
+      cooldown: 0.8
+      attackSound: {fileID: 8300000, guid: 91eb628f0a71bd84c8c7ef189aa523d7, type: 3}
+      speed: 20
+      color: 3
       attackFXScale: 10
       attackFXOffsetPositionDistance: 2.5
-      attackFXIndex: 11
+      attackFXIndex: 4
   - name: Mob 3
     prefab: {fileID: 5911068686392948138, guid: 841aaad01f315ec46a1c72969552f4f3, type: 3}
     maxHealth: 30
     speed: 5
     attack:
-      isRanged: 1
+      isRanged: 0
       damage: 10
-      minDistance: 2
-      maxDistance: 12
-      cooldown: 1.2
-      attackSound: {fileID: 0}
-      speed: 20
-      color: 1
+      minDistance: 0
+      maxDistance: 3
+      cooldown: 15
+      attackSound: {fileID: 8300000, guid: 91eb628f0a71bd84c8c7ef189aa523d7, type: 3}
+      speed: 0
+      color: 3
       attackFXScale: 10
       attackFXOffsetPositionDistance: 2.5
-      attackFXIndex: 4
+      attackFXIndex: 11
   - name: Mob 4
     prefab: {fileID: 1585416676206313591, guid: c94fc6063872b424188819e4a9dc91f9, type: 3}
     maxHealth: 20
@@ -71,9 +71,9 @@ MonoBehaviour:
       minDistance: 0
       maxDistance: 3
       cooldown: 1.5
-      attackSound: {fileID: 0}
+      attackSound: {fileID: 8300000, guid: 91eb628f0a71bd84c8c7ef189aa523d7, type: 3}
       speed: 0
-      color: 1
+      color: 3
       attackFXScale: 10
       attackFXOffsetPositionDistance: 2.5
       attackFXIndex: 11
@@ -87,3 +87,4 @@ MonoBehaviour:
   spawnEffectIndices: 17000000
   spawnEffectSizeScale: 40
   gridCellSize: 5
+  localAvoidanceWeight: 0.5
